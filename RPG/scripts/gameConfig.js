@@ -1,11 +1,11 @@
 
 window.addEventListener('load', () => {
 	//game configuratie, moet voor elk nieuw spel gedaan worden
-let config = {
+const config = {
     type: Phaser.AUTO,
-    width: 300,
-    height: 240,
-    backgroundColor: 0x999999,
+    width: 1000,
+    height: 840,
+    backgroundColor: 0x000000,
     physics: {
         default: 'arcade',
         arcade: {
@@ -22,7 +22,7 @@ let config = {
         parent: "thegame"
     },
     pixelArt: true,
-    scene: [GameScene]
+    scene: [ MenuScene, GameScene ] 
 }
 // nieuw game object instantieëren
 const game = new Phaser.Game(config)

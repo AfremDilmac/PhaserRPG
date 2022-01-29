@@ -1,7 +1,14 @@
-class GameScene extends Phaser.Scene {
-    constructor() {
-        super('GameScene')
-    }
+const GameScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+    initialize: function() {
+        Phaser.Scene.call(this, { "key": "gameScene" });
+    },
+
+
+
+
+//class GameScene extends Phaser.Scene {
+
 
     preload() {
         this.cursors
@@ -19,7 +26,7 @@ class GameScene extends Phaser.Scene {
         this.player
         this.keys
 
-    } //end preload
+    }, //end preload
 
     create() {
         // this.cursors = this.input.keyboard.createCursorKeys()
@@ -138,7 +145,7 @@ class GameScene extends Phaser.Scene {
         }
 		//als de player niet beweegt willen we niet dat hij in walking position staat zie guy.png voor verschillende posities
         this.player.setFrame(this.idleFrame.down)
-    } //end create
+    }, //end create
 
  
     update(time, delta) {
@@ -203,4 +210,4 @@ class GameScene extends Phaser.Scene {
     } //end update
 
 
-} //end gameScene
+});//end gameScene
