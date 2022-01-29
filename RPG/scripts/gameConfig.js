@@ -1,5 +1,6 @@
 
 window.addEventListener('load', () => {
+	//game configuratie, moet voor elk nieuw spel gedaan worden
 let config = {
     type: Phaser.AUTO,
     width: 300,
@@ -15,6 +16,7 @@ let config = {
         }
     },
     scale: {
+		// centreren + hele viewpoort gebruiken + div met id: thegame als parent declareren 
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         parent: "thegame"
@@ -22,6 +24,7 @@ let config = {
     pixelArt: true,
     scene: [GameScene]
 }
+// nieuw game object instantieëren
 const game = new Phaser.Game(config)
 }) //end load listener
 
