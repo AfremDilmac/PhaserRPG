@@ -8,6 +8,7 @@ const MenuScene = new Phaser.Class({
 		this.load.image('options', 'assets/menu/options_button.png')
 		this.load.image('play', 'assets/menu/play_button.png')
 		this.load.image('diamond', 'assets/menu/diamond.png')
+		this.load.image('option', 'assets/menu/option.png')
 		this.load.image('logo', 'assets/menu/logo.png')
 		//this.load.audio('introMusic', 'assets/audio/Dark-Ages.mp3')
 
@@ -47,10 +48,10 @@ const MenuScene = new Phaser.Class({
 		optionButton.setInteractive();
 		// hover sprite
 		let hoverSprite = this.add.sprite(390, 425, 'diamond')
-		let hoversprite2 = this.add.sprite(400, 525, 'diamond')
+		let hoversprite2 = this.add.sprite(400, 525, 'option')
 		hoverSprite.setScale(0.5)
 		hoverSprite.setVisible(false)
-		hoversprite2.setScale(0.5)
+		hoversprite2.setScale(0.1)
 		hoversprite2.setVisible(false)
 
 		// hover effects
