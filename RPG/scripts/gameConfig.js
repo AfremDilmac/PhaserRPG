@@ -3,8 +3,8 @@ window.addEventListener('load', () => {
 	//game configuratie, moet voor elk nieuw spel gedaan worden
 const config = {
     type: Phaser.AUTO,
-    width: 1000,
-    height: 840,
+    width: 400,
+    height: 300,
     backgroundColor: 0x000000,
     physics: {
         default: 'arcade',
