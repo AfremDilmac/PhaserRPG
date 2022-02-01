@@ -3,7 +3,7 @@ class Player extends Entity {
         super(scene, x, y, texturekey, 'Player')
 
 
-		const animFrameRate = 8
+		const animFrameRate = 6
 		const anims = scene.anims
 		// hier gebeurt de animatie van onze character aan de hand van frames
 		//player-left = frames nr 15 t.e.m 17 zie characters.png

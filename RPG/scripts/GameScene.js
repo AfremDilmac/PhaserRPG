@@ -18,6 +18,8 @@ class GameScene extends Phaser.Scene {
             frameWidth: 16,
             frameHieght: 16
         })
+		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
+		this.load.atlas('sprite', 'assets/skeleton.png', 'assets/skeleton.json')
 
         this.player
         this.keys
@@ -68,6 +70,22 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, worldLayer)
 		// focus op player bij beweging
         this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
+
+		this.anims.create({
+			key: 'skeletonLeft',
+			frames: this.anims.generateFrameNames('sprite', {
+				prefix: 'skeleton-walk-down/',
+				suffix: '',
+				start: 1,
+				end: 3,
+				zeroPad: 2
+			}),
+			frameRate: 6,
+			repeat: -1
+		})
+
+
+		this.add.sprite(280, 250, 'sprite').anims.play('skeletonLeft')
         
 
 
