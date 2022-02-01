@@ -79,14 +79,12 @@ class Enemy extends Entity {
             default:
                 break;
         }
-        console.log(this.body.blocked)
     } //End constructor
     update() {
         const {speed} = this //speed
         const enemyBlocked = this.body.blocked
 
         if (enemyBlocked.down || enemyBlocked.up || enemyBlocked.left || enemyBlocked.right) {
-            console.log("enemy block");
             let possibleDirections = []
 
             for (const direction in enemyBlocked) {
