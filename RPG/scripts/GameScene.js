@@ -19,10 +19,12 @@ class GameScene extends Phaser.Scene {
             frameHieght: 16
         })
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
-		this.load.atlas('sprite', 'assets/skeleton.png', 'assets/skeleton.json')
+		this.load.atlas('skeleton', 'assets/skeleton.png', 'assets/skeleton.json')
+        this.load.atlas('ghost', 'assets/ghost.png', 'assets/ghost.json')
 
         this.player
         this.keys
+        this.enemy
 
     } //end preload
 
@@ -53,7 +55,7 @@ class GameScene extends Phaser.Scene {
         /**
          * This is if you want to see the collission layer (world)
          */
-		//const debugGraphics = this.add.graphics().setAlpha(0.2)
+		// const debugGraphics = this.add.graphics().setAlpha(0.2)
         // worldLayer.renderDebug(debugGraphics, {
         //     tileColor: null,
         //     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
@@ -64,37 +66,25 @@ class GameScene extends Phaser.Scene {
          * Player
          */
 		// player instantieëren
-        this.player = new Player(this, 200, 120, 'characters')
+        this.player = new Player(this, 40, 35, 'characters')
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
         this.physics.add.collider(this.player, worldLayer)
 		// focus op player bij beweging
         this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
-		this.anims.create({
-			key: 'skeletonLeft',
-			frames: this.anims.generateFrameNames('sprite', {
-				prefix: 'skeleton-walk-down/',
-				suffix: '',
-				start: 1,
-				end: 3,
-				zeroPad: 2
-			}),
-			frameRate: 6,
-			repeat: -1
-		})
-
-
-		this.add.sprite(280, 250, 'sprite').anims.play('skeletonLeft')
-        
-
-
+        /**
+         * Enemy
+         */
+        //Om een enemy te kiezen gebruik het commando hieronder, kies de x, y positie en de atlas die je wilt
+        this.enemy = new Enemy(this, 250, 242, 'skeleton')
+        this.physics.add.collider(this.enemy, worldLayer)
     } //end create
 
  
     update(time, delta) {
-		this.player.update();
-
+		this.player.update()
+        this.enemy.update()
     } //end update
 
 
