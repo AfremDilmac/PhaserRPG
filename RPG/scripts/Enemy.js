@@ -1,10 +1,11 @@
 class Enemy extends Entity {
-    constructor(scene, x, y, textureKey) {
+    constructor(scene, x, y, textureKey, damage) {
         super(scene, x, y, textureKey, 'Enemy')
 
         const anims = scene.anims
         const animFrameRate = 4
         this.textureKey = textureKey
+		this.damage = damage
         //Animations
         //this = sprite dat wij aangeven in anims -> scene.anims
         anims.create({
@@ -57,7 +58,7 @@ class Enemy extends Entity {
         })
 
         this.speed = 32
-        //Switch met een random 0 - 3 nummer die een willekeurige richting geeft aan de vijand en de animatie die daarbij hoort
+        //Switch met een random 0 - 3 nummer die een willekeurige richting geeft aan de vijand + de animatie die daarbij hoort
         let direction = Math.floor(Math.random() * 4)
         switch (direction) {
             case 0:
@@ -80,10 +81,18 @@ class Enemy extends Entity {
                 break;
         }
     } //End constructor
+	
     update() {
         const {speed} = this //speed
         const enemyBlocked = this.body.blocked
+		//Deze if-statement zorgd ervoor dat de enemy in een andere richting gaat wanneer hij botst tegen een obstakel
 
+		//We nemen eerst al de kays uit de array enemyBlocked ==> none, up, down, left, right
+		//Dan maken we onze eigen array aan possibleDirections
+		//en we steken al deze keys erin met de push functie
+		//We maken de variabele newDirection aan dat gelijk zal zijn aan een willekeurig getal tussen 1 en 4 
+		//dit getal komt overeen met een van de keys behalve de key op positie 0 (none)
+		//Dan gaan we met een switch de enemy van richting laten veranderen
         if (enemyBlocked.down || enemyBlocked.up || enemyBlocked.left || enemyBlocked.right) {
             let possibleDirections = []
 
@@ -109,7 +118,7 @@ class Enemy extends Entity {
                     this.anims.play('enemy-right')
                     break;
                 case 'none':
-                    this.body.setVelocity(0, 0) //RIGHT
+                    this.body.setVelocity(0, 0) //NONE
                     this.anims.stop()
                     break;
                 default:

@@ -1,10 +1,12 @@
 class Player extends Entity {
-	constructor(scene, x, y, texturekey){
+	constructor(scene, x, y, texturekey, health){
         super(scene, x, y, texturekey, 'Player')
 
 
 		const animFrameRate = 6
 		const anims = scene.anims
+		this.health = health
+		this.facing = 'down'
 		// hier gebeurt de animatie van onze character aan de hand van frames
 		//player-left = frames nr 15 t.e.m 17 zie characters.png
 		//player-right = frames nr 27 t.e.m 29 zie characters.png
@@ -137,6 +139,10 @@ class Player extends Entity {
                 this.setFrame(this.idleFrame.down)
             }
         }
+
+		if(this.anims.currentAnim){
+			this.facing = this.anims.currentAnim.key.split('-')[1]
+		}
 
 	}
 }
