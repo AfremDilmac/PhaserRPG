@@ -105,7 +105,7 @@ class GameScene extends Phaser.Scene {
         this.cameras.main.shake(40, 0.02)
         p.setTint(0xff0000)//red
         this.time.addEvent({
-            delay: 500,
+            delay: 350,
             callback: ()=>{
                 p.clearTint()// get rid of red tint
             }, 
