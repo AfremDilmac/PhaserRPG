@@ -13,6 +13,8 @@ class GameScene extends Phaser.Scene {
         this.load.image('tiles', '../assets/Tilemap/dungeon.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/bullet.png')
+        //particle loaden
+        this.load.image('particle', '../assets/particle.png')
         //map dat we in Tiled hebben gemaakt loaden
         this.load.tilemapTiledJSON('map', '../scripts/dungeonMap.json')
         //characters loaden
@@ -34,6 +36,7 @@ class GameScene extends Phaser.Scene {
 		this.projectiles
 		this.keys
 		this.lastFiredTime = 0
+        this.emmiter
 
     } //end preload
 
@@ -137,6 +140,22 @@ class GameScene extends Phaser.Scene {
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 
+        /** 
+         * Particles
+        */
+       //Aanmaken van emitter dat we straks gaan gebruiken voor de handleProjectileEnemyCollision
+       this.emmiter = this.add.particles('particle').createEmitter({
+           x: 0,
+           y: 0,
+           quantity: 15,
+           speed: { min: -40, max: 40},
+           angle: { min: 0, max: 360},
+           scale: {start: 0.05, end: 0},
+           lifespan: 300,
+           active: false
+
+       })
+
     } //end create
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -161,6 +180,9 @@ class GameScene extends Phaser.Scene {
 				callbackScope: this,
 				loop: false
 			})
+            this.emmiter.active = true
+            this.emmiter.setPosition(enemy.x, enemy.y)
+            this.emmiter.explode()
 		}
 	}
 
