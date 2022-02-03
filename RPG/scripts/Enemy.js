@@ -1,11 +1,12 @@
 class Enemy extends Entity {
-    constructor(scene, x, y, textureKey, damage) {
-        super(scene, x, y, textureKey, 'Enemy')
+    constructor(scene, x, y, textureKey, damage, type) {
+        super(scene, x, y, textureKey, 'Enemy', type)
 
         const anims = scene.anims
         const animFrameRate = 4
         this.textureKey = textureKey
 		this.damage = damage
+        this.type = type
         //Animations
         //this = sprite dat wij aangeven in anims -> scene.anims
         anims.create({
