@@ -148,9 +148,9 @@ class GameScene extends Phaser.Scene {
            x: 0,
            y: 0,
            quantity: 15,
-           speed: { min: -40, max: 40},
+           speed: { min: -100, max: 100},
            angle: { min: 0, max: 360},
-           scale: {start: 0.05, end: 0},
+           scale: {start: 0.7, end: 0},
            lifespan: 300,
            active: false
 
