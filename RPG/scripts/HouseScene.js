@@ -1,6 +1,6 @@
-class GameScene extends Phaser.Scene {
+class HouseScene extends Phaser.Scene {
     constructor() {
-        super('gameScene')
+        super('houseScene')
     }
 
     //class GameScene extends Phaser.Scene {
@@ -10,7 +10,6 @@ class GameScene extends Phaser.Scene {
         this.cursors
         // this.cameras.main.setBackgroundColor('0x9900e3')
         // verchillende tiles loaden
-        // this.load.image('tiles', '../assets/Tilemap/dungeon.png')
         this.load.image('tiles', '../assets/Tilemap/dungeon.png')
         //bullet loaden
         this.load.image('bullet', 'assets/bullet.png')
@@ -83,7 +82,6 @@ class GameScene extends Phaser.Scene {
         // collision tussen player en wereld inschakelen
         this.player.body.setCollideWorldBounds(true)
         this.physics.add.collider(this.player, worldLayer)
-
         // focus op player bij beweging
         this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
