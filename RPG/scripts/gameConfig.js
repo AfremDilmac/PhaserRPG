@@ -1,3 +1,4 @@
+import VirtualJoyStickPlugin from '../../plugins/virtualjoystick-plugin.js';
 
 window.addEventListener('load', () => {
 	//game configuratie, moet voor elk nieuw spel gedaan worden
@@ -22,7 +23,14 @@ const config = {
         parent: "thegame"
     },
     pixelArt: true,
-    scene: [ MenuScene, GameScene ] 
+    scene: [ MenuScene, GameScene ],
+    plugins: {
+        global: [{
+            key: 'rexVirtualJoyStick',
+            plugin: VirtualJoyStickPlugin,
+            start: true
+        }]
+    } 
 }
 // nieuw game object instantieëren
 const game = new Phaser.Game(config)
