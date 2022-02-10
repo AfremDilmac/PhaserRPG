@@ -39,6 +39,15 @@ class GameScene extends Phaser.Scene {
         this.lastFiredTime = 0
         this.emmiter
 
+        /**
+         * Virtual joystick
+         */
+         var url;
+  
+         url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
+         this.load.plugin('rexvirtualjoystickplugin', url, true);
+
+
     } //end preload
 
     create() {
@@ -238,10 +247,11 @@ class GameScene extends Phaser.Scene {
     update(time, delta) {
         // als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
         // en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
-        if (this.keys.space.isDown) {
+        if (this.keys.space.isDown || this.player.isShooting) {
             if (time > this.lastFiredTime) {
                 this.lastFiredTime = time + 200
                 this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+               
             }
         }
         this.player.update()

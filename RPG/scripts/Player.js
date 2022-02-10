@@ -79,51 +79,33 @@ class Player extends Entity {
             s: S,
             d: D
         })
+        console.log(scene)
 
-        this.joyStick = this.plugins.get('rexVirtualJoyStick').add(this, {
-            x: 400,
-            y: 300,
-            radius: 100,
-            // base: this.add.circle(0, 0, 100, 0x888888),
-            // thumb: this.add.circle(0, 0, 50, 0xcccccc),
-            // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-            // forceMin: 16,
-            // enable: true
+        //Joystick plugin
+        this.joyStick = scene.plugins.get('rexvirtualjoystickplugin').add(scene, {
+            x: 350,
+            y: 250,
+            radius: 25,
+            base: scene.add.circle(0, 0, 30, 0x888888),
+            thumb: scene.add.circle(0, 0, 15, 0xcccccc),
+
         })
-            .on('update', this.dumpJoyStickState, this);
 
-        this.text = this.add.text(0, 0);
-        this.dumpJoyStickState();
+        //Rectangle shooting function
+        var onPointerDown = function() {
+            this.isShooting = true;
+          }.bind(this);
+          
+          var onPointerUp = function() {
+            this.isShooting = false;
+          }.bind(this);
+          
+          scene.add.rectangle(60, 250, 70, 50, 0x888888).setInteractive().on('pointerup', onPointerUp).on('pointerdown', onPointerDown);
+          
     }
-
-    dumpJoyStickState() {
-        var cursorKeys = this.joyStick.createCursorKeys();
-        var s = 'Key down: ';
-        for (var name in cursorKeys) {
-            if (cursorKeys[name].isDown) {
-                s += `${name} `;
-            }
-        }
-
-        s += `
-Force: ${Math.floor(this.joyStick.force * 100) / 100}
-Angle: ${Math.floor(this.joyStick.angle * 100) / 100}
-`;
-
-        s += '\nTimestamp:\n';
-        for (var name in cursorKeys) {
-            var key = cursorKeys[name];
-            s += `${name}: duration=${key.duration / 1000}\n`;
-        }
-
-        this.text.setText(s);
-    
-
-
-	}	// end constructor
+// end constructor
 
 	update(){
-
 		const {keys} = this //output: this.keys
         const speed = 100
 		//positie in een var steken, gebruikt voor idle animation (zie lijn 189 t.e.m 200 )
@@ -133,17 +115,17 @@ Angle: ${Math.floor(this.joyStick.angle * 100) / 100}
         //movement
 		// drukken op linker pijl = positionX -100 (zie speed var, lijn 144 )
 		// drukken op rechter pijl = positionX +100 (zie speed var, lijn 144 )
-        if (keys.left.isDown || keys.q.isDown) {
+        if (keys.left.isDown || keys.q.isDown || this.joyStick.left) {
             this.body.setVelocityX(-speed)
-        } else if (keys.right.isDown || keys.d.isDown) {
+        } else if (keys.right.isDown || keys.d.isDown || this.joyStick.right) {
             this.body.setVelocityX(speed)
         }
 
 		// drukken op boven pijl = positionY -100 (zie speed var, lijn 144 )
 		// drukken op rechter pijl = positionY +100 (zie speed var, lijn 144 )
-        if (keys.up.isDown || keys.z.isDown) {
+        if (keys.up.isDown || keys.z.isDown || this.joyStick.up) {
             this.body.setVelocityY(-speed)
-        } else if (keys.down.isDown || keys.s.isDown) {
+        } else if (keys.down.isDown || keys.s.isDown || this.joyStick.down) {
             this.body.setVelocityY(speed)
         }
 		//dit zorgt ervoor dat de speed niet groter wordt bij een diagonale beweging 
@@ -152,14 +134,14 @@ Angle: ${Math.floor(this.joyStick.angle * 100) / 100}
         //animations
 		//de player kijkt in een verschillende richting op basis van de controls en anims (zie lijn 88 t.e.m 117)
 		//rechter pijl = player kijkt naar oven etc..
-        if (keys.up.isDown || keys.z.isDown) {
+        if (keys.up.isDown || keys.z.isDow || this.joyStick.up) {
             this.anims.play('player-up', true)
-        } else if (keys.down.isDown || keys.s.isDown) {
+        } else if (keys.down.isDown || keys.s.isDown || this.joyStick.down) {
             this.anims.play('player-down', true)
         } else
-        if (keys.left.isDown || keys.q.isDown) {
+        if (keys.left.isDown || keys.q.isDown || this.joyStick.left) {
             this.anims.play('player-left', true)
-        } else if (keys.right.isDown || keys.d.isDown) {
+        } else if (keys.right.isDown || keys.d.isDown || this.joyStick.right) {
             this.anims.play('player-right', true)
         } else {
             this.anims.stop()
