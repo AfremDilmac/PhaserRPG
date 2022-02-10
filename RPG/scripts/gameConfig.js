@@ -1,7 +1,6 @@
-
 import VirtualJoyStickPlugin from '../../plugins/virtualjoystick-plugin.js';
+
 window.addEventListener('load', () => {
-    
 	//game configuratie, moet voor elk nieuw spel gedaan worden
 const config = {
     type: Phaser.AUTO,
