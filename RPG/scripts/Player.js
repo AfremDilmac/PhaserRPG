@@ -1,7 +1,8 @@
 class Player extends Entity {
 	constructor(scene, x, y, texturekey, health){
         super(scene, x, y, texturekey, 'Player')
-
+        
+        scene.input.addPointer(3)
 
 		const animFrameRate = 6
 		const anims = scene.anims
