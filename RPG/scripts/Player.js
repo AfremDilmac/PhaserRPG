@@ -1,7 +1,7 @@
 class Player extends Entity {
 	constructor(scene, x, y, texturekey, health){
         super(scene, x, y, texturekey, 'Player')
-        
+
         scene.input.addPointer(3)
 
 		const animFrameRate = 6
@@ -87,8 +87,9 @@ class Player extends Entity {
             x: 350,
             y: 250,
             radius: 25,
-            base: scene.add.circle(0, 0, 30, 0x888888),
+            base: scene.add.circle(0, 0, 30, 0x888888, 0.5),
             thumb: scene.add.circle(0, 0, 15, 0xcccccc),
+            opacity: 0.5,
 
         })
 
@@ -101,7 +102,9 @@ class Player extends Entity {
             this.isShooting = false;
           }.bind(this);
           
-          scene.add.rectangle(60, 250, 70, 50, 0x888888).setInteractive().on('pointerup', onPointerUp).on('pointerdown', onPointerDown);
+          
+       scene.add.circle(60, 250, 15, 0x6666ff, 0.5).setInteractive().on('pointerup', onPointerUp).on('pointerdown', onPointerDown);
+         
           
     }
 // end constructor

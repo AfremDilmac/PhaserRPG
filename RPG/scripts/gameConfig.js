@@ -22,7 +22,7 @@ const config = {
         parent: "thegame"
     },
     pixelArt: true,
-    scene: [ MenuScene, GameScene ],
+    scene: [ MenuScene, GameScene, HouseScene ],
 
 }
 // nieuw game object instantieëren

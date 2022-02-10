@@ -100,17 +100,17 @@ class GameScene extends Phaser.Scene {
          * Enemy
          */
         //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
-        this.enemy = new Enemy(this, 250, 242, 'skeleton', 25, 'wandering50')
-        // collision tussen enemy en map
-        this.physics.add.collider(this.enemy, worldLayer)
-        this.enemy.body.setCollideWorldBounds(true)
+        // this.enemy = new Enemy(this, 250, 242, 'skeleton', 25, 'wandering50')
+        // // collision tussen enemy en map
+        // this.physics.add.collider(this.enemy, worldLayer)
+        // this.enemy.body.setCollideWorldBounds(true)
 
-        //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
-        //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
-        this.enemy2 = new EnemyFollow(this, 250, 242, 'skeleton', 25, 'follow').setTint(0x00ff00)
-        // collision tussen enemy en map
-        this.physics.add.collider(this.enemy2, worldLayer)
-        this.enemy2.body.setCollideWorldBounds(true)
+        // //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
+        // //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
+        // this.enemy2 = new EnemyFollow(this, 250, 242, 'skeleton', 25, 'follow').setTint(0x00ff00)
+        // // collision tussen enemy en map
+        // this.physics.add.collider(this.enemy2, worldLayer)
+        // this.enemy2.body.setCollideWorldBounds(true)
 
         /** 
          * Group of ennemys
@@ -120,6 +120,7 @@ class GameScene extends Phaser.Scene {
         //enemies een blauwe kleur geven 
         //elements (enemies) in de group steken 
         this.enemies = this.add.group()
+       
         for (let i = 0; i < 8; i++) {
             const element = new Enemy(this, 220 + 20 * i, 100 + 10 * i, 'skeleton', 10, 'wandering10')
             element.body.setCollideWorldBounds(true)
@@ -200,7 +201,7 @@ class GameScene extends Phaser.Scene {
         if (projectile.active) {
             enemy.setTint(0xff0000)
             this.time.addEvent({
-                delay: 100,
+                delay: 0,
                 callback: () => {
                     enemy.explode()
                     projectile.recycle()
@@ -256,18 +257,24 @@ class GameScene extends Phaser.Scene {
         }
         this.player.update()
 
-        if (!this.enemy.isDead) {
-            this.enemy.update()
-        }
-        if (!this.enemy2.isDead) {
-            this.enemy2.update(this.player.body.position)
-        }
+        // if (!this.enemy.isDead) {
+        //     this.enemy.update()
+        // }
+        // if (!this.enemy2.isDead) {
+        //     this.enemy2.update(this.player.body.position)
+        // }
 
         this.enemies.children.iterate((child) => {
             if (!child.isDead) {
                 child.update()
             }
         })
+        //All enemies are dead
+        if (this.enemies.children.entries.length === 0) {
+            console.log("All enemies are dead")
+        }
+       
+        
     } //end update
 
 
