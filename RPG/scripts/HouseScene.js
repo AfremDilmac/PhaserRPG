@@ -12,12 +12,15 @@ class HouseScene extends Phaser.Scene {
         // verchillende tiles loaden
         // this.load.image('tiles', '../assets/Tilemap/dungeon.png')
         this.load.image('house-tiles', '../assets/Tilemap/Overworld.png')
+        this.load.image("butcher", "assets/npc/butcher.png")
+        this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
+        this.load.image("questemote", "assets/npc/emotes/question-mark.png")
         //bullet loaden
         this.load.image('bullet', 'assets/bullet.png')
         //particle loaden
         this.load.image('particle', '../assets/particle.png')
         //map dat we in Tiled hebben gemaakt loaden
-        this.load.tilemapTiledJSON('map-house', '../scripts/innerHouseMap.json')
+        this.load.tilemapTiledJSON('map-house', '../scripts/houseMap.json')
         //characters loaden
         this.load.spritesheet('characters', '../assets/characters.png', {
             frameWidth: 16,
@@ -80,6 +83,21 @@ class HouseScene extends Phaser.Scene {
         this.physics.world.bounds.height = map.heightInPixels
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
+        /**
+         * Butcher
+         */
+         let butcher = this.add.image(10 , 230, "butcher").setDepth(1);
+         let exclamationMark = this.add.image(11 , 220, "exclemote").setDepth(1);
+         
+         butcher.setInteractive()
+
+         butcher.on('pointerdown', ()=>{
+			
+            exclamationMark = this.add.image(11 , 220, "questemote").setDepth(1);
+		})
+
+        
+
 
         /**
          * This is if you want to see the collission layer (world)
@@ -103,11 +121,6 @@ class HouseScene extends Phaser.Scene {
         // focus op player bij beweging
         this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
-        /**
-         * Healthbar
-         */
-        //healthbar aanmaken
-        this.healthbar = new HealthBar(this, 20, 20, 100)
 
         /**
          * Projectiles
