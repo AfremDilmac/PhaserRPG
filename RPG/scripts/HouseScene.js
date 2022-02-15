@@ -86,14 +86,15 @@ class HouseScene extends Phaser.Scene {
         /**
          * Butcher
          */
-         let butcher = this.add.image(10 , 230, "butcher").setDepth(1);
-         let exclamationMark = this.add.image(11 , 220, "exclemote").setDepth(1);
+         let butcher = this.add.image(355, 40, "butcher").setDepth(1);
+         let exclamationMark = this.add.image(355 , 30, "exclemote").setDepth(1);
          
          butcher.setInteractive()
+         butcher.flipX = true
 
          butcher.on('pointerdown', ()=>{
 			
-            exclamationMark = this.add.image(11 , 220, "questemote").setDepth(1);
+            exclamationMark = this.add.image(355 , 30, "questemote").setDepth(1);
 		})
 
         
@@ -104,6 +105,12 @@ class HouseScene extends Phaser.Scene {
          */
         // const debugGraphics = this.add.graphics().setAlpha(0.2)
         // worldLayer.renderDebug(debugGraphics, {
+        //     tileColor: null,
+        //     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
+        //     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
+        // })
+
+        // worldLayer2.renderDebug(debugGraphics, {
         //     tileColor: null,
         //     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
         //     faceColor: new Phaser.Display.Color(0, 255, 0, 255)

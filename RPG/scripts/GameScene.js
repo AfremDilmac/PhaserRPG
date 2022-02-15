@@ -122,7 +122,7 @@ class GameScene extends Phaser.Scene {
         this.enemies = this.add.group()
        
         for (let i = 0; i < 8; i++) {
-            const element = new Enemy(this, 220 + 20 * i, 100 + 10 * i, 'skeleton', 10, 'wandering10')
+            const element = new Enemy(this, 180 + 20 * i, 230 + 10 * i, 'skeleton', 10, 'wandering10')
             element.body.setCollideWorldBounds(true)
             element.setTint(0x9999ff)
             this.enemies.add(element)
