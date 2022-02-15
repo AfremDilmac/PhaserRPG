@@ -11,13 +11,13 @@ class HouseScene extends Phaser.Scene {
         // this.cameras.main.setBackgroundColor('0x9900e3')
         // verchillende tiles loaden
         // this.load.image('tiles', '../assets/Tilemap/dungeon.png')
-        this.load.image('tiles', '../assets/Tilemap/Overworld.png')
+        this.load.image('house-tiles', '../assets/Tilemap/Overworld.png')
         //bullet loaden
         this.load.image('bullet', 'assets/bullet.png')
         //particle loaden
         this.load.image('particle', '../assets/particle.png')
         //map dat we in Tiled hebben gemaakt loaden
-        this.load.tilemapTiledJSON('map', '../scripts/houseMap.json')
+        this.load.tilemapTiledJSON('map-house', '../scripts/innerHouseMap.json')
         //characters loaden
         this.load.spritesheet('characters', '../assets/characters.png', {
             frameWidth: 16,
@@ -53,11 +53,11 @@ class HouseScene extends Phaser.Scene {
 
         //map object aanmaken met key 'map'
         const map = this.make.tilemap({
-            key: 'map'
+            key: 'map-house'
         })
 
         //verschillende layers aanmaken met gepaste key 
-        const tileset = map.addTilesetImage('House', 'tiles')
+        const tileset = map.addTilesetImage('House', 'house-tiles')
         const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
         const belowLayer2 = map.createStaticLayer('below player2', tileset, 0, 0)
         const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
@@ -67,6 +67,9 @@ class HouseScene extends Phaser.Scene {
         aboveLayer.setDepth(100)
         // collision inschakelen voor onze wereld 
         worldLayer.setCollisionByProperty({
+            collides: true
+        })
+        worldLayer2.setCollisionByProperty({
             collides: true
         })
         // worldLayer2.setCollisionByProperty({

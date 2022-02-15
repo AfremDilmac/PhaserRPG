@@ -100,8 +100,8 @@ class GameScene extends Phaser.Scene {
          * Enemy
          */
         //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
-        // this.enemy = new Enemy(this, 250, 242, 'skeleton', 25, 'wandering50')
-        // // collision tussen enemy en map
+        // this.enemy = new Enemy(this, 250, 242, 'spider', 25, 'wandering50')
+        // // // collision tussen enemy en map
         // this.physics.add.collider(this.enemy, worldLayer)
         // this.enemy.body.setCollideWorldBounds(true)
 
@@ -121,7 +121,7 @@ class GameScene extends Phaser.Scene {
         //elements (enemies) in de group steken 
         this.enemies = this.add.group()
        
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 8; i++) {
             const element = new Enemy(this, 220 + 20 * i, 100 + 10 * i, 'skeleton', 10, 'wandering10')
             element.body.setCollideWorldBounds(true)
             element.setTint(0x9999ff)
@@ -272,7 +272,7 @@ class GameScene extends Phaser.Scene {
         //All enemies are dead
         if (this.enemies.children.entries.length === 0) {
             //Enemies are dead
-            this.scene.switch('houseScene')
+            this.scene.start('houseScene')
         }
        
         
