@@ -69,9 +69,9 @@ class HouseScene extends Phaser.Scene {
         worldLayer.setCollisionByProperty({
             collides: true
         })
-        worldLayer2.setCollisionByProperty({
-            collides: true
-        })
+        // worldLayer2.setCollisionByProperty({
+        //     collides: true
+        // })
         // lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
         this.physics.world.bounds.width = map.widthInPixels
         this.physics.world.bounds.height = map.heightInPixels
