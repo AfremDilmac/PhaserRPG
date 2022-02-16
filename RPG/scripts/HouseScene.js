@@ -26,10 +26,16 @@ class HouseScene extends Phaser.Scene {
             frameWidth: 16,
             frameHieght: 16
         })
+
+        /**
+         * Dialog text
+         */
+        this.load.image("hello", "assets/text/hello.png")
+        this.load.image("who", "assets/text/who.png")
+        this.load.image("box", "assets/text/textbox.png")
+        this.load.image("exit", "assets/menu/exit.png")
         // vijanden loaden
         // we gebruiken atlas omdat we zowel de .png als de .json file loaden
-   
-
 
         this.player
         this.keys
@@ -44,10 +50,10 @@ class HouseScene extends Phaser.Scene {
         /**
          * Virtual joystick
          */
-         var url;
-  
-         url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
-         this.load.plugin('rexvirtualjoystickplugin', url, true);
+        var url;
+
+        url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
+        this.load.plugin('rexvirtualjoystickplugin', url, true);
 
 
     } //end preload
@@ -86,18 +92,15 @@ class HouseScene extends Phaser.Scene {
         /**
          * Butcher
          */
-         let butcher = this.add.image(355, 40, "butcher").setDepth(1);
-         let exclamationMark = this.add.image(355 , 30, "exclemote").setDepth(1);
-         
-         butcher.setInteractive()
-         butcher.flipX = true
+        let butcher = this.add.image(355, 40, "butcher").setDepth(1);
+        let exclamationMark = this.add.image(355, 30, "exclemote").setDepth(1);
 
-         butcher.on('pointerdown', ()=>{
-			
-            exclamationMark = this.add.image(355 , 30, "questemote").setDepth(1);
-		})
+        butcher.setInteractive()
+        butcher.flipX = true
 
-        
+
+
+
 
 
         /**
@@ -166,6 +169,32 @@ class HouseScene extends Phaser.Scene {
             active: false
 
         })
+        var textDialog = ''
+        let exit = ''
+        //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
+        butcher.on('pointerdown', () => {
+
+            exclamationMark = this.add.image(355, 30, "questemote").setDepth(1);
+            // textDialog = this.add.rectangle(200, 150, 148, 148, 0x282725).setDepth(100);
+            let txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
+            exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
+            exit.setInteractive()
+            // textDialog.setStrokeStyle(4, 0x106162);
+
+            textDialog = this.add.text(180, 220, 'Simon', {
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                fontSize: '14px',
+                color: 'white'
+            }).setDepth(101);
+            this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
+            textDialog = this.add.text(170, 250, 'Welcome villager...', {
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                fontSize: '8px',
+                color: 'white'
+            }).setDepth(101);
+            textDialog.setInteractive()
+
+        })
 
     } //end create
 
@@ -183,7 +212,7 @@ class HouseScene extends Phaser.Scene {
             if (time > this.lastFiredTime) {
                 this.lastFiredTime = time + 200
                 this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
-               
+
             }
         }
         this.player.update()
@@ -194,9 +223,8 @@ class HouseScene extends Phaser.Scene {
         // if (!this.enemy2.isDead) {
         //     this.enemy2.update(this.player.body.position)
         // }
-            
+
     } //end update
 
 
 }; //end gameScene
-
