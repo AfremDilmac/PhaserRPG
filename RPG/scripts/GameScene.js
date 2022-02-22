@@ -99,11 +99,6 @@ class GameScene extends Phaser.Scene {
         /**
          * Enemy
          */
-        //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
-        // this.enemy = new Enemy(this, 250, 242, 'spider', 25, 'wandering50')
-        // // // collision tussen enemy en map
-        // this.physics.add.collider(this.enemy, worldLayer)
-        // this.enemy.body.setCollideWorldBounds(true)
 
         // //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
         // //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
@@ -121,7 +116,7 @@ class GameScene extends Phaser.Scene {
         //elements (enemies) in de group steken 
         this.enemies = this.add.group()
        
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 1; i++) {
             const element = new Enemy(this, 180 + 20 * i, 100 + 10 * i, 'skeleton', 10, 'wandering10')
             element.body.setCollideWorldBounds(true)
             element.setTint(0x999999)
@@ -136,7 +131,6 @@ class GameScene extends Phaser.Scene {
         //Hier gebruiken we overlap omdat het er beter uitziet, met colider is het niet altijd duidelijk dat er een colision is
         // met de functie handlePlayerEnemyCollision gaan we wat effect geven aan de overlpa van p (player) en e (enemy)
         this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
-        this.physics.add.overlap(this.player, this.enemy, this.handlePlayerEnemyCollision, null, this)
         this.physics.add.overlap(this.player, this.enemy2, this.handlePlayerEnemyCollision, null, this)
 
 
@@ -158,7 +152,7 @@ class GameScene extends Phaser.Scene {
         this.projectiles = new Projectiles(this)
         this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
         this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
-        this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
+        this.physics.add.overlap(this.projectiles, this.enemy2, this.handleProjectileEnemyCollision, null, this)
 
         /** 
          * Particles
