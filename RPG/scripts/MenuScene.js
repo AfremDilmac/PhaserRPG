@@ -4,12 +4,14 @@ class MenuScene extends Phaser.Scene {
 	}
 
     preload() {
-		this.load.image("background", "assets/menu/back.png");
+		this.load.image("background", "assets/menu/back.png")
 		this.load.image('options', 'assets/menu/options_button.png')
 		this.load.image('play', 'assets/menu/play_button.png')
 		this.load.image('diamond', 'assets/menu/diamond.png')
 		this.load.image('option', 'assets/menu/option.png')
-		this.load.image('logo', 'assets/menu/logo.png')
+		this.load.image('logo', 'assets/mainlogo.png')
+		this.load.image('musicOn', 'assets/menu/musicOn.png') // later voor settings screen
+		this.load.image('musicOff', 'assets/menu/musicOff.png') // later voor settings screen
 		this.load.audio('introMusic', './assets/audio/Dark-Ages.mp3')
 
 		//loading bar aanmaken
@@ -50,21 +52,23 @@ class MenuScene extends Phaser.Scene {
 			})
 		}
 		this.sound.pauseOnBlur = true
+
 		let logo = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.20, "logo").setDepth(1);
-		logo.setScale(0.5)
+		logo.setScale(1)
 
 		let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, "play").setDepth(1);
 		playButton.setScale(0.5)
 
 		let optionButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 + 50, "options").setDepth(1);
 		optionButton.setScale(0.5)
+
         this.add.image(0, 0, "background").setOrigin(0);
 
 		playButton.setInteractive();
 		optionButton.setInteractive();
 		// hover sprite
 		let hoverSprite = this.add.sprite(150, 150, 'diamond')
-		let hoversprite2 = this.add.sprite(150, 200, 'option')
+		let hoversprite2 = this.add.sprite(150, 200, 'option') 
 		hoverSprite.setScale(0.3)
 		hoverSprite.setVisible(false)
 		hoversprite2.setScale(0.05)

@@ -4,14 +4,14 @@ class EnemyFollow extends Enemy {
 
         this.speed = 32
         this.chasing = true
+		this.damage = damage
     } //end create
 
     //dx = destination x
     //dy = destination y 
     update(destination) {
-        const {
-            speed
-        } = this
+        const {speed} = this
+		
         if (this.chasing) {
             this.body.setVelocity(0, 0)
             const dx = Math.abs(this.body.x - destination.x)
@@ -46,6 +46,7 @@ class EnemyFollow extends Enemy {
          * enemy following blocked on walls redirection
          */
          const enemyBlocked = this.body.blocked
+		 
          //Deze if-statement zorgd ervoor dat de enemy in een andere richting gaat wanneer hij botst tegen een obstakel
  
          //We nemen eerst al de kays uit de array enemyBlocked ==> none, up, down, left, right

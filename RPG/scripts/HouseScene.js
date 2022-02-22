@@ -103,9 +103,9 @@ class HouseScene extends Phaser.Scene {
 
 
 
-        /**
-         * This is if you want to see the collission layer (world)
-         */
+        // /**
+        //  * This is if you want to see the collission layer (world)
+        //  */
         // const debugGraphics = this.add.graphics().setAlpha(0.2)
         // worldLayer.renderDebug(debugGraphics, {
         //     tileColor: null,

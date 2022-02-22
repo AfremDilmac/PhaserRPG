@@ -107,10 +107,10 @@ class GameScene extends Phaser.Scene {
 
         // //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
         // //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
-        // this.enemy2 = new EnemyFollow(this, 250, 242, 'skeleton', 25, 'follow').setTint(0x00ff00)
-        // // collision tussen enemy en map
-        // this.physics.add.collider(this.enemy2, worldLayer)
-        // this.enemy2.body.setCollideWorldBounds(true)
+        this.enemy2 = new EnemyFollow(this, 250, 242, 'skeleton', 25, 'follow').setTint(0x00ff00)
+        // collision tussen enemy en map
+        this.physics.add.collider(this.enemy2, worldLayer)
+        this.enemy2.body.setCollideWorldBounds(true)
 
         /** 
          * Group of ennemys
@@ -121,10 +121,10 @@ class GameScene extends Phaser.Scene {
         //elements (enemies) in de group steken 
         this.enemies = this.add.group()
        
-        for (let i = 0; i < 8; i++) {
-            const element = new Enemy(this, 180 + 20 * i, 230 + 10 * i, 'skeleton', 10, 'wandering10')
+        for (let i = 0; i < 10; i++) {
+            const element = new Enemy(this, 180 + 20 * i, 100 + 10 * i, 'skeleton', 10, 'wandering10')
             element.body.setCollideWorldBounds(true)
-            element.setTint(0x9999ff)
+            element.setTint(0x999999)
             this.enemies.add(element)
         }
         //colision tussen enemie en map
@@ -201,9 +201,9 @@ class GameScene extends Phaser.Scene {
         if (projectile.active) {
             enemy.setTint(0xff0000)
             this.time.addEvent({
-                delay: 0,
+                delay: 100,
                 callback: () => {
-                    enemy.explode()
+                    enemy.destroy()
                     projectile.recycle()
                 },
                 callbackScope: this,
@@ -260,9 +260,9 @@ class GameScene extends Phaser.Scene {
         // if (!this.enemy.isDead) {
         //     this.enemy.update()
         // }
-        // if (!this.enemy2.isDead) {
-        //     this.enemy2.update(this.player.body.position)
-        // }
+        if (!this.enemy2.isDead) {
+            this.enemy2.update(this.player.body.position)
+        }
 
         this.enemies.children.iterate((child) => {
             if (!child.isDead) {
