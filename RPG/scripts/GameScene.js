@@ -255,7 +255,7 @@ class GameScene extends Phaser.Scene {
         //     this.enemy.update()
         // }
         if (!this.enemy2.isDead) {
-            this.enemy2.update(this.player.body.position)
+            this.enemy2.update(this.player.body.position, time)
         }
 
         this.enemies.children.iterate((child) => {
