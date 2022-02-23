@@ -93,7 +93,7 @@ class MenuScene extends Phaser.Scene {
 
 		playButton.on('pointerdown', function () {
 
-			this.scene.start('gameScene');
+			this.scene.start('houseScene');
 			this.music.pause('introMusic');
 	
 		}, this);

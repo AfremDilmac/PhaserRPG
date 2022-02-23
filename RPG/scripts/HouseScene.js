@@ -15,6 +15,7 @@ class HouseScene extends Phaser.Scene {
         this.load.image("butcher", "assets/npc/butcher.png")
         this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
         this.load.image("questemote", "assets/npc/emotes/question-mark.png")
+        this.load.image("apple", "assets/items/item1/Item__64.png")
         //bullet loaden
         this.load.image('bullet', 'assets/bullet.png')
         //particle loaden
@@ -34,6 +35,7 @@ class HouseScene extends Phaser.Scene {
         this.load.image("who", "assets/text/who.png")
         this.load.image("box", "assets/text/textbox.png")
         this.load.image("exit", "assets/menu/exit.png")
+        this.load.image("next", "assets/menu/next.png")
         // vijanden loaden
         // we gebruiken atlas omdat we zowel de .png als de .json file loaden
 
@@ -46,6 +48,17 @@ class HouseScene extends Phaser.Scene {
         this.keys
         this.lastFiredTime = 0
         this.emmiter
+        this.questStarted
+        this.apple
+        this.exit
+        this.txtbox
+        this.textDialog
+        this.titleDialog
+        this.line
+        this.questProcess = 0
+        this.exclamationMark
+        this.next
+        this.questStarted = false;
 
         /**
          * Virtual joystick
@@ -88,20 +101,6 @@ class HouseScene extends Phaser.Scene {
         this.physics.world.bounds.width = map.widthInPixels
         this.physics.world.bounds.height = map.heightInPixels
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-
-        /**
-         * Butcher
-         */
-        let butcher = this.add.image(355, 40, "butcher").setDepth(1);
-        let exclamationMark = this.add.image(355, 30, "exclemote").setDepth(1);
-
-        butcher.setInteractive()
-        butcher.flipX = true
-
-
-
-
-
 
         // /**
         //  * This is if you want to see the collission layer (world)
@@ -171,31 +170,57 @@ class HouseScene extends Phaser.Scene {
         })
         var textDialog = ''
         let exit = ''
+
+        
+        /**
+         * Butcher
+         */
+        let butcher = this.add.image(355, 40, "butcher").setDepth(1);
+        this.exclamationMark = this.add.image(355, 30, "exclemote").setDepth(1);
+
+        butcher.setInteractive()
+        butcher.flipX = true
         //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
         butcher.on('pointerdown', () => {
-
-            exclamationMark = this.add.image(355, 30, "questemote").setDepth(1);
-            // textDialog = this.add.rectangle(200, 150, 148, 148, 0x282725).setDepth(100);
-            let txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
-            exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
-            exit.setInteractive()
-            // textDialog.setStrokeStyle(4, 0x106162);
-
-            textDialog = this.add.text(180, 220, 'Simon', {
-                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-                fontSize: '14px',
-                color: 'white'
-            }).setDepth(101);
-            this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
-            textDialog = this.add.text(170, 250, 'Welcome villager...', {
-                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-                fontSize: '8px',
-                color: 'white'
-            }).setDepth(101);
-            textDialog.setInteractive()
-
+            if (this.questProcess == 0) {
+                // textDialog = this.add.rectangle(200, 150, 148, 148, 0x282725).setDepth(100);
+                this.txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
+                this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
+                this.exit.setInteractive()
+                this.next = this.add.image(290, 270, "next").setDepth(1).setScale(0.2);
+                this.apple = this.add.image(375, 95, "apple").setDepth(50).setScale(0.6);
+                this.apple.setInteractive()
+                this.questStarted = true
+                this.questProcess = 1
+                this.titleDialog = this.add.text(180, 220, 'Simon', {
+                    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                    fontSize: '14px',
+                    color: 'white'
+                }).setDepth(101);
+                this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
+                this.textDialog = this.add.text(160, 250, 'Welcome villager', {
+                    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                    fontSize: '8px',
+                    color: 'white'
+                }).setDepth(101);
+                this.next.setInteractive()
+            } else {
+                this.txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
+                this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
+                this.exit.setInteractive()
+                this.titleDialog = this.add.text(180, 220, 'Simon', {
+                    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                    fontSize: '14px',
+                    color: 'white'
+                }).setDepth(101);
+                this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
+                this.textDialog = this.add.text(130, 250, 'Thank you ! (playername) here 5 coins', {
+                    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                    fontSize: '8px',
+                    color: 'white'
+                }).setDepth(101);
+            }
         })
-
     } //end create
 
     //projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -214,6 +239,34 @@ class HouseScene extends Phaser.Scene {
                 this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
 
             }
+        }
+
+        if (this.questStarted) {
+            this.next.on('pointerdown', () => {
+                this.textDialog.destroy()
+                this.questProcess = 1
+                this.textDialog = this.add.text(115, 250, "I'm really hungry, can you find me an apple please?", {
+                    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+                    fontSize: '8px',
+                    color: 'white'
+                }).setDepth(101);
+                this.next.destroy();
+            })
+            this.apple.on('pointerdown', () => {
+                if (this.questProcess == 1) {
+                    this.apple.destroy()
+                    this.questProcess = 2
+                    this.exclamationMark = this.add.image(355, 30, "questemote").setDepth(1);
+                }
+            })
+            this.exit.on('pointerdown', () => {
+                this.txtBox.destroy()
+                this.textDialog.destroy()
+                this.titleDialog.destroy()
+                this.line.destroy()
+                this.exit.destroy()
+                this.next.destroy()
+            })
         }
         this.player.update()
 
