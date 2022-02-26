@@ -9,7 +9,7 @@ class MenuScene extends Phaser.Scene {
 		this.load.image('play', 'assets/menu/play_button.png')
 		this.load.image('diamond', 'assets/menu/diamond.png')
 		this.load.image('option', 'assets/menu/option.png')
-		this.load.image('logo', 'assets/mainlogo.png')
+		this.load.image('logo', 'assets/menu/mainlogo.png')
 		this.load.image('musicOn', 'assets/menu/musicOn.png') // later voor settings screen
 		this.load.image('musicOff', 'assets/menu/musicOff.png') // later voor settings screen
 		this.load.audio('introMusic', './assets/audio/Dark-Ages.mp3')

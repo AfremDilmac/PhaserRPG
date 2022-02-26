@@ -13,14 +13,14 @@ class GameScene extends Phaser.Scene {
 		// this.load.image('tiles', '../assets/Tilemap/dungeon.png')
 		this.load.image('tiles', '../assets/Tilemap/dungeon.png')
 		//bullet loaden
-		this.load.image('bullet', 'assets/bullet.png')
+		this.load.image('bullet', 'assets/items/bullet.png')
 		//coin loaden
 		// this.load.spritesheet('coin', '../assets/coin/FullCoins.png', {
 		// 	frameWidth: 8,
 		//     frameHieght: 8			
 		// })
 		//particle loaden
-		this.load.image('particle', '../assets/particle.png')
+		this.load.image('particle', '../assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
 		this.load.tilemapTiledJSON('map', '../scripts/dungeonMap.json')
 		//characters loaden
@@ -40,8 +40,8 @@ class GameScene extends Phaser.Scene {
 		})
 		// vijanden loaden
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
-		this.load.atlas('skeleton', 'assets/skeleton.png', 'assets/skeleton.json')
-		this.load.atlas('ghost', 'assets/ghost.png', 'assets/ghost.json')
+		this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
+		this.load.atlas('ghost', 'assets/ghost/ghost.png', 'assets/ghost/ghost.json')
 
 
 		this.player
@@ -134,7 +134,7 @@ class GameScene extends Phaser.Scene {
 
 		pickupLayer.forEachTile(tile => {
 			if (tile.index != -1) {
-				console.log(tile);
+				//console.log(tile);
 
 				let pickup
 				const x = tile.getCenterX()
