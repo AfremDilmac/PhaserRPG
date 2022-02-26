@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"C:\/Users\/Afrem\/OneDrive - ODISEE\/Bureaublad\/toriel\/phaserRPG-main\/filesToStartTutorial\/scripts\/dungeonMap.json"
-        }
-    },
  "height":20,
  "infinite":false,
  "layers":[
@@ -45,8 +37,20 @@
          "width":25,
          "x":0,
          "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1025, 0, 0, 1025, 0, 0, 1025, 0, 0, 1025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1334, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1334, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1334, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1334, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1334, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1025, 0, 1025, 0, 1025, 0, 1025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":20,
+         "id":4,
+         "name":"pickup",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":25,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":4,
+ "nextlayerid":5,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -56,7 +60,7 @@
         {
          "columns":32,
          "firstgid":1,
-         "image":"C:\/Users\/Afrem\/OneDrive - ODISEE\/Bureaublad\/0x72_DungeonTilesetII_v1.4\/0x72_DungeonTilesetII_v1.4.png",
+         "image":"..\/assets\/Tilemap\/dungeon.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
@@ -8154,6 +8158,133 @@
                          "name":"collides",
                          "type":"bool",
                          "value":true
+                        }]
+                }],
+         "tilewidth":16
+        }, 
+        {
+         "columns":7,
+         "firstgid":1025,
+         "image":"..\/assets\/pickup\/FullCoins.png",
+         "imageheight":16,
+         "imagewidth":127,
+         "margin":0,
+         "name":"FullCoins",
+         "spacing":0,
+         "tilecount":7,
+         "tileheight":16,
+         "tiles":[
+                {
+                 "id":0,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":1,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":2,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":3,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":4,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":5,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }, 
+                {
+                 "id":6,
+                 "properties":[
+                        {
+                         "name":"CP_coin",
+                         "type":"string",
+                         "value":"gold"
+                        }]
+                }],
+         "tilewidth":16
+        }, 
+        {
+         "columns":25,
+         "firstgid":1032,
+         "image":"..\/..\/..\/..\/..\/..\/..\/Downloads\/tiles.png",
+         "imageheight":224,
+         "imagewidth":400,
+         "margin":0,
+         "name":"salad",
+         "spacing":0,
+         "tilecount":350,
+         "tileheight":16,
+         "tiles":[
+                {
+                 "id":301,
+                 "properties":[
+                        {
+                         "name":"CP_salad",
+                         "type":"string",
+                         "value":""
+                        }]
+                }, 
+                {
+                 "id":302,
+                 "properties":[
+                        {
+                         "name":"CP_salad",
+                         "type":"string",
+                         "value":"salad"
+                        }]
+                }, 
+                {
+                 "id":303,
+                 "properties":[
+                        {
+                         "name":"CP_salad",
+                         "type":"string",
+                         "value":""
+                        }]
+                }, 
+                {
+                 "id":304,
+                 "properties":[
+                        {
+                         "name":"CP_salad",
+                         "type":"string",
+                         "value":""
                         }]
                 }],
          "tilewidth":16
