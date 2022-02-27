@@ -4,7 +4,7 @@ class Player extends Entity {
 
         scene.input.addPointer(3)
 
-		const animFrameRate = 6
+		const animFrameRate = 7
 		const anims = scene.anims
 		this.health = health
 		this.facing = 'down'
@@ -16,10 +16,8 @@ class Player extends Entity {
         anims.create({
             key: 'player-left',
             frames: anims.generateFrameNumbers(this.texturekey, {
-                // start: 3,
-                // end: 5
-                start: 15,
-                end: 17
+                start: 3,
+                end: 5
             }),
             frameRate: animFrameRate,
             repeat: -1
@@ -27,10 +25,8 @@ class Player extends Entity {
         anims.create({
             key: 'player-right',
             frames: anims.generateFrameNumbers(this.texturekey, {
-                // start: 6,
-                // end: 8
-                start: 27,
-                end: 29
+                start: 6,
+                end: 8
             }),
             frameRate: animFrameRate,
             repeat: -1
@@ -38,10 +34,8 @@ class Player extends Entity {
         anims.create({
             key: 'player-up',
             frames: anims.generateFrameNumbers(this.texturekey, {
-                // start: 9,
-                // end: 11
-                start: 39,
-                end: 41
+                start: 9,
+                end: 11
             }),
             frameRate: animFrameRate,
             repeat: -1
@@ -49,20 +43,18 @@ class Player extends Entity {
         anims.create({
 			key: 'player-down',
             frames: anims.generateFrameNumbers(this.texturekey, {
-                // start: 0,
-                // end: 2
-                start: 3,
-                end: 5
+                start: 0,
+                end: 2
             }),
             frameRate: animFrameRate,
             repeat: -1
         })
 		// startposities voor elke richting
         this.idleFrame = {
-            down: 4,
-            left: 16,
-            right: 28,
-            up: 40
+            down: 1,
+            left: 4,
+            right: 7,
+            up: 10
         }
 		//als de player niet beweegt willen we niet dat hij in walking position staat zie guy.png voor verschillende posities
         this.setFrame(this.idleFrame.down)

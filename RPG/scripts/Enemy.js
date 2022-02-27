@@ -1,5 +1,5 @@
 class Enemy extends Entity {
-    constructor(scene, x, y, textureKey, damage, type) {
+    constructor(scene, x, y, textureKey, damage, type, speed) {
         super(scene, x, y, textureKey, 'Enemy', type)
 
         const anims = scene.anims
@@ -7,13 +7,14 @@ class Enemy extends Entity {
         this.textureKey = textureKey
 		this.damage = damage
         this.type = type
+		this.speed = speed
         //Animations
         //this = sprite dat wij aangeven in anims -> scene.anims
         anims.create({
-            key: 'enemy-left',
+            key: this.type+ 'enemy-left',
             frames: anims.generateFrameNames(this.textureKey, {
-                prefix: 'skeleton-walk-left/',
-                suffix: '',
+                prefix: this.type+'-walk-left-',
+                suffix: '.png',
                 start: 1,
                 end: 3,
                 zeroPad: 2
@@ -22,10 +23,10 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: 'enemy-right',
+            key: this.type+ 'enemy-right',
             frames: anims.generateFrameNames(this.textureKey, {
-                prefix: 'skeleton-walk-right/',
-                suffix: '',
+                prefix: this.type+'-walk-right-',
+                suffix: '.png',
                 start: 1,
                 end: 3,
                 zeroPad: 2
@@ -34,10 +35,10 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: 'enemy-down',
+            key: this.type+ 'enemy-down',
             frames: anims.generateFrameNames(this.textureKey, {
-                prefix: 'skeleton-walk-down/',
-                suffix: '',
+                prefix: this.type+'-walk-down-',
+                suffix: '.png',
                 start: 1,
                 end: 3,
                 zeroPad: 2
@@ -46,10 +47,10 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: 'enemy-up',
+            key: this.type+ 'enemy-up',
             frames: anims.generateFrameNames(this.textureKey, {
-                prefix: 'skeleton-walk-up/',
-                suffix: '',
+                prefix: this.type+'-walk-up-',
+                suffix: '.png',
                 start: 1,
                 end: 3,
                 zeroPad: 2
@@ -58,25 +59,24 @@ class Enemy extends Entity {
             repeat: -1
         })
 
-        this.speed = 32
         //Switch met een random 0 - 3 nummer die een willekeurige richting geeft aan de vijand + de animatie die daarbij hoort
         let direction = Math.floor(Math.random() * 4)
         switch (direction) {
             case 0:
                 this.body.setVelocity(0, -this.speed) //UP
-                this.anims.play('enemy-up')
+                this.anims.play(this.type+'enemy-up')
                 break;
             case 1:
                 this.body.setVelocity(-this.speed, 0) //LEFT
-                this.anims.play('enemy-left')
+                this.anims.play(this.type+'enemy-left')
                 break;
             case 2:
                 this.body.setVelocity(0, this.speed) //DOWN
-                this.anims.play('enemy-down')
+                this.anims.play(this.type+'enemy-down')
                 break;
             case 3:
                 this.body.setVelocity(this.speed, 0) //RIGHT
-                this.anims.play('enemy-right')
+                this.anims.play(this.type+'enemy-right')
                 break;
             default:
                 break;
@@ -104,19 +104,19 @@ class Enemy extends Entity {
             switch (newDirection) {
                 case 'up':
                     this.body.setVelocity(0, -this.speed) //UP
-                    this.anims.play('enemy-up')
+                    this.anims.play(this.type+'enemy-up')
                     break;
                 case 'left':
                     this.body.setVelocity(-this.speed, 0) //LEFT
-                    this.anims.play('enemy-left')
+                    this.anims.play(this.type+'enemy-left')
                     break;
                 case 'down':
                     this.body.setVelocity(0, this.speed) //DOWN
-                    this.anims.play('enemy-down')
+                    this.anims.play(this.type+'enemy-down')
                     break;
                 case 'right':
                     this.body.setVelocity(this.speed, 0) //RIGHT
-                    this.anims.play('enemy-right')
+                    this.anims.play(this.type+'enemy-right')
                     break;
                 case 'none':
                     this.body.setVelocity(0, 0) //NONE

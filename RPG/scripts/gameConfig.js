@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
 const config = {
     type: Phaser.AUTO,
     width: 400,
-    height: 300,
+    height: 330,
     backgroundColor: 0x000000,
     physics: {
         default: 'arcade',
@@ -19,7 +19,7 @@ const config = {
 		// centreren + hele viewpoort gebruiken + div met id: thegame als parent declareren 
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        parent: "thegame"
+        parent: "game"
     },
     pixelArt: true,
     scene: [ MenuScene, GameScene, HouseScene ],

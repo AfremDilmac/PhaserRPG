@@ -1,5 +1,5 @@
 class EnemyFollow extends Enemy {
-    constructor(scene, x, y, textureKey, damage, type) {
+    constructor(scene, x, y, textureKey, damage, type, speed) {
         super(scene, x, y, textureKey, 'Enemy', type)
 
         this.speed = 32
@@ -25,22 +25,22 @@ class EnemyFollow extends Enemy {
 					if (this.body.x < destination.x) {
 						//move right
 						this.body.setVelocity(speed, 0)
-						this.anims.play('enemy-right', true)
+						this.anims.play(this.type+'enemy-right', true)
 					} else {
 						//move left
 						this.body.setVelocity(-speed, 0)
-						this.anims.play('enemy-left', true)
+						this.anims.play(this.type+'enemy-left', true)
 					}
 				} else {
 					//close y gap
 					if (this.body.y < destination.y) {
 						//move down
 						this.body.setVelocity(0, speed)
-						this.anims.play('enemy-down', true)
+						this.anims.play(this.type+'enemy-down', true)
 					} else {
 						//move up
 						this.body.setVelocity(0, -speed)
-						this.anims.play('enemy-up', true)
+						this.anims.play(this.type+'enemy-up', true)
 					}
 				}
 				this.body.velocity.normalize().scale(speed)
@@ -84,19 +84,19 @@ class EnemyFollow extends Enemy {
              switch (newDirection) {
                  case 'up':
                      this.body.setVelocity(0, -this.speed) //UP
-                     this.anims.play('enemy-up')
+                     this.anims.play(this.type+'enemy-up')
                      break;
                  case 'left':
                      this.body.setVelocity(-this.speed, 0) //LEFT
-                     this.anims.play('enemy-left')
+                     this.anims.play(this.type+'enemy-left')
                      break;
                  case 'down':
                      this.body.setVelocity(0, this.speed) //DOWN
-                     this.anims.play('enemy-down')
+                     this.anims.play(this.type+'enemy-down')
                      break;
                  case 'right':
                      this.body.setVelocity(this.speed, 0) //RIGHT
-                     this.anims.play('enemy-right')
+                     this.anims.play(this.type+'enemy-right')
                      break;
                  case 'none':
                      this.body.setVelocity(0, 0) //NONE
