@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
 const config = {
     type: Phaser.AUTO,
     width: 400,
-    height: 330,
+    height: 320,
     backgroundColor: 0x000000,
     physics: {
         default: 'arcade',

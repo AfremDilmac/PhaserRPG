@@ -253,7 +253,7 @@
 			}
 		},
 		{
-			"filename": "ghost-walk-left-01.png",
+			"filename": "ghost-walk-down-01.png",
 			"frame": {
 				"x": 80,
 				"y": 16,
@@ -274,7 +274,7 @@
 			}
 		},
 		{
-			"filename": "ghost-walk-left-01 (10).png",
+			"filename": "ghost-walk-down-02.png",
 			"frame": {
 				"x": 96,
 				"y": 16,
@@ -295,7 +295,7 @@
 			}
 		},
 		{
-			"filename": "ghost-walk-left-01 (8).png",
+			"filename": "ghost-walk-down-03.png",
 			"frame": {
 				"x": 0,
 				"y": 32,
@@ -316,7 +316,7 @@
 			}
 		},
 		{
-			"filename": "ghost-walk-left-01 (9).png",
+			"filename": "ghost-walk-left-01.png",
 			"frame": {
 				"x": 16,
 				"y": 32,

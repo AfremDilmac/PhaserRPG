@@ -168,14 +168,14 @@ class GameScene extends Phaser.Scene {
 		/**
 		 * Enemy
 		 */
-		this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
+		// this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
 		// this.physics.add.collider(this.enemy, this.worldLayer) // collision tussen enemy en map
-		this.enemy.body.setCollideWorldBounds(true)
+		// this.enemy.body.setCollideWorldBounds(true)
 
 		// //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
 		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
-		this.enemy2 = new EnemyFollow(this, 250, 242, 'monsters', 25, 'slime', 10).setTint(0x990005)
-		// this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
+		this.enemy2 = new Enemy(this, 250, 242, 'monsters', 25, 'bat', 10).setTint(0x990005)
+		this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
 		this.enemy2.body.setCollideWorldBounds(true)
 
 		/** 
@@ -186,7 +186,7 @@ class GameScene extends Phaser.Scene {
 		//enemies een blauwe kleur geven 
 		//elements (enemies) in de group steken 
 		this.enemies = this.add.group()
-		this.enemies.add(this.enemy)
+		// this.enemies.add(this.enemy)
 		this.enemies.add(this.enemy2)
 
 
@@ -208,7 +208,7 @@ class GameScene extends Phaser.Scene {
 
 				const x = tile.getCenterX()
 				const y = tile.getCenterY()
-				const e = new Enemy(this, x, y, 'monsters', 10, tile.properties.CP_monster, tile.properties.speed)
+				const e = new EnemyFollow(this, x, y, 'monsters', 10, tile.properties.CP_monster, 10)
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
@@ -236,7 +236,7 @@ class GameScene extends Phaser.Scene {
 
 		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
-		this.physics.add.collider(this.player, this.salad, this.handlePlayerGemCollision, null, this)
+		this.physics.add.collider(this.player, this.salad, this.handlePlayerSaladCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
@@ -374,12 +374,12 @@ class GameScene extends Phaser.Scene {
 		}
 		this.player.update()
 
-		if (!this.enemy.isDead) {
-		    this.enemy.update()
-		}
-		if (!this.enemy2.isDead) {
-			this.enemy2.update(this.player.body.position, time)
-		}
+		// if (!this.enemy.isDead) {
+		//     this.enemy.update()
+		// }
+		// if (!this.enemy2.isDead) {
+		// 	this.enemy2.update(this.player.body.position, time)
+		// }
 
 		this.enemies.children.iterate((child) => {
 			if (!child.isDead) {

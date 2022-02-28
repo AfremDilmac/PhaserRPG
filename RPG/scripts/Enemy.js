@@ -11,7 +11,7 @@ class Enemy extends Entity {
         //Animations
         //this = sprite dat wij aangeven in anims -> scene.anims
         anims.create({
-            key: this.type+ 'enemy-left',
+            key: this.type+'enemy-left',
             frames: anims.generateFrameNames(this.textureKey, {
                 prefix: this.type+'-walk-left-',
                 suffix: '.png',
@@ -23,7 +23,7 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: this.type+ 'enemy-right',
+            key: this.type+'enemy-right',
             frames: anims.generateFrameNames(this.textureKey, {
                 prefix: this.type+'-walk-right-',
                 suffix: '.png',
@@ -35,7 +35,7 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: this.type+ 'enemy-down',
+            key: this.type+'enemy-down',
             frames: anims.generateFrameNames(this.textureKey, {
                 prefix: this.type+'-walk-down-',
                 suffix: '.png',
@@ -47,7 +47,7 @@ class Enemy extends Entity {
             repeat: -1
         })
         anims.create({
-            key: this.type+ 'enemy-up',
+            key: this.type+'enemy-up',
             frames: anims.generateFrameNames(this.textureKey, {
                 prefix: this.type+'-walk-up-',
                 suffix: '.png',
@@ -59,6 +59,7 @@ class Enemy extends Entity {
             repeat: -1
         })
 
+		this.speed = 32
         //Switch met een random 0 - 3 nummer die een willekeurige richting geeft aan de vijand + de animatie die daarbij hoort
         let direction = Math.floor(Math.random() * 4)
         switch (direction) {
