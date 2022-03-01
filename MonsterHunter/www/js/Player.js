@@ -76,12 +76,13 @@ class Player extends Entity {
 
         //Joystick plugin
         this.joyStick = scene.plugins.get('rexvirtualjoystickplugin').add(scene, {
-            x: 350,
-            y: 250,
+            x: 560,
+            y: 325,
             radius: 25,
             base: scene.add.circle(0, 0, 30, 0x888888, 0.5),
             thumb: scene.add.circle(0, 0, 15, 0xcccccc),
             opacity: 0.5,
+            fixed: true,
 
         })
 

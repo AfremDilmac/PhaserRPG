@@ -70,6 +70,7 @@ class GameScene extends Phaser.Scene {
 		const map = this.make.tilemap({
 			key: 'map'
 		})
+		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('dungeon', 'tiles')
@@ -249,6 +250,8 @@ class GameScene extends Phaser.Scene {
 		 */
 		//healthbar aanmaken
 		this.healthbar = new HealthBar(this, 20, 20, 100)
+		
+		
 
 
 		//////////////////////:
