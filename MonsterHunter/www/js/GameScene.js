@@ -8,37 +8,37 @@ class GameScene extends Phaser.Scene {
 		
 		this.cursors
 		// verchillende tiles loaden
-		this.load.image('tiles', '../assets/Tilemap/dungeon.png')
+		this.load.image('tiles', 'assets/Tilemap/dungeon.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
-		this.load.image('particle', '../assets/items/particle.png')
+		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map', '../js/dungeonMap.json')
+		this.load.tilemapTiledJSON('map', 'js/dungeonMap.json')
 		//characters loaden
-		this.load.spritesheet('characters', '../assets/characters.png', {
+		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
 			frameHieght: 16
 		})
 		//player loaden
-		this.load.spritesheet('player', '../assets/guy.png', {
+		this.load.spritesheet('player', 'assets/guy.png', {
 			frameWidth: 32,
 			frameHieght: 32
 		})
 		// coin loaden
-		this.load.spritesheet('coin', '../assets/pickup/FullCoins.png', {
+		this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
 			frameWidth: 16,
 			frameHieght: 16
 		})
 		// salad loaden
-		this.load.spritesheet('salad', '../assets/pickup/salad.png', {
+		this.load.spritesheet('salad', 'assets/pickup/salad.png', {
 			frameWidth: 16,
 			frameHieght: 16
 		})
 		// vijanden loaden
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
 		// this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
-		this.load.atlas('monsters', '../assets/monsters.png', '../assets/monsters.json')
+		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 
 
 		this.player

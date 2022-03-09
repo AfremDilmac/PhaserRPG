@@ -10,8 +10,8 @@ class HouseScene extends Phaser.Scene {
 		this.cursors
 		// this.cameras.main.setBackgroundColor('0x9900e3')
 		// verchillende tiles loaden
-		// this.load.image('tiles', '../assets/Tilemap/dungeon.png')
-		this.load.image('house-tiles', '../assets/Tilemap/Overworld.png')
+		// this.load.image('tiles', 'assets/Tilemap/dungeon.png')
+		this.load.image('house-tiles', 'assets/Tilemap/Overworld.png')
 		this.load.image("butcher", "assets/npc/butcher.png")
 		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
 		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
@@ -19,16 +19,16 @@ class HouseScene extends Phaser.Scene {
 		//bullet loaden
 		this.load.image('bullet', 'assets/bullet.png')
 		//particle loaden
-		this.load.image('particle', '../assets/particle.png')
+		this.load.image('particle', 'assets/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-house', '../js/houseMap.json')
+		this.load.tilemapTiledJSON('map-house', 'js/houseMap.json')
 		//characters loaden
-		this.load.spritesheet('characters', '../assets/characters.png', {
+		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
 			frameHieght: 16
 		})
 		//player loaden
-		this.load.spritesheet('player', '../assets/guy.png', {
+		this.load.spritesheet('player', 'assets/guy.png', {
 			frameWidth: 32,
 			frameHieght: 32
 		})

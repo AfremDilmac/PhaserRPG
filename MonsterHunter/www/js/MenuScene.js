@@ -12,7 +12,7 @@ class MenuScene extends Phaser.Scene {
 		this.load.image('logo', 'assets/menu/mainlogo.png')
 		this.load.image('musicOn', 'assets/menu/musicOn.png') // later voor settings screen
 		this.load.image('musicOff', 'assets/menu/musicOff.png') // later voor settings screen
-		this.load.audio('introMusic', './assets/audio/Dark-Ages.mp3')
+		this.load.audio('introMusic', 'assets/audio/Dark-Ages.mp3')
 		
 		//loading bar aanmaken
 		let loadingBar = this.add.graphics({
@@ -26,7 +26,7 @@ class MenuScene extends Phaser.Scene {
 
 		//loading bar display
 		for (let i = 0; i < 500; i++){
-			this.load.spritesheet('characters' + i, '../assets/characters.png', {
+			this.load.spritesheet('characters' + i, 'assets/characters.png', {
 				frameWidth: 16,
 				frameHieght: 16
 			}); }
