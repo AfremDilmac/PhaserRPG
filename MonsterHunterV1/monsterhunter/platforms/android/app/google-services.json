@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "140923731332",
+    "project_id": "monsterhunterv1-fc3d7",
+    "storage_bucket": "monsterhunterv1-fc3d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140923731332:android:d26910d2cab857ad98b1d1",
+        "android_client_info": {
+          "package_name": "com.monsterhunter.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140923731332-ef0rg49la1hsabkaklbrqnujsh2f0bdk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYtUPP8uxoTL3ScpEMRrl-WlbV3hhcZxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140923731332-ef0rg49la1hsabkaklbrqnujsh2f0bdk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
