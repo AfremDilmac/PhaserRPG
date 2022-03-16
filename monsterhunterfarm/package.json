@@ -15,7 +15,7 @@
   "devDependencies": {
     "cordova-android": "^9.1.0",
     "cordova-plugin-whitelist": "^1.3.5",
-    "cordova-universal-links-plugin": "git+https://github.com/cgaeking/cordova-universal-links-plugin-fix.git"
+    "cordova-universal-links-plugin": "github:cgaeking/cordova-universal-links-plugin-fix"
   },
   "cordova": {
     "plugins": {
