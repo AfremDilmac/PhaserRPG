@@ -1,4 +1,5 @@
-document.addEventListener('deviceready', function() {
+// document.addEventListener('deviceready', function() {
+window.addEventListener('load', () => {
     var config = {
         type: Phaser.WEBGL,
         width: 800,
@@ -20,24 +21,24 @@ document.addEventListener('deviceready', function() {
             parent: "game"
         },
         pixelArt: true,
-        scene: [ MenuScene, GameScene, HouseScene, create, preload],
+        scene: [ MenuScene, GameScene, HouseScene , preload],
     };
     
     var game = new Phaser.Game(config);
     
     function preload() {
-        
+        window.addEventListener('resize', resize);
+        resize();
     }
     
     function create() {
-        resize();
+       
        
 
     }    
     function update() {
         
     }
-
     function resize() {
         var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
         var wratio = width / height, ratio = canvas.width / canvas.height;
@@ -49,5 +50,5 @@ document.addEventListener('deviceready', function() {
             canvas.style.height = height + "px";
         }
     }
-
 });
+// });
