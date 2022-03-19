@@ -106,6 +106,8 @@ class HouseScene extends Phaser.Scene {
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+		this.cameras.main.shake(100, 3)
+		this.cameras.main.flash();
 
 		// /**
 		//  * This is if you want to see the collission layer (world)
