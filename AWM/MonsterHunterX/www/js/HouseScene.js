@@ -245,7 +245,6 @@ class HouseScene extends Phaser.Scene {
 			if (time > this.lastFiredTime) {
 				this.lastFiredTime = time + 200
 				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
-
 			}
 		}
 

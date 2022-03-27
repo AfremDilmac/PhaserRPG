@@ -87,17 +87,13 @@ class Player extends Entity {
         })
 
         //Rectangle shooting function
-        var onPointerDown = function() {
-            this.isShooting = true;
-          }.bind(this);
-          
-          var onPointerUp = function() {
+          scene.input.on('pointerdown', function(pointer){
+           this.isShooting = true;
+        }.bind(this));
+
+        scene.input.on('pointerup', function(pointer){
             this.isShooting = false;
-          }.bind(this);
-          
-          
-    //    scene.add.circle(60, 250, 15, 0x6666ff, 0.5).setInteractive().on('pointerup', onPointerUp).on('pointerdown', onPointerDown);
-       
+         }.bind(this));
     }
 // end constructor
 
