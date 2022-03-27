@@ -14,8 +14,10 @@
 			<input type="password" id="password" name="password" placeholder="Password" />
 			<p id="errormsg-login"></p>
 
-			<input type="submit" id='login' name="login" value="Login" />
-
+			<div id="btns">
+				<input type="submit" id='login' name="login" value="Login" />
+				<a href="singup.html" id="signupBtn">Sign up</a>
+			</div>
 		</div>
 	</div>
 </body>
@@ -65,7 +67,7 @@
         })
 
 		lblError.innerHTML= 'User loged in!';
-        // ...
+        location.href='test.html'
       })
       .catch((error) => {
         const errorCode = error.code;

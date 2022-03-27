@@ -1,6 +1,6 @@
 {
-  "name": "com.monsterhunterfarm.www",
-  "displayName": "MonsterHunterfarm",
+  "name": "com.monsterhunter.www",
+  "displayName": "MonsterHunter",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Adam Azzouz, Afrem Dilmac",
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^9.1.0",
