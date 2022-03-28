@@ -93,8 +93,17 @@ class HouseScene extends Phaser.Scene {
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
+		const enterHouseMap = map.createStaticLayer('house map', tileset, 0, 0)
+		const enterDungeonMap = map.createStaticLayer('dungeon map', tileset, 0, 0)
+		const enterAboveMap = map.createStaticLayer('above map', tileset, 0, 0)
+		const enterBelowMap = map.createStaticLayer('below map', tileset, 0, 0)
+
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
+		enterHouseMap.setDepth(-1)
+		enterDungeonMap.setDepth(-1)
+		enterAboveMap.setDepth(-1)
+		enterBelowMap.setDepth(-1)
 		// collision inschakelen voor onze wereld 
 		worldLayer.setCollisionByProperty({
 			collides: true
@@ -102,6 +111,23 @@ class HouseScene extends Phaser.Scene {
 		worldLayer2.setCollisionByProperty({
 			collides: true
 		})
+
+		enterHouseMap.setCollisionByProperty({
+			collides: true
+		})
+
+		enterDungeonMap.setCollisionByProperty({
+			collides: true
+		})
+
+		enterAboveMap.setCollisionByProperty({
+			collides: true
+		})
+
+		enterBelowMap.setCollisionByProperty({
+			collides: true
+		})
+
 		// worldLayer2.setCollisionByProperty({
 		//     collides: true
 		// })
@@ -136,6 +162,10 @@ class HouseScene extends Phaser.Scene {
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.player, enterHouseMap, this.handleEnterHouseMapCollission, null, this)
+		this.physics.add.collider(this.player, enterDungeonMap, this.handleEnterDungeonMapCollission, null, this)
+		this.physics.add.collider(this.player, enterAboveMap, this.handleAboveMapCollission, null, this)
+		this.physics.add.collider(this.player, enterBelowMap, this.handleEnterBelowMapCollission, null, this)
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
@@ -234,6 +264,22 @@ class HouseScene extends Phaser.Scene {
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
 	handleProjectileWorldCollision(proj) {
 		this.projectiles.killAndHide(proj) // is hetzelfde als this.setActive(false) (KILL) + this.setVisible(false) (HIDE)
+	}
+
+	handleEnterHouseMapCollission() {
+        console.log('start enter house map')
+	}
+
+	handleAboveMapCollission() {
+        console.log('start above map')
+	}
+
+	handleEnterDungeonMapCollission() {
+        this.scene.start('gameScene')
+	}
+
+	handleEnterBelowMapCollission() {
+		this.scene.start('shopScene')
 	}
 
 	//time = tijd dat het programma gerund is in ms

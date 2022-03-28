@@ -21,7 +21,7 @@ window.addEventListener('load', () => {
             parent: "game"
         },
         pixelArt: true,
-        scene: [ MenuScene, GameScene, HouseScene , preload],
+        scene: [ MenuScene, GameScene, HouseScene, ShopScene , preload],
     };
     
     var game = new Phaser.Game(config);

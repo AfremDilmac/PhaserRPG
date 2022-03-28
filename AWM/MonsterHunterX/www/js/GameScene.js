@@ -251,9 +251,6 @@ class GameScene extends Phaser.Scene {
 		//healthbar aanmaken
 		this.healthbar = new HealthBar(this, 20, 20, 100)
 		
-		
-
-
 		//////////////////////:
 		// coint text
 		this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
