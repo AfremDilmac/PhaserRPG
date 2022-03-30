@@ -1,10 +1,7 @@
-class HouseScene extends Phaser.Scene {
+class InnerHouseScene extends Phaser.Scene {
 	constructor() {
-		super('houseScene')
+		super('innerHouseScene')
 	}
-
-	//class GameScene extends Phaser.Scene {
-
 
 	preload() {
 		this.cursors
@@ -12,17 +9,12 @@ class HouseScene extends Phaser.Scene {
 		// verchillende tiles loaden
 		// this.load.image('tiles', 'assets/Tilemap/dungeon.png')
 		this.load.image('house-tiles', 'assets/Tilemap/Overworld.png')
-		this.load.image("butcher", "assets/npc/butcher.png")
-		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
-		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
-		this.load.image("speakemote", "assets/npc/emotes/speach.png")
-		this.load.image("apple", "assets/items/item1/Item__64.png")
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-house', 'js/houseMap.json')
+		this.load.tilemapTiledJSON('map-house', 'js/InnerHouseMap.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -34,18 +26,7 @@ class HouseScene extends Phaser.Scene {
 			frameHieght: 32
 		})
 
-		/**
-		 * Dialog text
-		 */
-		this.load.image("hello", "assets/text/hello.png")
-		this.load.image("who", "assets/text/who.png")
-		this.load.image("box", "assets/text/textbox.png")
-		this.load.image("lblwelcome", "assets/text/welcome.png")
-		this.load.image("exit", "assets/menu/exit.png")
-		this.load.image("next", "assets/menu/next.png")
-		// vijanden loaden
-		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
-
+	
 		this.player
 		this.keys
 		this.enemy
@@ -55,17 +36,6 @@ class HouseScene extends Phaser.Scene {
 		this.keys
 		this.lastFiredTime = 0
 		this.emmiter
-		this.questStarted
-		this.apple
-		this.exit
-		this.txtbox
-		this.textDialog
-		this.titleDialog
-		this.line
-		this.questProcess = 0
-		this.exclamationMark
-		this.next
-		this.questStarted = false;
 
 		/**
 		 * Virtual joystick
@@ -93,38 +63,14 @@ class HouseScene extends Phaser.Scene {
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
-		const enterHouseMap = map.createStaticLayer('house map', tileset, 0, 0)
-		const enterDungeonMap = map.createStaticLayer('dungeon map', tileset, 0, 0)
-		const enterAboveMap = map.createStaticLayer('above map', tileset, 0, 0)
-		const enterBelowMap = map.createStaticLayer('below map', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
-		enterHouseMap.setDepth(-1)
-		enterDungeonMap.setDepth(-1)
-		enterAboveMap.setDepth(-1)
-		enterBelowMap.setDepth(-1)
 		// collision inschakelen voor onze wereld 
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
 		worldLayer2.setCollisionByProperty({
-			collides: true
-		})
-
-		enterHouseMap.setCollisionByProperty({
-			collides: true
-		})
-
-		enterDungeonMap.setCollisionByProperty({
-			collides: true
-		})
-
-		enterAboveMap.setCollisionByProperty({
-			collides: true
-		})
-
-		enterBelowMap.setCollisionByProperty({
 			collides: true
 		})
 
@@ -162,10 +108,6 @@ class HouseScene extends Phaser.Scene {
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)
-		this.physics.add.collider(this.player, enterHouseMap, this.handleEnterHouseMapCollission, null, this)
-		this.physics.add.collider(this.player, enterDungeonMap, this.handleEnterDungeonMapCollission, null, this)
-		this.physics.add.collider(this.player, enterAboveMap, this.handleAboveMapCollission, null, this)
-		this.physics.add.collider(this.player, enterBelowMap, this.handleEnterBelowMapCollission, null, this)
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
@@ -208,78 +150,12 @@ class HouseScene extends Phaser.Scene {
 			active: false
 
 		})
-		var textDialog = ''
-		let exit = ''
-
-
-		/**
-		 * Butcher
-		 */
-		let butcher = this.add.image(335, 85, "butcher").setDepth(1);
-		this.exclamationMark = this.add.image(335, 72, "exclemote").setDepth(1);
-		
-
-		butcher.setInteractive()
-		butcher.flipX = true
-		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
-		butcher.on('pointerdown', () => {
-			if (this.questProcess == 0) {
-				// textDialog = this.add.rectangle(200, 150, 148, 148, 0x282725).setDepth(100);
-				this.txtBox = this.add.image(500, 160, "speakemote").setDepth(10).setScale(0.1);
-				this.txtBox.flipX = true
-				this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
-				this.exit.setInteractive()
-				this.next = this.add.image(290, 270, "next").setDepth(1).setScale(0.2);
-				this.apple = this.add.image(375, 95, "apple").setDepth(50).setScale(0.6);
-				this.apple.setInteractive()
-				this.questStarted = true
-				this.questProcess = 1
-				this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
-				this.txtWelcome = this.add.image(500, 155, "lblwelcome").setDepth(12).setScale(0.38)
-				this.txtBox.setScrollFactor(0)
-				this.txtWelcome.setScrollFactor(0)
-			
-			} else {
-				this.txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
-				this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
-				this.exit.setInteractive()
-				this.titleDialog = this.add.text(180, 220, 'Simon', {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '14px',
-					color: 'white'
-				}).setDepth(101);
-				this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
-				this.textDialog = this.add.text(130, 250, 'Thank you ! (playername) here 5 coins', {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '8px',
-					color: 'white'
-				}).setDepth(101);
-
-			
-
-			}
-		})
+	
 	} //end create
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
 	handleProjectileWorldCollision(proj) {
 		this.projectiles.killAndHide(proj) // is hetzelfde als this.setActive(false) (KILL) + this.setVisible(false) (HIDE)
-	}
-
-	handleEnterHouseMapCollission() {
-        // this.scene.start('innerHouseScene')
-	}
-
-	handleAboveMapCollission() {
-        console.log('start above map')
-	}
-
-	handleEnterDungeonMapCollission() {
-        this.scene.start('gameScene')
-	}
-
-	handleEnterBelowMapCollission() {
-		this.scene.start('shopScene')
 	}
 
 	//time = tijd dat het programma gerund is in ms
@@ -292,34 +168,6 @@ class HouseScene extends Phaser.Scene {
 				this.lastFiredTime = time + 200
 				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
 			}
-		}
-
-		if (this.questStarted) {
-			this.next.on('pointerdown', () => {
-				this.textDialog.destroy()
-				this.questProcess = 1
-				this.textDialog = this.add.text(115, 250, "I'm really hungry, can you find me an apple please?", {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '8px',
-					color: 'white'
-				}).setDepth(101);
-				this.next.destroy();
-			})
-			this.apple.on('pointerdown', () => {
-				if (this.questProcess == 1) {
-					this.apple.destroy()
-					this.questProcess = 2
-					this.exclamationMark = this.add.image(355, 30, "questemote").setDepth(1);
-				}
-			})
-			this.exit.on('pointerdown', () => {
-				this.txtBox.destroy()
-				this.textDialog.destroy()
-				
-				this.line.destroy()
-				this.exit.destroy()
-				this.next.destroy()
-			})
 		}
 		this.player.update()
 
