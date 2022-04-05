@@ -151,7 +151,7 @@ class ShopScene extends Phaser.Scene {
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
-		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
+		// als er op space gedrukto wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.keys.space.isDown || this.player.isShooting) {
 			if (time > this.lastFiredTime) {

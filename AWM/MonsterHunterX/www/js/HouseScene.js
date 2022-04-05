@@ -39,7 +39,8 @@ class HouseScene extends Phaser.Scene {
 		 */
 		this.load.image("hello", "assets/text/hello.png")
 		this.load.image("who", "assets/text/who.png")
-		this.load.image("box", "assets/text/textbox.png")
+		this.load.image("hasbulla-welcome", "assets/text/hasbulla-welcome.png")
+		this.load.image("hasbulla-quest", "assets/text/hasbulla-welcome-2.png")
 		this.load.image("lblwelcome", "assets/text/welcome.png")
 		this.load.image("exit", "assets/menu/exit.png")
 		this.load.image("next", "assets/menu/next.png")
@@ -51,7 +52,6 @@ class HouseScene extends Phaser.Scene {
 		this.enemy
 		this.enemies
 		this.healthbar
-		this.projectiles
 		this.keys
 		this.lastFiredTime = 0
 		this.emmiter
@@ -86,7 +86,7 @@ class HouseScene extends Phaser.Scene {
 		})
 		this.cameras.main.zoom = 2;
 
-		//verschillende layers aanmaken met gepaste key 
+		//verschillende layers aanmaken met gepaste key
 		const tileset = map.addTilesetImage('House', 'house-tiles')
 		const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
 		const belowLayer2 = map.createStaticLayer('below player2', tileset, 0, 0)
@@ -104,7 +104,7 @@ class HouseScene extends Phaser.Scene {
 		enterDungeonMap.setDepth(-1)
 		enterAboveMap.setDepth(-1)
 		enterBelowMap.setDepth(-1)
-		// collision inschakelen voor onze wereld 
+		// collision inschakelen voor onze wereld
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
@@ -131,7 +131,7 @@ class HouseScene extends Phaser.Scene {
 		// worldLayer2.setCollisionByProperty({
 		//     collides: true
 		// })
-		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
+		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
@@ -170,101 +170,42 @@ class HouseScene extends Phaser.Scene {
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
-
-		/**
-		 * Projectiles
-		 */
-		//Key om projectiles te schieten definieëren
-		this.keys = this.input.keyboard.addKeys({
-			space: 'SPACE'
-		})
-		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
-		this.projectiles = new Projectiles(this)
-		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
-		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
-		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
-
-		/** 
-		 * Particles
-		 */
-		//Aanmaken van emitter dat we straks gaan gebruiken voor de handleProjectileEnemyCollision
-		this.emmiter = this.add.particles('particle').createEmitter({
-			x: 0,
-			y: 0,
-			quantity: 15,
-			speed: {
-				min: -100,
-				max: 100
-			},
-			angle: {
-				min: 0,
-				max: 360
-			},
-			scale: {
-				start: 0.7,
-				end: 0
-			},
-			lifespan: 300,
-			active: false
-
-		})
-		var textDialog = ''
-		let exit = ''
-
-
 		/**
 		 * Butcher
 		 */
 		let butcher = this.add.image(335, 85, "butcher").setDepth(1);
 		this.exclamationMark = this.add.image(335, 72, "exclemote").setDepth(1);
-		
+		console.log(this.player.y)
 
 		butcher.setInteractive()
 		butcher.flipX = true
 		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
 		butcher.on('pointerdown', () => {
-			if (this.questProcess == 0) {
-				// textDialog = this.add.rectangle(200, 150, 148, 148, 0x282725).setDepth(100);
-				this.txtBox = this.add.image(500, 160, "speakemote").setDepth(10).setScale(0.1);
-				this.txtBox.flipX = true
-				this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
+			if (this.player.y <= 104) {
+				if (this.questProcess == 0) {
+					this.txtBox = this.add.image(504, 180, "hasbulla-welcome").setDepth(10).setScale(0.15);
+				
+				// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+				this.exit = this.add.image(552, 165, "exit").setDepth(2000).setScale(0.15);
 				this.exit.setInteractive()
-				this.next = this.add.image(290, 270, "next").setDepth(1).setScale(0.2);
+				this.next = this.add.image(552, 192, "next").setDepth(2000).setScale(0.14);
+				this.next.setInteractive()
 				this.apple = this.add.image(375, 95, "apple").setDepth(50).setScale(0.6);
 				this.apple.setInteractive()
 				this.questStarted = true
 				this.questProcess = 1
-				this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
-				this.txtWelcome = this.add.image(500, 155, "lblwelcome").setDepth(12).setScale(0.38)
+				// this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
 				this.txtBox.setScrollFactor(0)
-				this.txtWelcome.setScrollFactor(0)
+				// this.txtWelcome.setScrollFactor(0)
+				this.exit.setScrollFactor(0)
+				this.next.setScrollFactor(0)
+				}
+			}
+			 else {
 			
-			} else {
-				this.txtBox = this.add.image(200, 250, "box").setDepth(1).setScale(0.3);
-				this.exit = this.add.image(290, 229, "exit").setDepth(1).setScale(0.2);
-				this.exit.setInteractive()
-				this.titleDialog = this.add.text(180, 220, 'Simon', {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '14px',
-					color: 'white'
-				}).setDepth(101);
-				this.line = this.add.line(25, 0, 280, 238, 170, 238, 0xD3D3D3).setDepth(102);
-				this.textDialog = this.add.text(130, 250, 'Thank you ! (playername) here 5 coins', {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '8px',
-					color: 'white'
-				}).setDepth(101);
-
-			
-
 			}
 		})
 	} //end create
-
-	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
-	handleProjectileWorldCollision(proj) {
-		this.projectiles.killAndHide(proj) // is hetzelfde als this.setActive(false) (KILL) + this.setVisible(false) (HIDE)
-	}
 
 	handleEnterHouseMapCollission() {
         // this.scene.start('innerHouseScene')
@@ -283,26 +224,14 @@ class HouseScene extends Phaser.Scene {
 	}
 
 	//time = tijd dat het programma gerund is in ms
-	//delta = tijd tussen laatste update en nieuwe update 
+	//delta = tijd tussen laatste update en nieuwe update
 	update(time, delta) {
-		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
-		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
-		if (this.keys.space.isDown || this.player.isShooting) {
-			if (time > this.lastFiredTime) {
-				this.lastFiredTime = time + 200
-				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
-			}
-		}
 
 		if (this.questStarted) {
 			this.next.on('pointerdown', () => {
-				this.textDialog.destroy()
+				this.txtboy.destroy()
+				this.txtBox = this.add.image(504, 180, "hasbulla-quest").setDepth(10).setScale(0.15);
 				this.questProcess = 1
-				this.textDialog = this.add.text(115, 250, "I'm really hungry, can you find me an apple please?", {
-					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-					fontSize: '8px',
-					color: 'white'
-				}).setDepth(101);
 				this.next.destroy();
 			})
 			this.apple.on('pointerdown', () => {
@@ -314,9 +243,6 @@ class HouseScene extends Phaser.Scene {
 			})
 			this.exit.on('pointerdown', () => {
 				this.txtBox.destroy()
-				this.textDialog.destroy()
-				
-				this.line.destroy()
 				this.exit.destroy()
 				this.next.destroy()
 			})
