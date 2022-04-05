@@ -66,6 +66,8 @@ class HouseScene extends Phaser.Scene {
 		this.exclamationMark
 		this.next
 		this.questStarted = false;
+		this.coins
+		this.coinAmount = 0
 
 		/**
 		 * Virtual joystick
@@ -155,6 +157,20 @@ class HouseScene extends Phaser.Scene {
 		// })
 
 		/**
+		 * Healthbar
+		 */
+		//healthbar aanmaken
+		this.healthbar = new HealthBar(this, 20, 20, 100)
+		
+		
+		//////////////////////:
+		// coint text
+		this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
+			font: '12px',
+			fill: '#ffffff'
+		})
+
+		/**
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
@@ -207,6 +223,9 @@ class HouseScene extends Phaser.Scene {
 					this.exclamationMark.destroy();
 					this.txtBox.setScrollFactor(0)
 					this.exit.setScrollFactor(0)
+
+					this.coinAmount += 5;
+					this.coinText.setText('Gold: ' + this.coinAmount)
 				}
 			}
 			
@@ -214,7 +233,7 @@ class HouseScene extends Phaser.Scene {
 	} //end create
 
 	handleEnterHouseMapCollission() {
-        // this.scene.start('innerHouseScene')
+        this.scene.start('innerHouseScene')
 	}
 
 	handleAboveMapCollission() {

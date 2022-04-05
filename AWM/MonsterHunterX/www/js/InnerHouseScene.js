@@ -14,7 +14,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-house', 'js/InnerHouseMap.json')
+		this.load.tilemapTiledJSON('map-innerhouse', 'js/innerHouseMap.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -52,7 +52,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
-			key: 'map-house'
+			key: 'map-innerhouse'
 		})
 		this.cameras.main.zoom = 2;
 
@@ -63,6 +63,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
+		const exitHouse = map.createStaticLayer('exit house', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
@@ -73,6 +74,10 @@ class InnerHouseScene extends Phaser.Scene {
 		worldLayer2.setCollisionByProperty({
 			collides: true
 		})
+		exitHouse.setCollisionByProperty({
+			collides: true
+		})
+		exitHouse.setDepth(0)
 
 		// worldLayer2.setCollisionByProperty({
 		//     collides: true
@@ -108,6 +113,8 @@ class InnerHouseScene extends Phaser.Scene {
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.player, worldLayer2)
+		this.physics.add.collider(this.player, exitHouse, this.handleExitHouse, null, this)
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
@@ -123,6 +130,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
+		this.physics.add.collider(this.projectiles, worldLayer2, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 
@@ -152,6 +160,10 @@ class InnerHouseScene extends Phaser.Scene {
 		})
 	
 	} //end create
+
+	handleExitHouse() {
+        this.scene.start('houseScene')
+	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
 	handleProjectileWorldCollision(proj) {
