@@ -40,7 +40,8 @@ class HouseScene extends Phaser.Scene {
 		this.load.image("hello", "assets/text/hello.png")
 		this.load.image("who", "assets/text/who.png")
 		this.load.image("hasbulla-welcome", "assets/text/hasbulla-welcome.png")
-		this.load.image("hasbulla-quest", "assets/text/hasbulla-welcome-2.png")
+		this.load.image("hasbulla2", "assets/text/hasbulla-welcome-2.png")
+		this.load.image("hasbulla3", "assets/text/hasbulla-welcome-3.png")
 		this.load.image("lblwelcome", "assets/text/welcome.png")
 		this.load.image("exit", "assets/menu/exit.png")
 		this.load.image("next", "assets/menu/next.png")
@@ -58,7 +59,6 @@ class HouseScene extends Phaser.Scene {
 		this.questStarted
 		this.apple
 		this.exit
-		this.txtbox
 		this.textDialog
 		this.titleDialog
 		this.line
@@ -183,8 +183,7 @@ class HouseScene extends Phaser.Scene {
 		butcher.on('pointerdown', () => {
 			if (this.player.y <= 104) {
 				if (this.questProcess == 0) {
-					this.txtBox = this.add.image(504, 180, "hasbulla-welcome").setDepth(10).setScale(0.15);
-				
+				this.txtBox = this.add.image(504, 180, "hasbulla-welcome").setDepth(10).setScale(0.15);
 				// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
 				this.exit = this.add.image(552, 165, "exit").setDepth(2000).setScale(0.15);
 				this.exit.setInteractive()
@@ -200,10 +199,17 @@ class HouseScene extends Phaser.Scene {
 				this.exit.setScrollFactor(0)
 				this.next.setScrollFactor(0)
 				}
+				if (this.questProcess > 1) {
+					this.txtBox.destroy();
+					this.txtBox = this.add.image(504, 180, "hasbulla3").setDepth(10).setScale(0.15);
+					this.exit = this.add.image(552, 165, "exit").setDepth(2000).setScale(0.15);
+					this.exit.setInteractive()
+					this.exclamationMark.destroy();
+					this.txtBox.setScrollFactor(0)
+					this.exit.setScrollFactor(0)
+				}
 			}
-			 else {
 			
-			}
 		})
 	} //end create
 
@@ -229,8 +235,9 @@ class HouseScene extends Phaser.Scene {
 
 		if (this.questStarted) {
 			this.next.on('pointerdown', () => {
-				this.txtboy.destroy()
-				this.txtBox = this.add.image(504, 180, "hasbulla-quest").setDepth(10).setScale(0.15);
+				this.txtBox.destroy();
+				this.txtBox = this.add.image(504, 180, "hasbulla2").setDepth(10).setScale(0.15);
+				this.txtBox.setScrollFactor(0)
 				this.questProcess = 1
 				this.next.destroy();
 			})
@@ -238,7 +245,8 @@ class HouseScene extends Phaser.Scene {
 				if (this.questProcess == 1) {
 					this.apple.destroy()
 					this.questProcess = 2
-					this.exclamationMark = this.add.image(355, 30, "questemote").setDepth(1);
+					this.exclamationMark.destroy();
+					this.exclamationMark = this.add.image(335, 75, "questemote").setDepth(1);
 				}
 			})
 			this.exit.on('pointerdown', () => {
