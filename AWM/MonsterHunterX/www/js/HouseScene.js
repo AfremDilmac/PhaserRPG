@@ -11,7 +11,7 @@ class HouseScene extends Phaser.Scene {
 		// this.cameras.main.setBackgroundColor('0x9900e3')
 		// verchillende tiles loaden
 		// this.load.image('tiles', 'assets/Tilemap/dungeon.png')
-		this.load.image('house-tiles', 'assets/Tilemap/Overworld.png')
+		this.load.image('house-tiles', 'assets/Tilemap/Tileset.png')
 		this.load.image("butcher", "assets/npc/butcher.png")
 		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
 		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
@@ -22,7 +22,7 @@ class HouseScene extends Phaser.Scene {
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-house', 'js/houseMap.json')
+		this.load.tilemapTiledJSON('map-house', 'js/VillageMap.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -32,6 +32,10 @@ class HouseScene extends Phaser.Scene {
 		this.load.spritesheet('player', 'assets/guy.png', {
 			frameWidth: 32,
 			frameHieght: 32
+		})
+		this.load.spritesheet('salad', 'assets/Tilemap/Tileset.png', {
+			frameWidth: 16,
+			frameHieght: 16
 		})
 
 		/**
@@ -62,6 +66,7 @@ class HouseScene extends Phaser.Scene {
 		this.textDialog
 		this.titleDialog
 		this.line
+		this.salad
 		this.questProcess = 0
 		this.exclamationMark
 		this.next
@@ -76,8 +81,6 @@ class HouseScene extends Phaser.Scene {
 
 		url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
 		this.load.plugin('rexvirtualjoystickplugin', url, true);
-
-
 	} //end preload
 
 	create() {
@@ -89,12 +92,13 @@ class HouseScene extends Phaser.Scene {
 		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key
-		const tileset = map.addTilesetImage('House', 'house-tiles')
+		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
 		const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
 		const belowLayer2 = map.createStaticLayer('below player2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
+		const pickupLayer = map.createStaticLayer('pickup', tileset, 0, 0)
 		const enterHouseMap = map.createStaticLayer('house map', tileset, 0, 0)
 		const enterDungeonMap = map.createStaticLayer('dungeon map', tileset, 0, 0)
 		const enterAboveMap = map.createStaticLayer('above map', tileset, 0, 0)
@@ -102,8 +106,8 @@ class HouseScene extends Phaser.Scene {
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
-		enterHouseMap.setDepth(-1)
-		enterDungeonMap.setDepth(-1)
+		enterHouseMap.setDepth(101)
+		pickupLayer.setDepth(-1)
 		enterAboveMap.setDepth(-1)
 		enterBelowMap.setDepth(-1)
 		// collision inschakelen voor onze wereld
@@ -143,18 +147,18 @@ class HouseScene extends Phaser.Scene {
 		// /**
 		//  * This is if you want to see the collission layer (world)
 		//  */
-		// const debugGraphics = this.add.graphics().setAlpha(0.2)
+		const debugGraphics = this.add.graphics().setAlpha(0.2)
 		// worldLayer.renderDebug(debugGraphics, {
 		//     tileColor: null,
 		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
 		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
 		// })
 
-		// worldLayer2.renderDebug(debugGraphics, {
-		//     tileColor: null,
-		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		// })
+		worldLayer2.renderDebug(debugGraphics, {
+		    tileColor: null,
+		    collidingTileColor: new Phaser.Display.Color(0, 0, 255),
+		    faceColor: new Phaser.Display.Color(0, 255, 0, 255)
+		})
 
 		/**
 		 * Healthbar
@@ -170,15 +174,48 @@ class HouseScene extends Phaser.Scene {
 			fill: '#ffffff'
 		})
 
+		this.anims.create({
+			key: 'saladAnim',
+			frames: this.anims.generateFrameNumbers('salad', {
+				start: 167,
+				end: 167,
+
+			}),
+			frameRate: 12,
+			repeat: -1
+		})
+
+		this.salad = this.physics.add.group()
+		pickupLayer.forEachTile(tile => {
+			if (tile.index != -1) {
+				//console.log(tile);
+				let pickup
+				const x = tile.getCenterX()
+				const y = tile.getCenterY()
+
+				if (tile.properties.CP_coin == 'gold') {
+					pickup = this.coins.create(x, y, 'coin')
+					pickup.anims.play('coinAnim', true)
+				} else if (tile.properties.CP_salad == 'salad') {
+					pickup = this.salad.create(x, y, 'salad')
+					pickup.anims.play('saladAnim', true)
+				}
+				pickup.body.width = 16
+				pickup.body.height = 16
+			}
+
+		})
+
 		/**
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 200, 200, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 200, 200, 'player', 80).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.collider(this.player, enterHouseMap, this.handleEnterHouseMapCollission, null, this)
+		this.physics.add.collider(this.player, this.salad, this.handlePlayerSaladCollision, null, this)
 		this.physics.add.collider(this.player, enterDungeonMap, this.handleEnterDungeonMapCollission, null, this)
 		this.physics.add.collider(this.player, enterAboveMap, this.handleAboveMapCollission, null, this)
 		this.physics.add.collider(this.player, enterBelowMap, this.handleEnterBelowMapCollission, null, this)
@@ -199,7 +236,7 @@ class HouseScene extends Phaser.Scene {
 		butcher.on('pointerdown', () => {
 			if (this.player.y <= 104) {
 				if (this.questProcess == 0) {
-				this.txtBox = this.add.image(504, 180, "hasbulla-welcome").setDepth(10).setScale(0.15);
+				this.txtBox = this.add.image(504, 180, "hasbulla-welcome").setDepth(1000).setScale(0.15);
 				// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
 				this.exit = this.add.image(552, 165, "exit").setDepth(2000).setScale(0.15);
 				this.exit.setInteractive()
@@ -217,7 +254,7 @@ class HouseScene extends Phaser.Scene {
 				}
 				if (this.questProcess > 1) {
 					this.txtBox.destroy();
-					this.txtBox = this.add.image(504, 180, "hasbulla3").setDepth(10).setScale(0.15);
+					this.txtBox = this.add.image(504, 180, "hasbulla3").setDepth(1000).setScale(0.15);
 					this.exit = this.add.image(552, 165, "exit").setDepth(2000).setScale(0.15);
 					this.exit.setInteractive()
 					this.exclamationMark.destroy();
@@ -248,6 +285,14 @@ class HouseScene extends Phaser.Scene {
 		this.scene.start('shopScene')
 	}
 
+	handlePlayerSaladCollision(p, s) {
+		s.destroy()
+		if (p.health < 95) {
+			p.health += 10
+		}
+		this.healthbar.updateHealth(p.health)
+	}
+
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update
 	update(time, delta) {
@@ -255,7 +300,7 @@ class HouseScene extends Phaser.Scene {
 		if (this.questStarted) {
 			this.next.on('pointerdown', () => {
 				this.txtBox.destroy();
-				this.txtBox = this.add.image(504, 180, "hasbulla2").setDepth(10).setScale(0.15);
+				this.txtBox = this.add.image(504, 180, "hasbulla2").setDepth(1000).setScale(0.15);
 				this.txtBox.setScrollFactor(0)
 				this.questProcess = 1
 				this.next.destroy();
