@@ -9,6 +9,11 @@ class InnerShopScene extends Phaser.Scene {
 		this.cursors
 		// verchillende tiles loaden
 		this.load.image('tiles', 'assets/Tilemap/Tileset.png')
+		//Shop npc
+		this.load.image("merchant", "assets/npc/merchant.png")
+		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
+		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
+		this.load.image("speakemote", "assets/npc/emotes/speach.png")
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
@@ -39,7 +44,10 @@ class InnerShopScene extends Phaser.Scene {
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
 		// this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
 		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
-
+		this.load.image("merchant-welcome", "assets/text/merchant-welcome.png")
+		this.load.image("merchant-shop", "assets/text/merchant-shop.png")
+		this.load.image("exit", "assets/menu/exit.png")
+		this.load.image("next", "assets/menu/next.png")
 
 		this.player
 		this.keys
@@ -49,6 +57,8 @@ class InnerShopScene extends Phaser.Scene {
 		this.projectiles
 		this.keys
 		this.lastFiredTime = 0
+		this.npcStart = false;
+		this.shopProcess = 0
 		this.emmiter
 		this.salad
 		this.coins
@@ -137,6 +147,23 @@ class InnerShopScene extends Phaser.Scene {
 			fill: '#ffffff'
 		})
 
+		let merchant = this.add.image(160, 62, "merchant").setDepth(1);
+	
+
+		merchant.setInteractive()
+		merchant.flipX = true
+		merchant.on('pointerdown', () =>{
+			console.log(this.player.y)
+			if (this.player.y <= 104) {
+				if (this.shopProcess == 0) {
+				this.txtBox = this.add.image(129, 38, "merchant-welcome").setDepth(1000).setScale(0.15);
+				this.exit = this.add.image(180, 20, "exit").setDepth(2000).setScale(0.15);
+				this.exit.setInteractive()
+				this.next = this.add.image(180, 50, "next").setDepth(2000).setScale(0.14);
+				this.next.setInteractive()
+				this.npcStart = true;
+			}}
+		})
 	} //end create
 
 
@@ -163,6 +190,20 @@ class InnerShopScene extends Phaser.Scene {
 				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
 
 			}
+		}
+		if (this.npcStart) {
+			this.next.on('pointerdown', () => {
+				this.txtBox.destroy();
+				this.txtBox = this.add.image(129, 38, "merchant-shop").setDepth(1000).setScale(0.15);
+			
+				this.shopProcess = 1
+				this.next.destroy();
+			})
+			this.exit.on('pointerdown', () => {
+				this.txtBox.destroy()
+				this.exit.destroy()
+				this.next.destroy()
+			})
 		}
        
 		this.player.update()
