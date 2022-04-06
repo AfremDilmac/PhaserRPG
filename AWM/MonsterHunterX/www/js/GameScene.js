@@ -8,13 +8,13 @@ class GameScene extends Phaser.Scene {
 		
 		this.cursors
 		// verchillende tiles loaden
-		this.load.image('tiles', 'assets/Tilemap/dungeon.png')
+		this.load.image('tiles', 'assets/Tilemap/Tileset.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map', 'js/dungeonMap.json')
+		this.load.tilemapTiledJSON('dungeon-map', 'js/dungeonMap2.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -26,15 +26,15 @@ class GameScene extends Phaser.Scene {
 			frameHieght: 32
 		})
 		// coin loaden
-		this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
-			frameWidth: 16,
-			frameHieght: 16
-		})
+		// this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
+		// 	frameWidth: 16,
+		// 	frameHieght: 16
+		// })
 		// salad loaden
-		this.load.spritesheet('salad', 'assets/pickup/salad.png', {
-			frameWidth: 16,
-			frameHieght: 16
-		})
+		// this.load.spritesheet('salad', 'assets/pickup/salad.png', {
+		// 	frameWidth: 16,
+		// 	frameHieght: 16
+		// })
 		// vijanden loaden
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
 		// this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
@@ -65,20 +65,20 @@ class GameScene extends Phaser.Scene {
 	} //end preload
 
 	create() {
-
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
-			key: 'map'
+			key: 'dungeon-map'
 		})
 		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key 
-		const tileset = map.addTilesetImage('dungeon', 'tiles')
+		const tileset = map.addTilesetImage('Tileset', 'tiles')
 		const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
+		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
-		const pickupLayer = map.createStaticLayer('pickup', tileset, 0, 0)
 		const monsterLayer = map.createStaticLayer('monster layer', tileset, 0, 0)
+		const dungeonDoor = map.createStaticLayer('dungeon door', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
@@ -86,6 +86,13 @@ class GameScene extends Phaser.Scene {
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
+		worldLayer2.setCollisionByProperty({
+			collides: true
+		})
+		dungeonDoor.setCollisionByProperty({
+			collides: true
+		})
+	
 		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
@@ -104,56 +111,56 @@ class GameScene extends Phaser.Scene {
 
 		////////////////////////////////////:
 		//collectable animaties 
-		this.anims.create({
-			key: 'coinAnim',
-			frames: this.anims.generateFrameNumbers('coin', {
-				start: 0,
-				end: 7,
+		// this.anims.create({
+		// 	key: 'coinAnim',
+		// 	frames: this.anims.generateFrameNumbers('coin', {
+		// 		start: 0,
+		// 		end: 7,
 
-			}),
-			frameRate: 12,
-			repeat: -1
-		})
+		// 	}),
+		// 	frameRate: 12,
+		// 	repeat: -1
+		// })
 
-		this.anims.create({
-			key: 'saladAnim',
-			frames: this.anims.generateFrameNumbers('salad', {
-				start: 302,
-				end: 302,
+		// this.anims.create({
+		// 	key: 'saladAnim',
+		// 	frames: this.anims.generateFrameNumbers('salad', {
+		// 		start: 302,
+		// 		end: 302,
 
-			}),
-			frameRate: 12,
-			repeat: -1
-		})
+		// 	}),
+		// 	frameRate: 12,
+		// 	repeat: -1
+		// })
 
 
-		this.coins = this.physics.add.group()
-		this.salad = this.physics.add.group()
+		// this.coins = this.physics.add.group()
+		// this.salad = this.physics.add.group()
 
 
 		//// We hebben pickups direct op de map geplaatst (Tiled) op de pickup layer 
 		//hier gaan we voor elke tile van de pickup layer zien als de id overeenkomt met een collectable 
 		// zo ja gaan we ze aanmaken met de create functie en de animatie starten  
-		pickupLayer.forEachTile(tile => {
-			if (tile.index != -1) {
-				//console.log(tile);
+		// pickupLayer.forEachTile(tile => {
+		// 	if (tile.index != -1) {
+		// 		console.log(tile);
 
-				let pickup
-				const x = tile.getCenterX()
-				const y = tile.getCenterY()
+		// 		let pickup
+		// 		const x = tile.getCenterX()
+		// 		const y = tile.getCenterY()
 
-				if (tile.properties.CP_coin == 'gold') {
-					pickup = this.coins.create(x, y, 'coin')
-					pickup.anims.play('coinAnim', true)
-				} else if (tile.properties.CP_salad == 'salad') {
-					pickup = this.salad.create(x, y, 'salad')
-					pickup.anims.play('saladAnim', true)
-				}
-				pickup.body.width = 16
-				pickup.body.height = 16
-			}
+		// 		if (tile.properties.CP_coin == 'gold') {
+		// 			pickup = this.coins.create(x, y, 'coin')
+		// 			pickup.anims.play('coinAnim', true)
+		// 		} else if (tile.properties.CP_salad == 'salad') {
+		// 			pickup = this.salad.create(x, y, 'salad')
+		// 			pickup.anims.play('saladAnim', true)
+		// 		}
+		// 		pickup.body.width = 16
+		// 		pickup.body.height = 16
+		// 	}
 
-		})
+		// })
 
 
 
@@ -161,7 +168,7 @@ class GameScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 40, 35, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 220, 85, 'player', 100).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
@@ -178,6 +185,7 @@ class GameScene extends Phaser.Scene {
 		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
 		this.enemy2 = new Enemy(this, 250, 242, 'monsters', 25, 'bat', 10).setTint(0x990005)
 		this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
+		this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
 		this.enemy2.body.setCollideWorldBounds(true)
 
 		/** 
@@ -237,12 +245,17 @@ class GameScene extends Phaser.Scene {
 		this.projectiles = new Projectiles(this)
 
 		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
-		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
-		this.physics.add.collider(this.player, this.salad, this.handlePlayerSaladCollision, null, this)
+		// this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
+		// this.physics.add.collider(this.player, this.salad, this.handlePlayerSaladCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
+		this.physics.add.collider(this.projectiles, worldLayer2, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.enemies, worldLayer2)
+		this.physics.add.collider(this.player, worldLayer2)
+		this.physics.add.collider(this.player, dungeonDoor, this.handleEnterDungeonMapCollission, null, this)
+
 
 
 		/**
@@ -253,10 +266,10 @@ class GameScene extends Phaser.Scene {
 		
 		//////////////////////:
 		// coint text
-		this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
-			font: '12px',
-			fill: '#ffffff'
-		})
+		// this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
+		// 	font: '12px',
+		// 	fill: '#ffffff'
+		// })
 
 		/** 
 		 * Particles
@@ -286,23 +299,26 @@ class GameScene extends Phaser.Scene {
 
 
 	} //end create
-
+	handleEnterDungeonMapCollission() {
+        this.scene.start('shopScene')
+		console.log('test collission')
+	}
 
 	////////////////////////////////
 	//collisions
-	handlePlayerCoinCollision(p, c) {
-		c.destroy()
-		this.coinAmount += 1
-		this.coinText.setText('Gold: ' + this.coinAmount)
-	}
+	// handlePlayerCoinCollision(p, c) {
+	// 	c.destroy()
+	// 	this.coinAmount += 1
+	// 	this.coinText.setText('Gold: ' + this.coinAmount)
+	// }
 
-	handlePlayerSaladCollision(p, s) {
-		s.destroy()
-		if (p.health < 95) {
-			p.health += 10
-		}
-		this.healthbar.updateHealth(p.health)
-	}
+	// handlePlayerSaladCollision(p, s) {
+	// 	s.destroy()
+	// 	if (p.health < 95) {
+	// 		p.health += 10
+	// 	}
+	// 	this.healthbar.updateHealth(p.health)
+	// }
 
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -390,7 +406,7 @@ class GameScene extends Phaser.Scene {
 		// //All enemies are dead
 		if (this.enemies.children.entries.length === 0) {
 			//Enemies are dead
-			this.scene.start('houseScene')
+			//OPEN CHEST
 		}
 
 
