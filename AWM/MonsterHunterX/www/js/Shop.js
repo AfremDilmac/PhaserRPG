@@ -119,9 +119,11 @@ class InnerShopScene extends Phaser.Scene {
 		this.projectiles = new Projectiles(this)
 
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
+        this.physics.add.collider(this.projectiles, worldLayer2, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.player, shopDoor, this.handleShopDoorCollission, null, this)
 
 		this.physics.add.collider(this.player, worldLayer)
+        this.physics.add.collider(this.player, worldLayer2)
 		/**
 		 * Healthbar
 		 */
