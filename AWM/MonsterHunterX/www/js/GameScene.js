@@ -14,7 +14,7 @@ class GameScene extends Phaser.Scene {
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('dungeon-map', 'js/dungeonMap2.json')
+		this.load.tilemapTiledJSON('dungeon-map', 'js/dungeonMap.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -168,7 +168,7 @@ class GameScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 220, 85, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 220, 95, 'player', 100).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
@@ -183,7 +183,7 @@ class GameScene extends Phaser.Scene {
 
 		// //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
 		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
-		this.enemy2 = new Enemy(this, 250, 242, 'monsters', 25, 'bat', 10).setTint(0x990005)
+		this.enemy2 = new Enemy(this, 250, 242, 'monsters', 150, 'bat', 10).setTint(0x990005)
 		this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
 		this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
 		this.enemy2.body.setCollideWorldBounds(true)
@@ -301,6 +301,7 @@ class GameScene extends Phaser.Scene {
 	} //end create
 	handleEnterDungeonMapCollission() {
         this.scene.start('shopScene')
+	
 		console.log('test collission')
 	}
 
