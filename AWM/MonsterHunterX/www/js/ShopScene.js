@@ -8,13 +8,13 @@ class ShopScene extends Phaser.Scene {
 		
 		this.cursors
 		// verchillende tiles loaden
-		this.load.image('tiles', 'assets/Tilemap/Overworld.png')
+		this.load.image('tiles', 'assets/Tilemap/Tileset.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map', 'js/shopMap.json')
+		this.load.tilemapTiledJSON('map', 'js/shopMap2.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -73,11 +73,13 @@ class ShopScene extends Phaser.Scene {
 		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key 
-		const tileset = map.addTilesetImage('Overworld', 'tiles')
+		const tileset = map.addTilesetImage('Tileset', 'tiles')
 		const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
         const belowLayer2 = map.createStaticLayer('below player2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
+		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
+		const shopDoor = map.createStaticLayer('shop door', tileset, 0, 0)
 		const aboveMap = map.createStaticLayer('above map', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
@@ -90,6 +92,9 @@ class ShopScene extends Phaser.Scene {
         aboveMap.setCollisionByProperty({
 			collides: true
 		})
+		shopDoor.setCollisionByProperty({
+			collides: true
+		})
 		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
@@ -100,7 +105,7 @@ class ShopScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 40, 35, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 80, 35, 'player', 100).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
@@ -119,6 +124,8 @@ class ShopScene extends Phaser.Scene {
 
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
         this.physics.add.collider(this.player, aboveMap, this.handleAboveMapCollission, null, this)
+		this.physics.add.collider(this.player, shopDoor, this.handleShopDoorCollission, null, this)
+
 		this.physics.add.collider(this.player, worldLayer)
 		/**
 		 * Healthbar
@@ -145,6 +152,9 @@ class ShopScene extends Phaser.Scene {
 
     handleAboveMapCollission() {
         this.scene.start('houseScene')
+	}
+	handleShopDoorCollission() {
+        this.scene.start('Shop');
 	}
 
 

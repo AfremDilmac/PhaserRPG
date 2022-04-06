@@ -147,18 +147,18 @@ class HouseScene extends Phaser.Scene {
 		// /**
 		//  * This is if you want to see the collission layer (world)
 		//  */
-		const debugGraphics = this.add.graphics().setAlpha(0.2)
+		// const debugGraphics = this.add.graphics().setAlpha(0.2)
 		// worldLayer.renderDebug(debugGraphics, {
 		//     tileColor: null,
 		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
 		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
 		// })
 
-		worldLayer2.renderDebug(debugGraphics, {
-		    tileColor: null,
-		    collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		    faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		})
+		// worldLayer2.renderDebug(debugGraphics, {
+		//     tileColor: null,
+		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
+		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
+		// })
 
 		/**
 		 * Healthbar
@@ -210,7 +210,7 @@ class HouseScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 200, 200, 'player', 80).setScale(0.5)
+		this.player = new Player(this, 230, 135, 'player', 80).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)

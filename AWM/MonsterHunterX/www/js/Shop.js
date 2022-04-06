@@ -1,20 +1,20 @@
-class InnerHouseScene extends Phaser.Scene {
+class InnerShopScene extends Phaser.Scene {
 	constructor() {
-		super('innerHouseScene')
+		super('Shop')
 	}
 
+
 	preload() {
+		
 		this.cursors
-		// this.cameras.main.setBackgroundColor('0x9900e3')
 		// verchillende tiles loaden
-		// this.load.image('tiles', 'assets/Tilemap/dungeon.png')
-		this.load.image('house-tiles', 'assets/Tilemap/Tileset.png')
+		this.load.image('tiles', 'assets/Tilemap/Tileset.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-innerhouse', 'js/innerVillageMap.json')
+		this.load.tilemapTiledJSON('shop-map', 'js/Shop.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/characters.png', {
 			frameWidth: 16,
@@ -25,8 +25,22 @@ class InnerHouseScene extends Phaser.Scene {
 			frameWidth: 32,
 			frameHieght: 32
 		})
+		// coin loaden
+		this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
+			frameWidth: 16,
+			frameHieght: 16
+		})
+		// salad loaden
+		this.load.spritesheet('salad', 'assets/pickup/salad.png', {
+			frameWidth: 16,
+			frameHieght: 16
+		})
+		// vijanden loaden
+		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
+		// this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
+		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 
-	
+
 		this.player
 		this.keys
 		this.enemy
@@ -36,7 +50,9 @@ class InnerHouseScene extends Phaser.Scene {
 		this.keys
 		this.lastFiredTime = 0
 		this.emmiter
-
+		this.salad
+		this.coins
+		this.coinAmount = 0
 		/**
 		 * Virtual joystick
 		 */
@@ -52,18 +68,17 @@ class InnerHouseScene extends Phaser.Scene {
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
-			key: 'map-innerhouse'
+			key: 'shop-map'
 		})
 		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key 
-		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
+		const tileset = map.addTilesetImage('Tileset', 'tiles')
 		const belowLayer = map.createStaticLayer('below player', tileset, 0, 0)
-		const belowLayer2 = map.createStaticLayer('below player2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const worldLayer2 = map.createStaticLayer('world2', tileset, 0, 0)
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
-		const exitHouse = map.createStaticLayer('exit house', tileset, 0, 0)
+		const shopDoor = map.createStaticLayer('exit shop', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
@@ -71,54 +86,26 @@ class InnerHouseScene extends Phaser.Scene {
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
-		worldLayer2.setCollisionByProperty({
+        worldLayer2.setCollisionByProperty({
 			collides: true
 		})
-		exitHouse.setCollisionByProperty({
+		shopDoor.setCollisionByProperty({
 			collides: true
 		})
-		exitHouse.setDepth(0)
-
-		// worldLayer2.setCollisionByProperty({
-		//     collides: true
-		// })
 		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-		this.cameras.main.shake(100, 3)
-		this.cameras.main.flash();
-
-		// /**
-		//  * This is if you want to see the collission layer (world)
-		//  */
-		// const debugGraphics = this.add.graphics().setAlpha(0.2)
-		// worldLayer.renderDebug(debugGraphics, {
-		//     tileColor: null,
-		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		// })
-
-		// worldLayer2.renderDebug(debugGraphics, {
-		//     tileColor: null,
-		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		// })
 
 		/**
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 80, 100, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 210, 270, 'player', 100).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
-		this.physics.add.collider(this.player, worldLayer)
-		this.physics.add.collider(this.player, worldLayer2)
-		this.physics.add.collider(this.player, exitHouse, this.handleExitHouse, null, this)
-
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
-
 
 		/**
 		 * Projectiles
@@ -127,68 +114,56 @@ class InnerHouseScene extends Phaser.Scene {
 		this.keys = this.input.keyboard.addKeys({
 			space: 'SPACE'
 		})
+
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)
+
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
-		this.physics.add.collider(this.projectiles, worldLayer2, this.handleProjectileWorldCollision, null, this)
-		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
-		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.collider(this.player, shopDoor, this.handleShopDoorCollission, null, this)
 
-		/** 
-		 * Particles
+		this.physics.add.collider(this.player, worldLayer)
+		/**
+		 * Healthbar
 		 */
-		//Aanmaken van emitter dat we straks gaan gebruiken voor de handleProjectileEnemyCollision
-		this.emmiter = this.add.particles('particle').createEmitter({
-			x: 0,
-			y: 0,
-			quantity: 15,
-			speed: {
-				min: -100,
-				max: 100
-			},
-			angle: {
-				min: 0,
-				max: 360
-			},
-			scale: {
-				start: 0.7,
-				end: 0
-			},
-			lifespan: 300,
-			active: false
-
+		//healthbar aanmaken
+		this.healthbar = new HealthBar(this, 20, 20, 100)
+		
+		//////////////////////:
+		// coint text
+		this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
+			font: '12px',
+			fill: '#ffffff'
 		})
-	
+
 	} //end create
 
-	handleExitHouse() {
-        this.scene.start('houseScene')
-	}
 
+	////////////////////////////////
+	//collisions
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
 	handleProjectileWorldCollision(proj) {
 		this.projectiles.killAndHide(proj) // is hetzelfde als this.setActive(false) (KILL) + this.setVisible(false) (HIDE)
 	}
 
+	handleShopDoorCollission() {
+        this.scene.start('shopScene')
+	}
+
+
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
-		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
+		// als er op space gedrukto wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.keys.space.isDown || this.player.isShooting) {
 			if (time > this.lastFiredTime) {
 				this.lastFiredTime = time + 200
 				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+
 			}
 		}
+       
 		this.player.update()
-
-		// if (!this.enemy.isDead) {
-		//     this.enemy.update()
-		// }
-		// if (!this.enemy2.isDead) {
-		//     this.enemy2.update(this.player.body.position)
-		// }
 
 	} //end update
 
