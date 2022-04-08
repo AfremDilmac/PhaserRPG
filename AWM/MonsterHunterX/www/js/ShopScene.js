@@ -13,6 +13,8 @@ class ShopScene extends Phaser.Scene {
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
+		//minimap loaden
+		this.load.image('minimapshop', 'assets/minimap/ShopMap-minimap.png')
 		//map dat we in Tiled hebben gemaakt loaden
 		this.load.tilemapTiledJSON('map', 'js/shopMap2.json')
 		//characters loaden
@@ -123,6 +125,11 @@ class ShopScene extends Phaser.Scene {
 		this.keys = this.input.keyboard.addKeys({
 			space: 'SPACE'
 		})
+
+		/**
+ 		* minimap 
+ 		*/
+		 this.minimapInnerShop = this.add.image(340, 50, "minimapshop").setDepth(10000).setScale(0.2);
 
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)

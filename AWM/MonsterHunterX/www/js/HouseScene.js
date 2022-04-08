@@ -19,6 +19,8 @@ class HouseScene extends Phaser.Scene {
 		this.load.image("apple", "assets/items/item1/Item__64.png")
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
+		//minimap loaden
+		this.load.image('minimapvillage', 'assets/minimap/VillageMap-minimap.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
@@ -61,6 +63,7 @@ class HouseScene extends Phaser.Scene {
 		this.lastFiredTime = 0
 		this.emmiter
 		this.questStarted
+		this.minimapVillage
 		this.apple
 		this.exit
 		this.textDialog
@@ -205,6 +208,11 @@ class HouseScene extends Phaser.Scene {
 			}
 
 		})
+		/**
+ 		* minimap 
+ 		*/
+		this.minimapVillage = this.add.image(340, 50, "minimapvillage").setDepth(10000).setScale(0.2);
+
 
 		/**
 		 * Player

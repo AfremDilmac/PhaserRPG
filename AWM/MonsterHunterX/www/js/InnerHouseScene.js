@@ -11,6 +11,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.load.image('house-tiles', 'assets/Tilemap/Tileset.png')
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
+		//minimap loaden
+		this.load.image('minimap', 'assets/minimap/innerVillageMap-minimap.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
@@ -36,6 +38,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.keys
 		this.lastFiredTime = 0
 		this.emmiter
+		this.minimap
 
 		/**
 		 * Virtual joystick
@@ -105,6 +108,11 @@ class InnerHouseScene extends Phaser.Scene {
 		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
 		// })
 
+		/**
+		 * Minimap
+		 */
+		 this.minimap = this.add.image(340, 50, "minimap").setDepth(1).setScale(0.2);
+		
 		/**
 		 * Player
 		 */

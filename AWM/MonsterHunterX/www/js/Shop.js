@@ -18,6 +18,8 @@ class InnerShopScene extends Phaser.Scene {
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
+		//minimap loaden
+		this.load.image('minimapinnershop', 'assets/minimap/InnerShopMap-minimap.png')
 		//map dat we in Tiled hebben gemaakt loaden
 		this.load.tilemapTiledJSON('shop-map', 'js/Shop.json')
 		//characters loaden
@@ -116,6 +118,11 @@ class InnerShopScene extends Phaser.Scene {
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
+
+		/**
+ 		* minimap 
+ 		*/
+		 this.minimapShop = this.add.image(340, 50, "minimapinnershop").setDepth(10000).setScale(0.2);
 
 		/**
 		 * Projectiles
