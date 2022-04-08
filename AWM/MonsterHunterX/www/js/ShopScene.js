@@ -86,7 +86,6 @@ class ShopScene extends Phaser.Scene {
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
-		dungeonMap.setDepth(100)
         aboveMap.setDepth(-1)
 		// collision inschakelen voor onze wereld 
 		worldLayer.setCollisionByProperty({
@@ -96,9 +95,6 @@ class ShopScene extends Phaser.Scene {
 			collides: true
 		})
 		shopDoor.setCollisionByProperty({
-			collides: true
-		})
-		dungeonMap.setCollisionByProperty({
 			collides: true
 		})
 		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
@@ -136,7 +132,6 @@ class ShopScene extends Phaser.Scene {
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
         this.physics.add.collider(this.player, aboveMap, this.handleAboveMapCollission, null, this)
 		this.physics.add.collider(this.player, shopDoor, this.handleShopDoorCollission, null, this)
-		this.physics.add.collider(this.player, dungeonMap, this.handleDungeonDoorCollission, null, this)
 
 		this.physics.add.collider(this.player, worldLayer)
 		/**
@@ -164,13 +159,12 @@ class ShopScene extends Phaser.Scene {
 
     handleAboveMapCollission() {
         this.scene.start('houseScene')
+		this.player.setPosition(800, 200)
 	}
 	handleShopDoorCollission() {
         this.scene.start('Shop');
 	}
-	handleDungeonDoorCollission() {
-        this.scene.start('gameScene');
-	}
+
 
 
 	//time = tijd dat het programma gerund is in ms
