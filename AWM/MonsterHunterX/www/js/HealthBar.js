@@ -16,7 +16,6 @@ class HealthBar{
 		this.newGraphics.fillStyle(0x3587e2, 1)
 		this.newGraphics.fillRectShape(healthbarFill)
 		// string 'Health' plaatsen naast de healthbar
-		this.scene.add.text(x, y + 2, 'Health', {fontSize: '11px', fill: '#fff'})
 
 	}// end constructor
 

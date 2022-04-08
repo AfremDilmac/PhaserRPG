@@ -83,7 +83,6 @@ class ShopScene extends Phaser.Scene {
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
 		const shopDoor = map.createStaticLayer('shop door', tileset, 0, 0)
 		const aboveMap = map.createStaticLayer('above map', tileset, 0, 0)
-		const dungeonMap = map.createStaticLayer('dungeon map', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)

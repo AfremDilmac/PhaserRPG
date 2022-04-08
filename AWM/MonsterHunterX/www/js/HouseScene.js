@@ -103,9 +103,9 @@ class HouseScene extends Phaser.Scene {
 		const aboveLayer = map.createStaticLayer('above player', tileset, 0, 0)
 		const pickupLayer = map.createStaticLayer('pickup', tileset, 0, 0)
 		const enterHouseMap = map.createStaticLayer('house map', tileset, 0, 0)
-		const enterDungeonMap = map.createStaticLayer('dungeon map', tileset, 0, 0)
 		const enterAboveMap = map.createStaticLayer('above map', tileset, 0, 0)
 		const enterBelowMap = map.createStaticLayer('below map', tileset, 0, 0)
+		const dungeonRightMap = map.createStaticLayer('dungeon right map', tileset, 0, 0)
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		aboveLayer.setDepth(100)
@@ -125,15 +125,14 @@ class HouseScene extends Phaser.Scene {
 			collides: true
 		})
 
-		enterDungeonMap.setCollisionByProperty({
-			collides: true
-		})
-
 		enterAboveMap.setCollisionByProperty({
 			collides: true
 		})
 
 		enterBelowMap.setCollisionByProperty({
+			collides: true
+		})
+		dungeonRightMap.setCollisionByProperty({
 			collides: true
 		})
 
@@ -224,9 +223,9 @@ class HouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.collider(this.player, enterHouseMap, this.handleEnterHouseMapCollission, null, this)
 		this.physics.add.collider(this.player, this.salad, this.handlePlayerSaladCollision, null, this)
-		this.physics.add.collider(this.player, enterDungeonMap, this.handleEnterDungeonMapCollission, null, this)
 		this.physics.add.collider(this.player, enterAboveMap, this.handleAboveMapCollission, null, this)
 		this.physics.add.collider(this.player, enterBelowMap, this.handleEnterBelowMapCollission, null, this)
+		this.physics.add.collider(this.player, dungeonRightMap, this.handleDungeonRightMapCollission, null, this)
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
@@ -285,14 +284,14 @@ class HouseScene extends Phaser.Scene {
         console.log('start above map')
 	}
 
-	handleEnterDungeonMapCollission() {
-        this.scene.start('gameScene')
-	}
 
 	handleEnterBelowMapCollission() {
 		this.scene.start('shopScene')
 	}
-
+	
+	handleDungeonRightMapCollission(){
+		//this.scene.start()  ADD CORRECT SCENE..
+	}
 	handlePlayerSaladCollision(p, s) {
 		s.destroy()
 		if (p.health < 95) {
