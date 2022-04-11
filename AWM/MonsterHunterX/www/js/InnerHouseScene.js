@@ -62,6 +62,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
 		const floor = map.createStaticLayer('floor', tileset, 0, 0)
+		const floor2 = map.createStaticLayer('floor2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 
 
