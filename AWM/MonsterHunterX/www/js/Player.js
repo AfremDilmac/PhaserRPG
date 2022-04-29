@@ -72,7 +72,7 @@ class Player extends Entity {
             s: S,
             d: D
         })
-        console.log(scene)
+        
 
         //Joystick plugin
         this.joyStick = scene.plugins.get('rexvirtualjoystickplugin').add(scene, {

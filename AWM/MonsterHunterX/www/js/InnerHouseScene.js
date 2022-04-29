@@ -22,7 +22,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//map dat we in Tiled hebben gemaakt loaden
 		this.load.tilemapTiledJSON('map-innerhouse', 'js/UltimeMap.json')
 		//characters loaden
-		this.load.spritesheet('characters', 'assets/characters.png', {
+		this.load.spritesheet('characters', 'assets/monsters.png', {
 			frameWidth: 16,
 			frameHieght: 16
 		})
@@ -31,6 +31,7 @@ class InnerHouseScene extends Phaser.Scene {
 			frameWidth: 32,
 			frameHieght: 32
 		})
+		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 
 		/**
 		 * Text
@@ -80,6 +81,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const floor = map.createStaticLayer('floor', tileset, 0, 0)
 		const floor2 = map.createStaticLayer('floor2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
+		const monsterLayer = map.createStaticLayer('monster', tileset, 0, 0)
 
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
@@ -88,17 +90,7 @@ class InnerHouseScene extends Phaser.Scene {
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
-		// worldLayer2.setCollisionByProperty({
-		// 	collides: true
-		// })
-		// exitHouse.setCollisionByProperty({
-		// 	collides: true
-		// })
-		// exitHouse.setDepth(0)
 
-		// worldLayer2.setCollisionByProperty({
-		//     collides: true
-		// })
 		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
@@ -106,26 +98,12 @@ class InnerHouseScene extends Phaser.Scene {
 		this.cameras.main.shake(100, 3)
 		this.cameras.main.flash();
 
-		// /**
-		//  * This is if you want to see the collission layer (world)
-		//  */
-		// const debugGraphics = this.add.graphics().setAlpha(0.2)
-		// worldLayer.renderDebug(debugGraphics, {
-		//     tileColor: null,
-		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		// })
-
-		// worldLayer2.renderDebug(debugGraphics, {
-		//     tileColor: null,
-		//     collidingTileColor: new Phaser.Display.Color(0, 0, 255),
-		//     faceColor: new Phaser.Display.Color(0, 255, 0, 255)
-		// })
-
 		/**
 		 * Minimap
 		 */
 		//  this.minimap = this.add.image(340, 50, "minimap").setDepth(1).setScale(0.2);
+
+
 		
 		/**
 		 * Player
@@ -142,29 +120,16 @@ class InnerHouseScene extends Phaser.Scene {
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 		
-		/**
-		 * Enemy
-		 */
-		// this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
-		// this.physics.add.collider(this.enemy, this.worldLayer) // collision tussen enemy en map
-		// this.enemy.body.setCollideWorldBounds(true)
 
-		// //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
-		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
-		// this.enemy2 = new Enemy(this, 250, 242, 'monsters', 150, 'bat', 10).setTint(0x990005)
-		// this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
-		// // this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
-		// this.enemy2.body.setCollideWorldBounds(true)
-
-		/** 
+				/** 
 		 * Group of ennemys
 		 */
-		//Groep enemies aanmaken op verchillende plaatsen (zie berekening) a.d.h van de group functie
-		//Colider inschakelen
-		//enemies een blauwe kleur geven 
-		//elements (enemies) in de group steken 
-		// this.enemies = this.add.group()
-		// // this.enemies.add(this.enemy)
+		// Groep enemies aanmaken op verchillende plaatsen (zie berekening) a.d.h van de group functie
+		// Colider inschakelen
+		// enemies een blauwe kleur geven 
+		// elements (enemies) in de group steken 
+		this.enemies = this.add.group()
+		// this.enemies.add(this.enemy)
 		// this.enemies.add(this.enemy2)
 		// for (let i = 0; i < 10; i++) {
 		// 	const element = new Enemy(this, 180 + 2900 * i, 100 + 10 * i, 'monsters', 10, 'bat')
@@ -182,6 +147,39 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	this.enemies.add(element)
 		// }
 
+				
+		//healthbar aanmaken
+		this.healthbar = new HealthBar(this, this.player.x - 27, this.player.y - 19, 50)
+		
+		/**
+		 * Enemy
+		 */
+
+		 monsterLayer.forEachTile(tile => {
+			if (tile.properties.CP_monster !== undefined) {
+
+				const x = tile.getCenterX()
+				const y = tile.getCenterY()
+				const e = new EnemyFollow(this, x, y, 'monsters', 10, tile.properties.CP_monster, 10)
+				this.enemies.add(e)
+				e.body.setCollideWorldBounds(true)
+				e.setTint(0x09fc65)
+			}
+
+		})
+		// this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
+		// this.physics.add.collider(this.enemy, this.worldLayer) // collision tussen enemy en map
+		// this.enemy.body.setCollideWorldBounds(true)
+
+		// //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
+		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
+		// this.enemy2 = new Enemy(this, 250, 242, 'monsters', 150, 'bat', 10).setTint(0x990005)
+		// this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
+		// // this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
+		// this.enemy2.body.setCollideWorldBounds(true)
+
+
+
 
 		/**
 		 * Projectiles
@@ -192,13 +190,12 @@ class InnerHouseScene extends Phaser.Scene {
 		})
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)
+		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
+		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
-		// this.physics.add.collider(this.projectiles, worldLayer2, this.handleProjectileWorldCollision, null, this)
-		// this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
-		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
-		// this.physics.add.collider(this.enemies, worldLayer)
+		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.player, worldLayer)
-		// this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 
 		/** 
 		 * Particles
@@ -260,9 +257,53 @@ class InnerHouseScene extends Phaser.Scene {
 		this.projectiles.killAndHide(proj) // is hetzelfde als this.setActive(false) (KILL) + this.setVisible(false) (HIDE)
 	}
 
+	handleProjectileEnemyCollision(enemy, projectile) {
+		if (projectile.active) {
+			enemy.setTint(0xff0000)
+			this.time.addEvent({
+				delay: 100,
+				callback: () => {
+					enemy.destroy()
+					projectile.recycle()
+				},
+				callbackScope: this,
+				loop: false
+			})
+			this.emmiter.active = true
+			this.emmiter.setPosition(enemy.x, enemy.y)
+			this.emmiter.explode()
+		}
+	}
+
+	handlePlayerEnemyCollision(p, e) {
+		p.health -= e.damage
+		this.healthbar.updateHealth(p.health)
+		if (p.health <= 0) {
+			this.cameras.main.shake(100, 0.05)
+			this.cameras.main.fade(250, 0, 0, 0)
+			this.cameras.main.once('camerafadeoutcomplete', () => {	
+				this.scene.restart()
+			})
+		}
+		this.cameras.main.shake(40, 0.02)
+		p.setTint(0xff0000) //red
+		this.time.addEvent({
+			delay: 350,
+			callback: () => {
+				p.clearTint() // get rid of red tint
+			},
+			callbackScope: this,
+			loop: false
+		})
+		e.explode()
+	}
+
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
+
+		this.healthbar.x = this.player.x - 45
+		this.healthbar.y = this.player.y - 19		
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.keys.space.isDown || this.player.isShooting) {
@@ -292,11 +333,11 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 
 		this.player.update()
-		// this.enemies.children.iterate((child) => {
-		// 	if (!child.isDead) {
-		// 		child.update()
-		// 	}
-		// })
+		this.enemies.children.iterate((child) => {
+			if (!child.isDead) {
+				child.update()
+			}
+		})
 		// // //All enemies are dead
 		// if (this.enemies.children.entries.length === 0) {
 		// 	//Enemies are dead

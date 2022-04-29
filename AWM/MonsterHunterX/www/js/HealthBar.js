@@ -8,8 +8,8 @@ class HealthBar{
 		// twee rectangles aanmaken voor healthbar 
 		this.graphics = this.scene.add.graphics()
 		this.newGraphics = this.scene.add.graphics()
-		const healthbarBackground = new Phaser.Geom.Rectangle(x + 32, y, 104, 12)
-		const healthbarFill = new Phaser.Geom.Rectangle(x + 34, y + 2, this.currentHealth, 8)
+		const healthbarBackground = new Phaser.Geom.Rectangle(x, y, 52, 7)
+		const healthbarFill = new Phaser.Geom.Rectangle(x + 1, y + 1, this.currentHealth, 5)
 		//kleur geven 
 		this.graphics.fillStyle(0xffffff, 0.5)
 		this.graphics.fillRectShape(healthbarBackground)
@@ -27,7 +27,7 @@ class HealthBar{
 		this.newGraphics.clear()
 		this.newGraphics.fillStyle(0xff0025, 1)
 
-		const healthbarFill = new Phaser.Geom.Rectangle(this.x + 34, this.y +2, this.currentHealth, 8)
-			this.newGraphics.fillRectShape(healthbarFill)
+		const healthbarFill = new Phaser.Geom.Rectangle(this.x, this.y , this.currentHealth, 8)
+		this.newGraphics.fillRectShape(healthbarFill)
 	}
 }
