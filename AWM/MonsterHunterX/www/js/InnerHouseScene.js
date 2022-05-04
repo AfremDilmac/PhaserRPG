@@ -302,8 +302,7 @@ class InnerHouseScene extends Phaser.Scene {
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
 
-		this.healthbar.x = this.player.x - 45
-		this.healthbar.y = this.player.y - 19		
+		
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.keys.space.isDown || this.player.isShooting) {
@@ -333,6 +332,14 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 
 		this.player.update()
+		
+		/**
+		 * Health update
+		 */
+		this.healthbar.x = this.player.x - 45
+		this.healthbar.y = this.player.y - 19	
+		this.healthbar.updateHealth()
+
 		this.enemies.children.iterate((child) => {
 			if (!child.isDead) {
 				child.update()

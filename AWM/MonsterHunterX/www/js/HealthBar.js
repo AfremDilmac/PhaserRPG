@@ -25,9 +25,17 @@ class HealthBar{
 		this.currentHealth = health
 
 		this.newGraphics.clear()
+		
+		this.graphics.clear()
+		
 		this.newGraphics.fillStyle(0xff0025, 1)
-
+		// const healthbarFill = new Phaser.Geom.Rectangle(this.x, this.y , this.currentHealth, 8)
+		const healthbarBackground = new Phaser.Geom.Rectangle(this.x, this.y, 52, 7)
 		const healthbarFill = new Phaser.Geom.Rectangle(this.x, this.y , this.currentHealth, 8)
+
+		this.graphics.fillStyle(0xffffff, 0.5)
+		this.graphics.fillRectShape(healthbarBackground)
 		this.newGraphics.fillRectShape(healthbarFill)
 	}
+	
 }
