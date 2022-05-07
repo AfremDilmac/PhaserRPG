@@ -240,8 +240,6 @@ class InnerHouseScene extends Phaser.Scene {
 				}
 			}
 		})
-		
-		console.log(this.player.y)
 
 		this.butcher.setInteractive()
 		this.butcher.flipX = true

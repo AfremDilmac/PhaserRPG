@@ -8,7 +8,8 @@
 <body>
 
 	<div id="login-box">
-		<div class="left">
+		<form class="left">
+
 			<h1 id='status'>Sign up</h1>
 			<input type="text" id="username" name="username" placeholder="Username" />
 			<input type="text" id="email" name="email" placeholder="E-mail" />
@@ -17,7 +18,7 @@
 
 			<input type="submit" id='signUp' name="signup_submit" value="Sign up" />
 
-		</div>
+		</form>
 	</div>
 </body>
 
@@ -30,6 +31,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
   import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"; 
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -48,6 +50,25 @@
   const app = initializeApp(firebaseConfig);
   const database = getDatabase(app);
   const auth = getAuth();
+
+  const db = getFirestore()
+  const colRef = collection(db, 'users')
+
+  
+
+
+  
+  getDocs(colRef)
+  	.then((snapshot) => {
+		 let users = []
+		 snapshot.docs.forEach((doc) => {
+			 users.push({...doc.data(), id: doc.id})
+		 })
+		 console.log(users);
+	  })
+	  .catch(err => {
+		  console.log(err.message);
+	  })
 
 signUp.addEventListener('click',(e) => {
 
@@ -79,6 +100,8 @@ signUp.addEventListener('click',(e) => {
     });
 
 });
+
+
 
 //  login.addEventListener('click',(e)=>{
 //    var email = document.getElementById('email').value;
@@ -126,5 +149,7 @@ signUp.addEventListener('click',(e) => {
 
 
 </script>
+
+<script type="module" src="js/firestore.js"></script>
 
 </html>
