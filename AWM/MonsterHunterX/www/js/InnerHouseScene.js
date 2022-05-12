@@ -31,16 +31,21 @@ class InnerHouseScene extends Phaser.Scene {
 			frameWidth: 32,
 			frameHieght: 32
 		})
+		// coin loaden
+		this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
+			frameWidth: 16,
+			frameHieght: 16
+		})
 		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 
 		/**
 		 * Text
 		 */
-		 this.load.image("exit", "assets/menu/exit.png")
-		 this.load.image("next", "assets/menu/next.png")
-		 this.load.image("hasbulla-welcome", "assets/text/intro.png")
-		 this.load.image("hasbulla-wonder-forest", "assets/text/wonder-forest.png")
-	
+		this.load.image("exit", "assets/menu/exit.png")
+		this.load.image("next", "assets/menu/next.png")
+		this.load.image("hasbulla-welcome", "assets/text/intro.png")
+		this.load.image("hasbulla-wonder-forest", "assets/text/wonder-forest.png")
+
 		this.player
 		this.keys
 		this.enemy
@@ -56,6 +61,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.exit
 		this.next
 		this.butcher
+		this.coins
+		this.coinAmount = 0
 
 		/**
 		 * Virtual joystick
@@ -82,6 +89,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const floor2 = map.createStaticLayer('floor2', tileset, 0, 0)
 		const worldLayer = map.createStaticLayer('world', tileset, 0, 0)
 		const monsterLayer = map.createStaticLayer('monster', tileset, 0, 0)
+		const pickupLayer = map.createStaticLayer('pickup', tileset, 0, 0)
 
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
@@ -103,8 +111,39 @@ class InnerHouseScene extends Phaser.Scene {
 		 */
 		//  this.minimap = this.add.image(340, 50, "minimap").setDepth(1).setScale(0.2);
 
+		////////////////////////////////////:
+		//collectable animaties 
+		this.anims.create({
+			key: 'coinAnim',
+			frames: this.anims.generateFrameNumbers('coin', {
+				start: 0,
+				end: 7,
 
-		
+			}),
+			frameRate: 12,
+			repeat: -1
+		})
+
+		this.coins = this.physics.add.group()
+
+		pickupLayer.forEachTile(tile => {
+			if (tile.index != -1) {
+				// console.log(tile);
+
+				let pickup
+				const x = tile.getCenterX()
+				const y = tile.getCenterY()
+
+				
+				pickup = this.coins.create(x, y, 'coin').setScale(0.7)
+				pickup.anims.play('coinAnim', true)
+				pickup.body.width = 16
+				pickup.body.height = 16
+			}
+
+		})
+
+
 		/**
 		 * Player
 		 */
@@ -119,9 +158,9 @@ class InnerHouseScene extends Phaser.Scene {
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
-		
 
-				/** 
+
+		/** 
 		 * Group of ennemys
 		 */
 		// Groep enemies aanmaken op verchillende plaatsen (zie berekening) a.d.h van de group functie
@@ -147,15 +186,15 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	this.enemies.add(element)
 		// }
 
-				
+
 		//healthbar aanmaken
 		this.healthbar = new HealthBar(this, this.player.x - 27, this.player.y - 19, 50)
-		
+
 		/**
 		 * Enemy
 		 */
 
-		 monsterLayer.forEachTile(tile => {
+		monsterLayer.forEachTile(tile => {
 			if (tile.properties.CP_monster !== undefined) {
 
 				const x = tile.getCenterX()
@@ -196,6 +235,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
+
 
 		/** 
 		 * Particles
@@ -228,7 +269,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.butcher = this.add.image(110, 3080, "butcher").setDepth(1);
 		this.exclamationMark = this.add.image(110, 3070, "exclemote").setDepth(1);
 		this.butcher.on('pointerdown', () => {
-			if (this.player.y >= 3060 && this.player.y <= 3107 ) {
+			if (this.player.y >= 3060 && this.player.y <= 3107) {
 				if (this.questProcess == 0) {
 					this.txtBox = this.add.image(80, 3055, "hasbulla-welcome").setDepth(1000).setScale(0.15);
 					// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
@@ -243,12 +284,17 @@ class InnerHouseScene extends Phaser.Scene {
 
 		this.butcher.setInteractive()
 		this.butcher.flipX = true
-	
+
 	} //end create
 
 	// handleExitHouse() {
-    //     this.scene.start('houseScene')
+	//     this.scene.start('houseScene')
 	// }
+
+	handlePlayerCoinCollision(p, c) {
+		c.destroy()
+		this.coinAmount += 1
+	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
 	handleProjectileWorldCollision(proj) {
@@ -279,7 +325,7 @@ class InnerHouseScene extends Phaser.Scene {
 		if (p.health <= 0) {
 			this.cameras.main.shake(100, 0.05)
 			this.cameras.main.fade(250, 0, 0, 0)
-			this.cameras.main.once('camerafadeoutcomplete', () => {	
+			this.cameras.main.once('camerafadeoutcomplete', () => {
 				this.scene.restart()
 			})
 		}
@@ -300,7 +346,7 @@ class InnerHouseScene extends Phaser.Scene {
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
 
-		
+
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.keys.space.isDown || this.player.isShooting) {
@@ -330,12 +376,12 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 
 		this.player.update()
-		
+
 		/**
 		 * Health update
 		 */
 		this.healthbar.x = this.player.x - 45
-		this.healthbar.y = this.player.y - 19	
+		this.healthbar.y = this.player.y - 19
 		this.healthbar.updateHealth()
 
 		this.enemies.children.iterate((child) => {
