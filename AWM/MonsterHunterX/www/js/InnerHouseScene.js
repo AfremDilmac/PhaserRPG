@@ -148,7 +148,7 @@ class InnerHouseScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 90, 3159, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 90, 3159, 'player', 50).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		this.physics.add.collider(this.player, worldLayer)
@@ -199,7 +199,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 				const x = tile.getCenterX()
 				const y = tile.getCenterY()
-				const e = new EnemyFollow(this, x, y, 'monsters', 10, tile.properties.CP_monster, 10)
+				const e = new EnemyFollow(this, x, y, 'monsters', 5, tile.properties.CP_monster, 50)
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
@@ -380,9 +380,9 @@ class InnerHouseScene extends Phaser.Scene {
 		/**
 		 * Health update
 		 */
-		this.healthbar.x = this.player.x - 45
+		this.healthbar.x = this.player.x - 25
 		this.healthbar.y = this.player.y - 19
-		this.healthbar.updateHealth()
+		this.healthbar.updateHealth(this.player.health)
 
 		this.enemies.children.iterate((child) => {
 			if (!child.isDead) {
