@@ -7,8 +7,6 @@ class MenuScene extends Phaser.Scene {
 		this.load.image("background", "assets/menu/back.png")
 		this.load.image('options', 'assets/menu/options_button.png')
 		this.load.image('play', 'assets/menu/play_button.png')
-		this.load.image('diamond', 'assets/menu/diamond.png')
-		this.load.image('option', 'assets/menu/option.png')
 		this.load.image('logo', 'assets/menu/mainlogo.png')
 		this.load.image('musicOn', 'assets/menu/musicOn.png') // later voor settings screen
 		this.load.image('musicOff', 'assets/menu/musicOff.png') // later voor settings screen
@@ -66,30 +64,6 @@ class MenuScene extends Phaser.Scene {
 
 		playButton.setInteractive();
 		optionButton.setInteractive();
-		// hover sprite
-		let hoverSprite = this.add.sprite(150, 150, 'diamond')
-		let hoversprite2 = this.add.sprite(150, 200, 'option') 
-		hoverSprite.setScale(0.3)
-		hoverSprite.setVisible(false)
-		hoversprite2.setScale(0.05)
-		hoversprite2.setVisible(false)
-
-		// hover effects
-		playButton.on('pointerover', ()=>{
-			hoverSprite.setVisible(true)
-		})
-
-		playButton.on('pointerout', ()=>{
-			hoverSprite.setVisible(false)
-		})
-
-		optionButton.on('pointerover', ()=>{
-			hoversprite2.setVisible(true)
-		})
-
-		optionButton.on('pointerout', ()=>{
-			hoversprite2.setVisible(false)
-		})
 
 		playButton.on('pointerdown', function () {
 
