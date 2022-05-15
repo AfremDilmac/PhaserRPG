@@ -55,7 +55,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.keys
 		this.enemy
 		this.enemies
-		this.enemies
+		this.enemies2
 		this.healthbar
 		this.projectiles
 		this.keys
@@ -177,7 +177,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// enemies een blauwe kleur geven 
 		// elements (enemies) in de group steken 
 		this.enemies = this.add.group()
-		this.enemies = this.add.group()
+		this.enemies2 = this.add.group()
 		// this.enemies.add(this.enemy)
 		// this.enemies.add(this.enemy2)
 
@@ -244,12 +244,12 @@ class InnerHouseScene extends Phaser.Scene {
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)
 		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
-		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
+		this.physics.add.overlap(this.player, this.enemies2, this.handlePlayerEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
-		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.overlap(this.projectiles, this.enemies2, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
-		this.physics.add.collider(this.enemies, worldLayer)
+		this.physics.add.collider(this.enemies2, worldLayer)
 		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
@@ -414,21 +414,21 @@ class InnerHouseScene extends Phaser.Scene {
 							const element = new Enemy(this, 128, 1810, 'monsters', 5, 'bat')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
-							this.enemies.add(element)
+							this.enemies2.add(element)
 						}
 
 						for (let i = 0; i < 5; i++) {
 							const element = new Enemy(this, 395, 1829, 'monsters', 5, 'spider')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
-							this.enemies.add(element)
+							this.enemies2.add(element)
 						}
 
 						for (let i = 0; i < 5; i++) {
 							const element = new Enemy(this, 798, 2076, 'monsters', 5, 'bat')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
-							this.enemies.add(element)
+							this.enemies2.add(element)
 						}
 						this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
 						this.wall.setImmovable()
@@ -453,45 +453,23 @@ class InnerHouseScene extends Phaser.Scene {
 			})
 			
 				//Enemies are dead
-				
-					if (this.questProcess >= 1) {
-						if (this.enemies.children.entries.length === 0) {
-							console.log("lvl1 done")
-							this.questProcess = 2;
-							this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
-							this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
-							this.butcher.on('pointerdown', () => {
-								if (this.player.y <= 2250) {
-										this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
-										// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-										this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
-										this.next.setInteractive()
-										this.questProcess = 3
-								}
-							})
-						}
-					
-				
-					if (this.questProcess == 3) {
-						if (this.enemies.children.entries.length === 0) {
-						console.log("lvl 2 done")
+				if (this.enemies.children.entries.length === 0) {
 					this.questProcess = 2;
 					this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
 					this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
+					this.butcher.setInteractive()
+					this.butcher.flipX = true
 					this.butcher.on('pointerdown', () => {
 						if (this.player.y <= 2250) {
 								this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
 								// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
 								this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
 								this.next.setInteractive()
+								this.questProcess = 3
 						}
 					})
-					this.butcher.setInteractive()
-					this.butcher.flipX = true
 				}
-					}
-				}
-
+				
 			}
 
 
@@ -510,12 +488,11 @@ class InnerHouseScene extends Phaser.Scene {
 			}
 		})
 
-		this.enemies.children.iterate((child) => {
+		this.enemies2.children.iterate((child) => {
 			if (!child.isDead) {
 				child.update()
 			}
 		})
-
 
 		// // //All enemies are dead
 

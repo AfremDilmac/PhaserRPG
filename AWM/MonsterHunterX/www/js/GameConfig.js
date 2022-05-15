@@ -2,7 +2,7 @@
 window.addEventListener('load', () => {
     var config = {
         type: Phaser.WEBGL,
-        width: 800,
+        width: 960,
         height: 480,
         backgroundColor: 0x000000,
         physics: {
