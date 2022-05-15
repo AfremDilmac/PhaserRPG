@@ -87,6 +87,7 @@ class Player extends Entity {
         })
 
         //Rectangle shooting function
+
           scene.input.on('pointerdown', function(pointer){
            this.isShooting = true;
         }.bind(this));
