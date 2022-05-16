@@ -139,7 +139,7 @@ class InnerShopScene extends Phaser.Scene {
 		 * Healthbar
 		 */
 		//healthbar aanmaken
-		this.healthbar = new HealthBar(this, 20, 20, 100)
+		this.healthbar = new HealthBar(this, this.player.x - 27, this.player.y - 19, 50)
 		
 		//////////////////////:
 		// coint text
@@ -183,30 +183,11 @@ class InnerShopScene extends Phaser.Scene {
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 	update(time, delta) {
+		this.healthbar.x = this.player.x - 25
+		this.healthbar.y = this.player.y - 19
+		this.healthbar.updateHealth(this.player.health)
 		// als er op space gedrukto wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
-		if (this.keys.space.isDown || this.player.isShooting) {
-			if (time > this.lastFiredTime) {
-				this.lastFiredTime = time + 200
-				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
-
-			}
-		}
-		if (this.npcStart) {
-			this.next.on('pointerdown', () => {
-				this.txtBox.destroy();
-				this.txtBox = this.add.image(129, 38, "merchant-shop").setDepth(1000).setScale(0.15);
-			
-				this.shopProcess = 1
-				this.next.destroy();
-			})
-			this.exit.on('pointerdown', () => {
-				this.txtBox.destroy()
-				this.exit.destroy()
-				this.next.destroy()
-			})
-		}
-       
 		this.player.update()
 
 	} //end update

@@ -372,14 +372,14 @@ class InnerHouseScene extends Phaser.Scene {
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.input.x < 500) {
-		if (this.keys.space.isDown || this.player.isShooting) {
-			if (time > this.lastFiredTime) {
-				console.log('y:' + this.player.y + 'x: ' + this.player.x)
-				this.lastFiredTime = time + 200
-				this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+			if (this.keys.space.isDown || this.player.isShooting) {
+				if (time > this.lastFiredTime) {
+					console.log('y:' + this.player.y + 'x: ' + this.player.x)
+					this.lastFiredTime = time + 200
+					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+				}
 			}
 		}
-	}
 
 		//Text npc
 		//Welcome game -> start wonder forest
@@ -388,10 +388,10 @@ class InnerHouseScene extends Phaser.Scene {
 				this.next.on('pointerdown', () => {
 					this.txtBox.destroy();
 					this.txtBox = this.add.image(115, 2180, "shop").setDepth(1000).setScale(0.15);
-					this.yes.setInteractive()
-					this.no.setInteractive()
 					this.yes = this.add.image(80, 2190, "yes").setDepth(2000).setScale(0.15);
 					this.no = this.add.image(150, 2190, "no").setDepth(2000).setScale(0.14);
+					this.yes.setInteractive()
+					this.no.setInteractive()
 					this.next.destroy();
 					this.exit.destroy();
 					this.wall.destroy()
@@ -399,7 +399,8 @@ class InnerHouseScene extends Phaser.Scene {
 						this.scene.start('Shop')
 					})
 					this.no.on('pointerdown', () => {
-					
+						this.yes.destroy()
+						this.no.destroy()
 						this.txtBox.destroy()
 						this.exit.destroy()
 						this.next.destroy()
@@ -431,6 +432,29 @@ class InnerHouseScene extends Phaser.Scene {
 						this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
 						this.wall.setImmovable()
 						this.physics.add.collider(this.player, this.wall)
+						
+					})
+				})
+			}
+			if (this.questProcess == 4) {
+				this.next.on('pointerdown', () => {
+					this.txtBox.destroy();
+					this.txtBox = this.add.image(104, 1480, "shop").setDepth(1000).setScale(0.15);
+					this.yes = this.add.image(80, 1490, "yes").setDepth(2000).setScale(0.15);
+					this.no = this.add.image(149, 1490, "no").setDepth(2000).setScale(0.14);
+					this.yes.setInteractive()
+					this.no.setInteractive()
+					this.next.destroy();
+					this.exit.destroy();
+					this.wall.destroy()
+					this.yes.on('pointerdown', () => {
+						this.scene.start('Shop')
+					})
+					this.no.on('pointerdown', () => {
+						this.txtBox.destroy()
+						this.exit.destroy()
+						this.next.destroy()
+						this.exclamationMark.destroy()
 						this.yes.destroy()
 						this.no.destroy()
 					})
@@ -450,11 +474,16 @@ class InnerHouseScene extends Phaser.Scene {
 				this.next.destroy()
 				this.butcher.destroy()
 				this.exclamationMark.destroy()
+				if (this.yes != undefined || this.no != undefined) {
+					this.yes.destroy()
+					this.no.destroy()
+				}
+
 			})
-			
-				//Enemies are dead
-				if (this.enemies.children.entries.length === 0) {
-					if(this.questProcess == 1){
+
+			//Enemies are dead
+			if (this.enemies.children.entries.length === 0) {
+				if (this.questProcess == 1) {
 					this.questProcess = 2;
 					this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
 					this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
@@ -462,16 +491,34 @@ class InnerHouseScene extends Phaser.Scene {
 					this.butcher.flipX = true
 					this.butcher.on('pointerdown', () => {
 						if (this.player.y <= 2250) {
-								this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
-								// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-								this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
-								this.next.setInteractive()
-								this.questProcess = 3
+							this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
+							// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+							this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
+							this.next.setInteractive()
+							this.questProcess = 3
 						}
 					})
 				}
 			}
+
+			if (this.questProcess == 3 && this.enemies2.children.entries.length === 0) {
+				console.log("lvl 2 cleared")
+				this.butcher = this.add.image(134, 1508, "butcher").setDepth(1);
+				this.exclamationMark = this.add.image(134, 1490, "questemote").setDepth(1);
+				this.butcher.setInteractive()
+				this.butcher.flipX = true
+				this.butcher.on('pointerdown', () => {
+					if (this.player.y <= 2250) {
+						this.txtBox = this.add.image(104, 1480, "hasbulla-good-job").setDepth(1000).setScale(0.15);
+						// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+						this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
+						this.next.setInteractive()
+						this.questProcess = 4
+					}
+				})
 			}
+
+		}
 
 
 		this.player.update()
@@ -493,6 +540,7 @@ class InnerHouseScene extends Phaser.Scene {
 			if (!child.isDead) {
 				child.update()
 			}
+
 		})
 
 		// // //All enemies are dead

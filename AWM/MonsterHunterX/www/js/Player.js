@@ -100,7 +100,7 @@ class Player extends Entity {
 
 	update(){
 		const {keys} = this //output: this.keys
-        const speed = 150
+        const speed = 500
 		//positie in een var steken, gebruikt voor idle animation (zie lijn 189 t.e.m 200 )
         const previousVelocity = this.body.velocity.clone()
 		// player stopt als we op geen enekel arrow drukken
@@ -127,7 +127,7 @@ class Player extends Entity {
         //animations
 		//de player kijkt in een verschillende richting op basis van de controls en anims (zie lijn 88 t.e.m 117)
 		//rechter pijl = player kijkt naar oven etc..
-        if (keys.up.isDown || keys.z.isDow || this.joyStick.up) {
+        if (keys.up.isDown || keys.z.isDown || this.joyStick.up) {
             this.anims.play('player-up', true)
         } else if (keys.down.isDown || keys.s.isDown || this.joyStick.down) {
             this.anims.play('player-down', true)
