@@ -30,24 +30,24 @@ const firebaseConfig = {
 	  })
 
 
-// nieuwe doc toevoegen in firestore bij signup 
-const sigupForm = document.querySelector('.left')
-sigupForm.addEventListener('submit', (e) => {
-	e.preventDefault();
+// // nieuwe doc toevoegen in firestore bij signup 
+// const sigupForm = document.querySelector('.left')
+// sigupForm.addEventListener('submit', (e) => {
+// 	e.preventDefault();
 
-	addDoc(colRef, {
-		mail: sigupForm.email.value ,
-		name: sigupForm.username.value
-	})
-	.then( () =>{
-		sigupForm.reset()
-	})
-})
+// 	addDoc(colRef, {
+// 		mail: sigupForm.email.value ,
+// 		name: sigupForm.username.value
+// 	})
+// 	.then( () =>{
+// 		sigupForm.reset()
+// 	})
+// })
 
 
 /////// FUNCTIE OM EEN DOC TE VERWIJDEREN /////////
 
-// const docRef = doc(db, 'users', deleteForm.id.value) // deleteForm = HTML form dat gemaakt moet worden / id = name propertie van input selector 
+// const docRef = doc(db, 'users', "hYjfLWZ9zzTO8G9EchHYNDTlONA3") // deleteForm = HTML form dat gemaakt moet worden / id = name propertie van input selector 
 // // delete doc met gegeven id in form
 // deleteDoc(docRef)
 //   .then(() => {
@@ -56,3 +56,18 @@ sigupForm.addEventListener('submit', (e) => {
 
 
 
+
+  
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   
+//   

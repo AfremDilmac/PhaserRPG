@@ -31,7 +31,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
   import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"; 
+  import { getFirestore, collection, getDocs, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"; 
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -55,50 +55,94 @@
   const colRef = collection(db, 'users')
 
   
-
-
-  
   getDocs(colRef)
   	.then((snapshot) => {
 		 let users = []
 		 snapshot.docs.forEach((doc) => {
 			 users.push({...doc.data(), id: doc.id})
 		 })
-		 console.log(users);
+		 //console.log(users);
 	  })
 	  .catch(err => {
 		  console.log(err.message);
 	  })
 
-signUp.addEventListener('click',(e) => {
 
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
-  var username = document.getElementById('username').value;
-  var lblError = document.getElementById('errormsg-signup')
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-     // Signed in 
-      const user = userCredential.user;
+// const signUp = document.getElementById('signUp')
 
-      set(ref(database, 'users/' + user.uid),{
-          username: username,
-          email: email
-      })
+signUp.addEventListener('click',() => {
 
-      lblError.innerHTML='user created!'
-	  setTimeout(2000)
-      location.href='index.html'
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+//   var email = document.getElementById('email').value;
+//   var password = document.getElementById('password').value;
+//   var username = document.getElementById('username').value;
+//   var lblError = document.getElementById('errormsg-signup')
+  
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then((userCredential) => {
+//       // Signed in 
+//       const user = userCredential.user;
 
-      lblError.innerHTML= errorCode
-    // ..
-    });
+//       set(ref(database, 'users/' + user.uid),{
+//           username: username,
+//           email: email
+//       })
+// 	  console.log(user.uid); // ID VAN AUTH
+// 	  localStorage.setItem("ID", user.uid)
 
+//       lblError.innerHTML='user created!'
+//       //location.href='index.html'
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+
+//       lblError.innerHTML= errorCode
+//     // ..
+//     });
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+	// nieuwe doc toevoegen in firestore bij signup 
+	const sigupForm = document.querySelector('.left')
+
+	sigupForm.addEventListener('submit', (e) => {
+		e.preventDefault();
+
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var username = document.getElementById('username').value;
+		var lblError = document.getElementById('errormsg-signup')
+  
+		createUserWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+			// Signed in 
+			const user = userCredential.user;
+
+			set(ref(database, 'users/' + user.uid),{
+				username: username,
+				email: email
+			})
+			console.log(user.uid); // ID VAN AUTH
+			localStorage.setItem("ID", user.uid)
+			let ident = localStorage.getItem('ID')
+
+			setDoc(doc(db, "users", ident), {
+				mail: email,
+				name: username,
+			});
+			
+			})
+			lblError.innerHTML='user created!'
+			//location.href='index.html'
+			})
+			.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+
+			lblError.innerHTML= errorCode
+			// ..
+			});
 });
 
 
