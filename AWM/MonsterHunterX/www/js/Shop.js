@@ -14,6 +14,7 @@ class InnerShopScene extends Phaser.Scene {
 		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
 		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
 		this.load.image("speakemote", "assets/npc/emotes/speach.png")
+		this.load.image("down", "assets/menu/down.png")
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//particle loaden
@@ -45,8 +46,6 @@ class InnerShopScene extends Phaser.Scene {
 		// we gebruiken atlas omdat we zowel de .png als de .json file loaden
 		// this.load.atlas('skeleton', 'assets/skeleton/skeleton.png', 'assets/skeleton/skeleton.json')
 		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
-		this.load.image("merchant-welcome", "assets/text/merchant-welcome.png")
-		this.load.image("merchant-shop", "assets/text/merchant-shop.png")
 		this.load.image("exit", "assets/menu/exit.png")
 		this.load.image("next", "assets/menu/next.png")
 
@@ -112,11 +111,14 @@ class InnerShopScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 210, 270, 'player', 100).setScale(0.5)
+		this.player = new Player(this, 210, 270, 'player', 50).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
+
+		
+
 
 		/**
 		 * Projectiles
@@ -143,13 +145,16 @@ class InnerShopScene extends Phaser.Scene {
 		
 		//////////////////////:
 		// coint text
-		this.coinText = this.add.text(20, 40, 'Gold: ' + this.coinAmount, {
-			font: '12px',
-			fill: '#ffffff'
-		})
 
 		let merchant = this.add.image(160, 62, "merchant").setDepth(1);
-	
+		
+		let foodArrow = this.add.image(110, 168, "down").setDepth(1).setScale(0.1);
+		foodArrow.setInteractive()
+		foodArrow.on('pointerdown', () =>{
+			if (this.player.x >= 101 && this.player.y > 160 && this.player.x <= 138 && this.player.y <= 210 ) {
+				console.log('Buy food')
+			}
+		})
 
 		merchant.setInteractive()
 		merchant.flipX = true
@@ -189,6 +194,8 @@ class InnerShopScene extends Phaser.Scene {
 		// als er op space gedrukto wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		this.player.update()
+		// console.log('X: ' + this.player.x + 'Y: ' + this.player.y)
+		
 
 	} //end update
 
