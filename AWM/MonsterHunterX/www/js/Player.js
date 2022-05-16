@@ -76,7 +76,7 @@ class Player extends Entity {
 
         //Joystick plugin
         this.joyStick = scene.plugins.get('rexvirtualjoystickplugin').add(scene, {
-            x: 560,
+            x: 660,
             y: 300,
             radius: 25,
             base: scene.add.circle(0, 0, 30, 0x888888, 0.5),
@@ -87,6 +87,7 @@ class Player extends Entity {
         })
 
         //Rectangle shooting function
+
           scene.input.on('pointerdown', function(pointer){
            this.isShooting = true;
         }.bind(this));
