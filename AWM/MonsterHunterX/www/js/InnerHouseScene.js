@@ -388,10 +388,10 @@ class InnerHouseScene extends Phaser.Scene {
 				this.next.on('pointerdown', () => {
 					this.txtBox.destroy();
 					this.txtBox = this.add.image(115, 2180, "shop").setDepth(1000).setScale(0.15);
-					this.yes = this.add.image(80, 2190, "yes").setDepth(2000).setScale(0.15);
-					this.no = this.add.image(150, 2190, "no").setDepth(2000).setScale(0.14);
 					this.yes.setInteractive()
 					this.no.setInteractive()
+					this.yes = this.add.image(80, 2190, "yes").setDepth(2000).setScale(0.15);
+					this.no = this.add.image(150, 2190, "no").setDepth(2000).setScale(0.14);
 					this.next.destroy();
 					this.exit.destroy();
 					this.wall.destroy()
@@ -399,12 +399,10 @@ class InnerHouseScene extends Phaser.Scene {
 						this.scene.start('Shop')
 					})
 					this.no.on('pointerdown', () => {
+					
 						this.txtBox.destroy()
 						this.exit.destroy()
-						this.yes.destroy()
-						this.no.destroy()
 						this.next.destroy()
-						this.butcher.destroy()
 						this.exclamationMark.destroy()
 						this.txtBox = this.add.image(115, 2180, "hasbulla-desert").setDepth(1000).setScale(0.15);
 						this.exit = this.add.image(155, 2165, "exit").setDepth(2000).setScale(0.15);
@@ -433,6 +431,8 @@ class InnerHouseScene extends Phaser.Scene {
 						this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
 						this.wall.setImmovable()
 						this.physics.add.collider(this.player, this.wall)
+						this.yes.destroy()
+						this.no.destroy()
 					})
 				})
 			}
@@ -454,6 +454,7 @@ class InnerHouseScene extends Phaser.Scene {
 			
 				//Enemies are dead
 				if (this.enemies.children.entries.length === 0) {
+					if(this.questProcess == 1){
 					this.questProcess = 2;
 					this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
 					this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
@@ -469,7 +470,7 @@ class InnerHouseScene extends Phaser.Scene {
 						}
 					})
 				}
-				
+			}
 			}
 
 

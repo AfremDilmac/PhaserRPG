@@ -2,8 +2,8 @@
 window.addEventListener('load', () => {
     var config = {
         type: Phaser.WEBGL,
-        width: 960,
-        height: 480,
+        width: 980,
+        height: 500,
         backgroundColor: 0x000000,
         physics: {
             default: 'arcade',

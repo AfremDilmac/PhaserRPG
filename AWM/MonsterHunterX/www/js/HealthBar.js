@@ -36,8 +36,22 @@ class HealthBar{
 		const healthbarBackground = new Phaser.Geom.Rectangle(this.x, this.y, 52, 7)
 		const healthbarFill = new Phaser.Geom.Rectangle(this.x + 1, this.y + 1 , this.currentHealth, 5)
 
-
-		this.newGraphics.fillStyle(0xff0025, 1)
+		if (this.currentHealth >= 40) {
+			this.newGraphics.fillStyle(0x0EE30E, 1)
+		}
+		if (this.currentHealth >= 30 && this.currentHealth < 40) {
+			this.newGraphics.fillStyle(0xA1E50F, 1)
+		}
+		if (this.currentHealth >= 20 && this.currentHealth < 30) {
+			this.newGraphics.fillStyle(0xEBC000, 1)
+		}
+		if (this.currentHealth >= 10 && this.currentHealth < 20) {
+			this.newGraphics.fillStyle(0xF06C6C, 1)
+		}
+		if (this.currentHealth >= 0 && this.currentHealth < 10) {
+			this.newGraphics.fillStyle(0xEB0000, 1)
+		}
+		
 		this.newGraphics.fillRectShape(healthbarFill)
 
 		this.graphics.fillStyle(0xffffff, 0.5)
