@@ -90,7 +90,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const map = this.make.tilemap({
 			key: 'map-innerhouse'
 		})
-		this.cameras.main.zoom = 3;
+		this.cameras.main.zoom = 2;
 
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
