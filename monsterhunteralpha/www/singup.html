@@ -1,0 +1,199 @@
+<html>
+
+<head>
+	<title>Firebase Authentication</title>
+	<link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+	<div id="login-box">
+		<form class="left">
+
+			<h1 id='status'>Sign up</h1>
+			<input type="text" id="username" name="username" placeholder="Username" />
+			<input type="text" id="email" name="email" placeholder="E-mail" />
+			<input type="password" id="password" name="password" placeholder="Password" />
+			<p id="errormsg-signup"></p>
+
+			<input type="submit" id='signUp' name="signup_submit" value="Sign up" />
+
+		</form>
+	</div>
+</body>
+
+
+
+
+
+<script type="module">
+	// Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+  import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"; 
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+	apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+    authDomain: "monsterhunter-d7680.firebaseapp.com",
+    databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "monsterhunter-d7680",
+    storageBucket: "monsterhunter-d7680.appspot.com",
+    messagingSenderId: "338059376056",
+    appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth();
+
+  const db = getFirestore()
+  const colRef = collection(db, 'users')
+
+  
+  getDocs(colRef)
+  	.then((snapshot) => {
+		 let users = []
+		 snapshot.docs.forEach((doc) => {
+			 users.push({...doc.data(), id: doc.id})
+		 })
+		 //console.log(users);
+	  })
+	  .catch(err => {
+		  console.log(err.message);
+	  })
+
+
+
+// const signUp = document.getElementById('signUp')
+
+signUp.addEventListener('click',() => {
+
+//   var email = document.getElementById('email').value;
+//   var password = document.getElementById('password').value;
+//   var username = document.getElementById('username').value;
+//   var lblError = document.getElementById('errormsg-signup')
+  
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then((userCredential) => {
+//       // Signed in 
+//       const user = userCredential.user;
+
+//       set(ref(database, 'users/' + user.uid),{
+//           username: username,
+//           email: email
+//       })
+// 	  console.log(user.uid); // ID VAN AUTH
+// 	  localStorage.setItem("ID", user.uid)
+
+//       lblError.innerHTML='user created!'
+//       //location.href='index.html'
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+
+//       lblError.innerHTML= errorCode
+//     // ..
+//     });
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+	// nieuwe doc toevoegen in firestore bij signup 
+	const sigupForm = document.querySelector('.left')
+
+	sigupForm.addEventListener('submit', (e) => {
+		e.preventDefault();
+
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var username = document.getElementById('username').value;
+		var lblError = document.getElementById('errormsg-signup')
+  
+		createUserWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+			// Signed in 
+			const user = userCredential.user;
+
+			set(ref(database, 'users/' + user.uid),{
+				username: username,
+				email: email
+			})
+			console.log(user.uid); // ID VAN AUTH
+			localStorage.setItem("ID", user.uid)
+			let ident = localStorage.getItem('ID')
+
+			setDoc(doc(db, "users", ident), {
+				mail: email,
+				name: username,
+			});
+			
+			})
+			lblError.innerHTML='user created!'
+			//location.href='index.html'
+			})
+			.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+
+			lblError.innerHTML= errorCode
+			// ..
+			});
+});
+
+
+
+//  login.addEventListener('click',(e)=>{
+//    var email = document.getElementById('email').value;
+//    var password = document.getElementById('password').value;
+
+//       signInWithEmailAndPassword(auth, email, password)
+//       .then((userCredential) => {
+//         // Signed in 
+//         const user = userCredential.user;
+
+//         const dt = new Date();
+//          update(ref(database, 'users/' + user.uid),{
+//           last_login: dt,
+//         })
+
+//          alert('User loged in!');
+//         // ...
+//       })
+//       .catch((error) => {
+//         const errorCode = error.code;
+//         const errorMessage = error.message;
+
+//         alert(errorMessage);
+//   });
+
+//  });
+
+
+// get user data 
+
+// const user = auth.currentUser;
+// onAuthStateChanged(auth, (user) => {
+//   if (user) {
+//     // User is signed in, see docs for a list of available properties
+//     // https://firebase.google.com/docs/reference/js/firebase.User
+//     const uid = user.uid;
+//     //bla bla bla
+//     // ...
+//   } else {
+//     // User is signed out
+//     // ...
+//     //bla bla bla
+//   }
+// });
+
+
+</script>
+
+<script type="module" src="js/firestore.js"></script>
+
+</html>
