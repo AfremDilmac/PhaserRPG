@@ -90,7 +90,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const map = this.make.tilemap({
 			key: 'map-innerhouse'
 		})
-		this.cameras.main.zoom = 2;
+		this.cameras.main.zoom = 3;
 
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
@@ -316,6 +316,8 @@ class InnerHouseScene extends Phaser.Scene {
 	handlePlayerCoinCollision(p, c) {
 		c.destroy()
 		this.coinAmount += 1
+
+		localStorage.setItem('GOLD', this.coinAmount)
 	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -394,7 +396,10 @@ class InnerHouseScene extends Phaser.Scene {
 					this.no.setInteractive()
 					this.next.destroy();
 					this.exit.destroy();
-					this.wall.destroy()
+					this.wall.destroy();
+					localStorage.setItem('health', this.player.health)
+					localStorage.setItem('positionX', this.player.x)
+					localStorage.setItem('positionY', this.player.y)
 					this.yes.on('pointerdown', () => {
 						this.scene.start('Shop')
 					})
@@ -446,7 +451,10 @@ class InnerHouseScene extends Phaser.Scene {
 					this.no.setInteractive()
 					this.next.destroy();
 					this.exit.destroy();
-					this.wall.destroy()
+					this.wall.destroy();
+					localStorage.setItem('health', this.player.health)
+					localStorage.setItem('positionX', this.player.x)
+					localStorage.setItem('positionY', this.player.y)
 					this.yes.on('pointerdown', () => {
 						this.scene.start('Shop')
 					})
