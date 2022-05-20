@@ -300,6 +300,13 @@ class InnerHouseScene extends Phaser.Scene {
 					this.next.setInteractive()
 					this.questStarted = true
 					this.questProcess = 1;
+					//update fields localstorage
+					//@TODO: pas aan
+
+					//update in firestore
+					updatePlayer();
+					
+
 				}
 			}
 		})
@@ -317,7 +324,7 @@ class InnerHouseScene extends Phaser.Scene {
 		c.destroy()
 		this.coinAmount += 1
 
-		localStorage.setItem('GOLD', this.coinAmount)
+		localStorage.setItem('gold', this.coinAmount)
 	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -504,8 +511,14 @@ class InnerHouseScene extends Phaser.Scene {
 							this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
 							this.next.setInteractive()
 							this.questProcess = 3
+							//update fields localstorage
+							//@TODO: pas aan
+
+							//update in firestore
+							updatePlayer();
 						}
 					})
+
 				}
 			}
 
@@ -522,8 +535,14 @@ class InnerHouseScene extends Phaser.Scene {
 						this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
 						this.next.setInteractive()
 						this.questProcess = 4
+						//update fields localstorage
+						//@TODO: pas aan
+
+						//update in firestore
+						updatePlayer();
 					}
 				})
+				
 			}
 
 		}
