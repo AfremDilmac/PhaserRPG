@@ -56,6 +56,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.enemy
 		this.enemies
 		this.enemies2
+		this.enemies3
 		this.healthbar
 		this.projectiles
 		this.keys
@@ -70,6 +71,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.no
 		this.butcher
 		this.wall
+		this.wall2
 		this.coins
 		this.coinAmount = 0
 
@@ -90,7 +92,7 @@ class InnerHouseScene extends Phaser.Scene {
 		const map = this.make.tilemap({
 			key: 'map-innerhouse'
 		})
-		this.cameras.main.zoom = 2;
+		this.cameras.main.zoom = 2.5;
 
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
@@ -135,32 +137,17 @@ class InnerHouseScene extends Phaser.Scene {
 
 		this.coins = this.physics.add.group()
 
-		pickupLayer.forEachTile(tile => {
-			if (tile.index != -1) {
-				// console.log(tile);
-
-				let pickup
-				const x = tile.getCenterX()
-				const y = tile.getCenterY()
-
-
-				pickup = this.coins.create(x, y, 'coin').setScale(0.7)
-				pickup.anims.play('coinAnim', true)
-				pickup.body.width = 16
-				pickup.body.height = 16
-			}
-
-		})
+		
 
 
 		/**
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 90, 3159, 'player', 50).setScale(0.5)
+		this.player = new Player(this, 90, 3159, 'player', 500).setScale(0.5)
 		// collision tussen player en wereld inschakelen
-		this.player.body.setCollideWorldBounds(true)
-		this.physics.add.collider(this.player, worldLayer)
+		// this.player.body.setCollideWorldBounds(true)
+		// this.physics.add.collider(this.player, worldLayer)
 		// this.physics.add.collider(this.player, worldLayer2)
 		// this.physics.add.collider(this.player, exitHouse, this.handleExitHouse, null, this)
 
@@ -178,27 +165,10 @@ class InnerHouseScene extends Phaser.Scene {
 		// elements (enemies) in de group steken 
 		this.enemies = this.add.group()
 		this.enemies2 = this.add.group()
+		this.enemies3 = this.add.group()
 		// this.enemies.add(this.enemy)
 		// this.enemies.add(this.enemy2)
 
-		/**
-		 * Wonder forest
-		 */
-		if (this.questProcess == 0) {
-			for (let i = 0; i < 5; i++) {
-				const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
-				element.body.setCollideWorldBounds(true)
-				element.setTint(0x999999)
-				this.enemies.add(element)
-			}
-
-			for (let i = 0; i < 5; i++) {
-				const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
-				element.body.setCollideWorldBounds(true)
-				element.setTint(0x999999)
-				this.enemies.add(element)
-			}
-		}
 
 
 		//healthbar aanmaken
@@ -231,9 +201,6 @@ class InnerHouseScene extends Phaser.Scene {
 		// // this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
 		// this.enemy2.body.setCollideWorldBounds(true)
 
-
-
-
 		/**
 		 * Projectiles
 		 */
@@ -245,12 +212,15 @@ class InnerHouseScene extends Phaser.Scene {
 		this.projectiles = new Projectiles(this)
 		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
 		this.physics.add.overlap(this.player, this.enemies2, this.handlePlayerEnemyCollision, null, this)
+		this.physics.add.overlap(this.player, this.enemies3, this.handlePlayerEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies2, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.overlap(this.projectiles, this.enemies3, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.enemies2, worldLayer)
-		this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.enemies3, worldLayer)
+		// this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
 
@@ -282,6 +252,9 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall = this.physics.add.sprite(144, 2180, "wall").setScale(0.08)
 		this.wall.setImmovable()
 		this.physics.add.collider(this.player, this.wall)
+		this.physics.add.collider(this.enemies, this.wall)
+		this.physics.add.collider(this.enemies2, this.wall)
+		this.physics.add.collider(this.enemies3, this.wall)
 
 
 		/**
@@ -292,6 +265,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.butcher.on('pointerdown', () => {
 			if (this.player.y >= 3060 && this.player.y <= 3107) {
 				if (this.questProcess == 0) {
+					
 					this.txtBox = this.add.image(80, 3055, "hasbulla-welcome").setDepth(1000).setScale(0.15);
 					// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
 					this.exit = this.add.image(125, 3040, "exit").setDepth(2000).setScale(0.15);
@@ -300,6 +274,40 @@ class InnerHouseScene extends Phaser.Scene {
 					this.next.setInteractive()
 					this.questStarted = true
 					this.questProcess = 1;
+					console.log('QuestProcess: ' + this.questProcess)
+					
+					//Monsters
+					for (let i = 0; i < 5; i++) {
+						const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
+						element.body.setCollideWorldBounds(true)
+						element.setTint(0x999999)
+						this.enemies.add(element)
+					}
+		
+					for (let i = 0; i < 5; i++) {
+						const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
+						element.body.setCollideWorldBounds(true)
+						element.setTint(0x999999)
+						this.enemies.add(element)
+					}
+
+					//Coins
+					pickupLayer.forEachTile(tile => {
+						if (tile.index != -1) {
+							// console.log(tile);
+			
+							let pickup
+							const x = tile.getCenterX()
+							const y = tile.getCenterY()
+			
+			
+							pickup = this.coins.create(x, y, 'coin').setScale(0.7)
+							pickup.anims.play('coinAnim', true)
+							pickup.body.width = 16
+							pickup.body.height = 16
+						}
+			
+					})
 				}
 			}
 		})
@@ -387,6 +395,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//Welcome game -> start wonder forest
 		if (this.questStarted) {
 			if (this.questProcess == 3) {
+				console.log('QuestProcess: ' + this.questProcess)
 				this.next.on('pointerdown', () => {
 					this.txtBox.destroy();
 					this.txtBox = this.add.image(115, 2180, "shop").setDepth(1000).setScale(0.15);
@@ -409,44 +418,49 @@ class InnerHouseScene extends Phaser.Scene {
 						this.txtBox.destroy()
 						this.exit.destroy()
 						this.next.destroy()
-						this.exclamationMark.destroy()
-						this.txtBox = this.add.image(115, 2180, "hasbulla-desert").setDepth(1000).setScale(0.15);
+						// this.exclamationMark.destroy()
+						// this.txtBox = this.add.image(115, 2180, "hasbulla-desert").setDepth(1000).setScale(0.15);
 						this.exit = this.add.image(155, 2165, "exit").setDepth(2000).setScale(0.15);
 						this.exit.setInteractive()
 
-						for (let i = 0; i < 5; i++) {
+						for (let i = 0; i < 1; i++) {
 							const element = new Enemy(this, 128, 1810, 'monsters', 5, 'bat')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
 							this.enemies2.add(element)
 						}
 
-						for (let i = 0; i < 5; i++) {
+						for (let i = 0; i < 1; i++) {
 							const element = new Enemy(this, 395, 1829, 'monsters', 5, 'spider')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
 							this.enemies2.add(element)
 						}
 
-						for (let i = 0; i < 5; i++) {
+						for (let i = 0; i < 1; i++) {
 							const element = new Enemy(this, 798, 2076, 'monsters', 5, 'bat')
 							element.body.setCollideWorldBounds(true)
 							element.setTint(0x999999)
 							this.enemies2.add(element)
 						}
-						this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
-						this.wall.setImmovable()
-						this.physics.add.collider(this.player, this.wall)
+						// this.wall2 = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
+						// this.wall2.setImmovable()
+						// this.physics.add.collider(this.player, this.wall2)
+						// this.physics.add.collider(this.enemies, this.wall2)
+						// this.physics.add.collider(this.enemies2, this.wall2)
+						// this.physics.add.collider(this.enemies3, this.wall2)
 						
 					})
 				})
 			}
 			if (this.questProcess == 4) {
+				console.log('QuestProcess: ' + this.questProcess)
 				this.next.on('pointerdown', () => {
 					this.txtBox.destroy();
 					this.txtBox = this.add.image(104, 1480, "shop").setDepth(1000).setScale(0.15);
 					this.yes = this.add.image(80, 1490, "yes").setDepth(2000).setScale(0.15);
 					this.no = this.add.image(149, 1490, "no").setDepth(2000).setScale(0.14);
+					this.wall2.destroy();
 					this.yes.setInteractive()
 					this.no.setInteractive()
 					this.next.destroy();
@@ -465,10 +479,12 @@ class InnerHouseScene extends Phaser.Scene {
 						this.exclamationMark.destroy()
 						this.yes.destroy()
 						this.no.destroy()
+						this.butcher.destroy()
 					})
 				})
 			}
 			if (this.questProcess == 1) {
+				console.log('QuestProcess: ' + this.questProcess)
 				this.next.on('pointerdown', () => {
 					this.txtBox.destroy();
 					this.txtBox = this.add.image(80, 3055, "hasbulla-wonder-forest").setDepth(1000).setScale(0.15);
@@ -493,6 +509,7 @@ class InnerHouseScene extends Phaser.Scene {
 			if (this.enemies.children.entries.length === 0) {
 				if (this.questProcess == 1) {
 					this.questProcess = 2;
+					console.log('QuestProcess: ' + this.questProcess)
 					this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
 					this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
 					this.butcher.setInteractive()
@@ -504,30 +521,97 @@ class InnerHouseScene extends Phaser.Scene {
 							this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
 							this.next.setInteractive()
 							this.questProcess = 3
+							console.log('QuestProcess: ' + this.questProcess)
 						}
 					})
 				}
 			}
-
-			if (this.questProcess == 3 && this.enemies2.children.entries.length === 0) {
-				console.log("lvl 2 cleared")
-				this.butcher = this.add.image(134, 1508, "butcher").setDepth(1);
-				this.exclamationMark = this.add.image(134, 1490, "questemote").setDepth(1);
-				this.butcher.setInteractive()
-				this.butcher.flipX = true
-				this.butcher.on('pointerdown', () => {
-					if (this.player.y <= 2250) {
-						this.txtBox = this.add.image(104, 1480, "hasbulla-good-job").setDepth(1000).setScale(0.15);
-						// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-						this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
-						this.next.setInteractive()
-						this.questProcess = 4
-					}
-				})
-			}
-
+		}
+		if (this.player.y < 2136 && this.player.y > 1535 &&this.enemies2.children.entries.length === 0) {
+			console.log("lvl 2 cleared")
+			this.wall2.destroy();
+			this.wall.destroy();
+			this.butcher = this.add.image(134, 1508, "butcher").setDepth(1);
+			this.exclamationMark = this.add.image(134, 1490, "questemote").setDepth(1);
+			this.butcher.setInteractive()
+			this.butcher.flipX = true
+			this.butcher.on('pointerdown', () => {
+				if (this.player.y <= 2250) {
+					this.txtBox = this.add.image(104, 1480, "hasbulla-good-job").setDepth(1000).setScale(0.15);
+					// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+					this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
+					this.next.setInteractive()
+					this.questProcess = 4
+					console.log('QuestProcess: ' + this.questProcess)
+				}
+			})
 		}
 
+		if (this.player.y < 2136 && this.player.y > 2108 && this.questProcess == 3) {
+			this.wall2 = this.physics.add.sprite(144, 2180, "wall").setScale(0.08)
+			this.wall2.setImmovable()
+			this.physics.add.collider(this.player, this.wall2)
+			this.physics.add.collider(this.enemies, this.wall2)
+			this.physics.add.collider(this.enemies2, this.wall2)
+			this.physics.add.collider(this.enemies3, this.wall2)
+			
+		}
+
+		//lvl 3
+		if (this.player.y < 1400 && this.questProcess == 4) {
+			
+			this.wall2.destroy();
+			this.wall.destroy();
+			this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
+			this.wall.setImmovable()
+			this.physics.add.collider(this.player, this.wall)
+			this.physics.add.collider(this.enemies, this.wall)
+			this.physics.add.collider(this.enemies2, this.wall)
+			this.physics.add.collider(this.enemies3, this.wall)
+
+			this.wall2 = this.physics.add.sprite(871, 706, "wall").setScale(0.08)
+			this.wall2.setImmovable()
+			this.physics.add.collider(this.player, this.wall2)
+			this.physics.add.collider(this.enemies, this.wall2)
+			this.physics.add.collider(this.enemies2, this.wall2)
+			this.physics.add.collider(this.enemies3, this.wall2)
+
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 207, 958, 'monsters', 5, 'skeleton')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 695, 1357, 'monsters', 5, 'spider')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 495, 1189, 'monsters', 5, 'skeleton')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 336, 801, 'monsters', 5, 'spider')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 669, 952, 'monsters', 5, 'bat')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+			this.questProcess = 6;
+			console.log('QuestProcess: ' + this.questProcess)
+		}
 
 		this.player.update()
 
@@ -548,9 +632,13 @@ class InnerHouseScene extends Phaser.Scene {
 			if (!child.isDead) {
 				child.update()
 			}
-
 		})
 
+		this.enemies3.children.iterate((child) => {
+			if (!child.isDead) {
+				child.update()
+			}
+		})
 		// // //All enemies are dead
 
 

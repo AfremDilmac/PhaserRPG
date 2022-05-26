@@ -76,7 +76,7 @@ class Player extends Entity {
 
         //Joystick plugin
         this.joyStick = scene.plugins.get('rexvirtualjoystickplugin').add(scene, {
-            x: 660,
+            x: 650,
             y: 300,
             radius: 25,
             base: scene.add.circle(0, 0, 30, 0x888888, 0.5),
@@ -100,7 +100,7 @@ class Player extends Entity {
 
 	update(){
 		const {keys} = this //output: this.keys
-        const speed = 150
+        const speed = 500
 		//positie in een var steken, gebruikt voor idle animation (zie lijn 189 t.e.m 200 )
         const previousVelocity = this.body.velocity.clone()
 		// player stopt als we op geen enekel arrow drukken
