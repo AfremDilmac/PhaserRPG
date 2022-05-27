@@ -100,7 +100,7 @@ class Player extends Entity {
 
 	update(){
 		const {keys} = this //output: this.keys
-        const speed = 450
+        const speed = 250
 		//positie in een var steken, gebruikt voor idle animation (zie lijn 189 t.e.m 200 )
         const previousVelocity = this.body.velocity.clone()
 		// player stopt als we op geen enekel arrow drukken

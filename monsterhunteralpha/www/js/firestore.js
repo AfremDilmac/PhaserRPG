@@ -119,9 +119,9 @@ sigupForm.addEventListener('submit', (e) => {
 let i = localStorage.getItem('ID')
 const docRef = doc(db, 'users', i)
 
-function updatePlayer(){
+window.updatePlayer = function(){
 	
-	let a = localStorage.getItem('gold:')
+	let a = localStorage.getItem('gold')
 	let b = localStorage.getItem('health')
 	let c = localStorage.getItem('positionX')
 	let d = localStorage.getItem('positionY')
@@ -129,6 +129,7 @@ function updatePlayer(){
 	docRef.updateDoc(docRef, {
 		gold: a,
 		health: b,
+		name: "jooooo",
 		positionX: c,
 		positionY: d,
 	})
