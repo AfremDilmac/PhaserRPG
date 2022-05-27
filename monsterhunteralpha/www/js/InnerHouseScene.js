@@ -72,6 +72,9 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall
 		this.coins
 		this.coinAmount = 0
+		this.score1 
+		this.score2  
+		this.totalScore
 
 		/**
 		 * Virtual joystick
@@ -185,21 +188,21 @@ class InnerHouseScene extends Phaser.Scene {
 		/**
 		 * Wonder forest
 		 */
-		if (this.questProcess == "start") {
-			for (let i = 0; i < 1; i++) {
-				const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
-				element.body.setCollideWorldBounds(true)
-				element.setTint(0x999999)
-				this.enemies.add(element)
-			}
+		// if (this.questProcess == "start") {
+		// 	for (let i = 0; i < 1; i++) {
+		// 		const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies.add(element)
+		// 	}
 
-			for (let i = 0; i < 1; i++) {
-				const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
-				element.body.setCollideWorldBounds(true)
-				element.setTint(0x999999)
-				this.enemies.add(element)
-			}
-		}
+		// 	for (let i = 0; i < 1; i++) {
+		// 		const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies.add(element)
+		// 	}
+		// }
 ////////////////////////////////////////////////////////////////////////////////
 		// if (this.questProcess == "dessert") {
 		// 	for (let i = 0; i < 5; i++) {
@@ -241,18 +244,19 @@ class InnerHouseScene extends Phaser.Scene {
 		 * Enemy
 		 */
 
-		// monsterLayer.forEachTile(tile => {
-		// 	if (tile.properties.CP_monster !== undefined) {
+		monsterLayer.forEachTile(tile => {
+			if (tile.properties.CP_monster !== undefined) {
 
-		// 		const x = tile.getCenterX()
-		// 		const y = tile.getCenterY()
-		// 		const e = new EnemyFollow(this, x, y, 'monsters', 5, tile.properties.CP_monster, 50)
-		// 		this.enemies.add(e)
-		// 		e.body.setCollideWorldBounds(true)
-		// 		e.setTint(0x09fc65)
-		// 	}
+				const x = tile.getCenterX()
+				const y = tile.getCenterY()
+				const e = new Enemy(this, x, y, 'monsters', 5, tile.properties.CP_monster, 50)
+				this.enemies.add(e)
+				e.body.setCollideWorldBounds(true)
+				e.setTint(0x09fc65)
+			}
 
-		// })
+		})
+		console.log(this.enemies);
 		// this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
 		// this.physics.add.collider(this.enemy, this.worldLayer) // collision tussen enemy en map
 		// this.enemy.body.setCollideWorldBounds(true)
@@ -352,7 +356,6 @@ class InnerHouseScene extends Phaser.Scene {
 
 		// this.butcher.setInteractive()
 		// this.butcher.flipX = true
-
 	} //end create
 
 	// handleExitHouse() {
@@ -375,7 +378,9 @@ class InnerHouseScene extends Phaser.Scene {
 
 	handleProjectileEnemyCollision(enemy, projectile) {
 		if (projectile.active) {
+
 			enemy.setTint(0xff0000)
+
 			this.time.addEvent({
 				delay: 100,
 				callback: () => {
@@ -385,9 +390,11 @@ class InnerHouseScene extends Phaser.Scene {
 				callbackScope: this,
 				loop: false
 			})
+
 			this.emmiter.active = true
 			this.emmiter.setPosition(enemy.x, enemy.y)
 			this.emmiter.explode()
+			this.score1 += 1;
 		}
 	}
 
@@ -412,11 +419,14 @@ class InnerHouseScene extends Phaser.Scene {
 			loop: false
 		})
 		e.explode()
+		this.score2 += 1
 	}
 
+	
 	////UPDATE
 
 	update(time, delta) {
+
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 
@@ -434,9 +444,9 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 //////////////////////////////////////////////////////////////////////////////////
+this.totalScore = this.score1 + this.score2;
 
-
-		if (this.enemies.children.entries.length === 0 && this.questProcess == "start") {
+		if (this.totalScore == 16 && this.questProcess == "start") {
 			this.wall.destroy();
 		}
 
@@ -460,6 +470,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.player, this.wall);
 
 
+			console.log(totalScore);
 
 			// updatePlayer();
 		}
