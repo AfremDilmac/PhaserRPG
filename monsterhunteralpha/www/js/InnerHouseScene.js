@@ -147,7 +147,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.player = new Player(this, 90, 3159, 'player', 500).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		// this.player.body.setCollideWorldBounds(true)
-		// this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.player, worldLayer)
 		// this.physics.add.collider(this.player, worldLayer2)
 		// this.physics.add.collider(this.player, exitHouse, this.handleExitHouse, null, this)
 
@@ -220,7 +220,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.enemies2, worldLayer)
 		this.physics.add.collider(this.enemies3, worldLayer)
-		// this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
 
@@ -325,7 +325,7 @@ class InnerHouseScene extends Phaser.Scene {
 		c.destroy()
 		this.coinAmount += 1
 
-		localStorage.setItem('GOLD', this.coinAmount)
+		localStorage.setItem('gold', this.coinAmount)
 	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -409,6 +409,7 @@ class InnerHouseScene extends Phaser.Scene {
 					localStorage.setItem('health', this.player.health)
 					localStorage.setItem('positionX', this.player.x)
 					localStorage.setItem('positionY', this.player.y)
+					updatePlayer();
 					this.yes.on('pointerdown', () => {
 						this.scene.start('Shop')
 					})
@@ -469,6 +470,7 @@ class InnerHouseScene extends Phaser.Scene {
 					localStorage.setItem('health', this.player.health)
 					localStorage.setItem('positionX', this.player.x)
 					localStorage.setItem('positionY', this.player.y)
+					updatePlayer();
 					this.yes.on('pointerdown', () => {
 						this.scene.start('Shop')
 					})

@@ -134,6 +134,12 @@ function updatePlayer(){
 	})
 }
 
+//tried:
+// import - export 
+// bind
+// require
+
+
 
 
 

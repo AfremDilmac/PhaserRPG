@@ -21,7 +21,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
 		//map dat we in Tiled hebben gemaakt loaden
-		this.load.tilemapTiledJSON('map-innerhouse', 'js/UltimeMap.json')
+		this.load.tilemapTiledJSON('map', 'js/UltimeMap.json')
 		//characters loaden
 		this.load.spritesheet('characters', 'assets/monsters.png', {
 			frameWidth: 16,
@@ -63,7 +63,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.emmiter
 		this.minimap
 		this.questStarted = false;
-		this.questProcess = 0
+		this.questProcess = "start"
 		this.exit
 		this.next
 		this.yes
@@ -88,7 +88,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
-			key: 'map-innerhouse'
+			key: 'map'
 		})
 		this.cameras.main.zoom = 2;
 
@@ -178,25 +178,44 @@ class InnerHouseScene extends Phaser.Scene {
 		// elements (enemies) in de group steken 
 		this.enemies = this.add.group()
 		this.enemies2 = this.add.group()
+		this.enemies3 = this.add.group()
 		// this.enemies.add(this.enemy)
 		// this.enemies.add(this.enemy2)
 
 		/**
 		 * Wonder forest
 		 */
-		if (this.questProcess == 0) {
-			for (let i = 0; i < 5; i++) {
+		if (this.questProcess == "start") {
+			for (let i = 0; i < 1; i++) {
 				const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
 				element.body.setCollideWorldBounds(true)
 				element.setTint(0x999999)
 				this.enemies.add(element)
 			}
 
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < 1; i++) {
 				const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
 				element.body.setCollideWorldBounds(true)
 				element.setTint(0x999999)
 				this.enemies.add(element)
+			}
+		}
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+		if (this.questProcess == "cave") {
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 180 , 600 , 'monsters', 5, 'skeleton')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
+			}
+
+			for (let i = 0; i < 5; i++) {
+				const element = new Enemy(this, 550 , 600 , 'monsters', 5, 'skeleton')
+				element.body.setCollideWorldBounds(true)
+				element.setTint(0x999999)
+				this.enemies3.add(element)
 			}
 		}
 
@@ -279,8 +298,11 @@ class InnerHouseScene extends Phaser.Scene {
 			active: false
 
 		})
+
+		// wall
 		this.wall = this.physics.add.sprite(144, 2180, "wall").setScale(0.08)
 		this.wall.setImmovable()
+		this.wall.visible = false;
 		this.physics.add.collider(this.player, this.wall)
 
 
@@ -289,9 +311,10 @@ class InnerHouseScene extends Phaser.Scene {
 		 */
 		this.butcher = this.add.image(110, 3080, "butcher").setDepth(1);
 		this.exclamationMark = this.add.image(110, 3070, "exclemote").setDepth(1);
+
 		this.butcher.on('pointerdown', () => {
 			if (this.player.y >= 3060 && this.player.y <= 3107) {
-				if (this.questProcess == 0) {
+				if (this.questProcess == "start") {
 					this.txtBox = this.add.image(80, 3055, "hasbulla-welcome").setDepth(1000).setScale(0.15);
 					// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
 					this.exit = this.add.image(125, 3040, "exit").setDepth(2000).setScale(0.15);
@@ -299,12 +322,12 @@ class InnerHouseScene extends Phaser.Scene {
 					this.next = this.add.image(125, 3063, "next").setDepth(2000).setScale(0.14);
 					this.next.setInteractive()
 					this.questStarted = true
-					this.questProcess = 1;
+					this.questProcess = "wonder";
 					//update fields localstorage
 					//@TODO: pas aan
 
 					//update in firestore
-					updatePlayer();
+					// updatePlayer();
 					
 
 				}
@@ -319,6 +342,8 @@ class InnerHouseScene extends Phaser.Scene {
 	// handleExitHouse() {
 	//     this.scene.start('houseScene')
 	// }
+
+	//COLLISION HANDLING
 
 	handlePlayerCoinCollision(p, c) {
 		c.destroy()
@@ -373,10 +398,11 @@ class InnerHouseScene extends Phaser.Scene {
 		e.explode()
 	}
 
+	////UPDATE
+
+	update(time, delta) {
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
-	update(time, delta) {
-
 
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
@@ -390,162 +416,260 @@ class InnerHouseScene extends Phaser.Scene {
 			}
 		}
 
-		//Text npc
-		//Welcome game -> start wonder forest
-		if (this.questStarted) {
-			if (this.questProcess == 3) {
-				this.next.on('pointerdown', () => {
-					this.txtBox.destroy();
-					this.txtBox = this.add.image(115, 2180, "shop").setDepth(1000).setScale(0.15);
-					this.yes = this.add.image(80, 2190, "yes").setDepth(2000).setScale(0.15);
-					this.no = this.add.image(150, 2190, "no").setDepth(2000).setScale(0.14);
-					this.yes.setInteractive()
-					this.no.setInteractive()
-					this.next.destroy();
-					this.exit.destroy();
-					this.wall.destroy();
-					localStorage.setItem('health', this.player.health)
-					localStorage.setItem('positionX', this.player.x)
-					localStorage.setItem('positionY', this.player.y)
-					this.yes.on('pointerdown', () => {
-						this.scene.start('Shop')
-					})
-					this.no.on('pointerdown', () => {
-						this.yes.destroy()
-						this.no.destroy()
-						this.txtBox.destroy()
-						this.exit.destroy()
-						this.next.destroy()
-						this.exclamationMark.destroy()
-						this.txtBox = this.add.image(115, 2180, "hasbulla-desert").setDepth(1000).setScale(0.15);
-						this.exit = this.add.image(155, 2165, "exit").setDepth(2000).setScale(0.15);
-						this.exit.setInteractive()
 
-						for (let i = 0; i < 5; i++) {
-							const element = new Enemy(this, 128, 1810, 'monsters', 5, 'bat')
-							element.body.setCollideWorldBounds(true)
-							element.setTint(0x999999)
-							this.enemies2.add(element)
-						}
+//////////////////////////////////////////////////////////////////////////////////
 
-						for (let i = 0; i < 5; i++) {
-							const element = new Enemy(this, 395, 1829, 'monsters', 5, 'spider')
-							element.body.setCollideWorldBounds(true)
-							element.setTint(0x999999)
-							this.enemies2.add(element)
-						}
 
-						for (let i = 0; i < 5; i++) {
-							const element = new Enemy(this, 798, 2076, 'monsters', 5, 'bat')
-							element.body.setCollideWorldBounds(true)
-							element.setTint(0x999999)
-							this.enemies2.add(element)
-						}
-						this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
-						this.wall.setImmovable()
-						this.physics.add.collider(this.player, this.wall)
-						
-					})
-				})
-			}
-			if (this.questProcess == 4) {
-				this.next.on('pointerdown', () => {
-					this.txtBox.destroy();
-					this.txtBox = this.add.image(104, 1480, "shop").setDepth(1000).setScale(0.15);
-					this.yes = this.add.image(80, 1490, "yes").setDepth(2000).setScale(0.15);
-					this.no = this.add.image(149, 1490, "no").setDepth(2000).setScale(0.14);
-					this.yes.setInteractive()
-					this.no.setInteractive()
-					this.next.destroy();
-					this.exit.destroy();
-					this.wall.destroy();
-					localStorage.setItem('health', this.player.health)
-					localStorage.setItem('positionX', this.player.x)
-					localStorage.setItem('positionY', this.player.y)
-					this.yes.on('pointerdown', () => {
-						this.scene.start('Shop')
-					})
-					this.no.on('pointerdown', () => {
-						this.txtBox.destroy()
-						this.exit.destroy()
-						this.next.destroy()
-						this.exclamationMark.destroy()
-						this.yes.destroy()
-						this.no.destroy()
-					})
-				})
-			}
-			if (this.questProcess == 1) {
-				this.next.on('pointerdown', () => {
-					this.txtBox.destroy();
-					this.txtBox = this.add.image(80, 3055, "hasbulla-wonder-forest").setDepth(1000).setScale(0.15);
-					this.questProcess = 1
-					this.next.destroy();
-				})
-			}
-			this.exit.on('pointerdown', () => {
-				this.txtBox.destroy()
-				this.exit.destroy()
-				this.next.destroy()
-				this.butcher.destroy()
-				this.exclamationMark.destroy()
-				if (this.yes != undefined || this.no != undefined) {
-					this.yes.destroy()
-					this.no.destroy()
-				}
 
-			})
-
-			//Enemies are dead
-			if (this.enemies.children.entries.length === 0) {
-				if (this.questProcess == 1) {
-					this.questProcess = 2;
-					this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
-					this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
-					this.butcher.setInteractive()
-					this.butcher.flipX = true
-					this.butcher.on('pointerdown', () => {
-						if (this.player.y <= 2250) {
-							this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
-							// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-							this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
-							this.next.setInteractive()
-							this.questProcess = 3
-							//update fields localstorage
-							//@TODO: pas aan
-
-							//update in firestore
-							updatePlayer();
-						}
-					})
-
-				}
-			}
-
-			if (this.questProcess == 3 && this.enemies2.children.entries.length === 0) {
-				console.log("lvl 2 cleared")
-				this.butcher = this.add.image(134, 1508, "butcher").setDepth(1);
-				this.exclamationMark = this.add.image(134, 1490, "questemote").setDepth(1);
-				this.butcher.setInteractive()
-				this.butcher.flipX = true
-				this.butcher.on('pointerdown', () => {
-					if (this.player.y <= 2250) {
-						this.txtBox = this.add.image(104, 1480, "hasbulla-good-job").setDepth(1000).setScale(0.15);
-						// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-						this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
-						this.next.setInteractive()
-						this.questProcess = 4
-						//update fields localstorage
-						//@TODO: pas aan
-
-						//update in firestore
-						updatePlayer();
-					}
-				})
-				
-			}
-
+		if (this.player.y <= 2180 && this.player.y >= 2175) {
+			console.log('enter dessert');
+			this.questProcess = "dessert"
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+		
+			// updatePlayer();
 		}
+
+		if (this.player.y <= 2165) {
+			console.log('desert out');
+			// wall
+			this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08)
+			this.wall.setImmovable()
+			this.wall.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall);
+			this.physics.add.collider(this.enemies, this.wall);
+			this.physics.add.collider(this.player, this.wall);
+		}
+
+
+		if (this.enemies.children.entries.length === 0 && this.questProcess == "start") {
+			this.wall.destroy();
+		}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+
+		if (this.player.y <= 1446 && this.player.y >= 1445) {
+			console.log('enter cave');
+			this.questProcess = "cave"
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			// updatePlayer();
+		}
+
+		if (this.player.y <= 1440) {
+			// wall
+			this.wall = this.physics.add.sprite(135, 1460, "wall").setScale(0.08)
+			this.wall.setImmovable()
+			this.wall.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall);
+			this.physics.add.collider(this.enemies, this.wall);
+			this.physics.add.collider(this.player, this.wall);
+		}
+
+		if (this.enemies2.children.entries.length === 0 && this.questProcess == "dessert") {
+			this.wall.destroy();
+		}
+
+
+// //////////////////////////////////////////////////////////////////////////////////////
+
+
+		if (this.player.y <= 691 && this.player.y >= 690) {
+			console.log('enter ice');
+			this.questProcess = "ice";
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			// updatePlayer();
+		}
+
+		if (this.player.y <= 685) {
+			// wall
+			this.wall = this.physics.add.sprite(875, 710, "wall").setScale(0.08)
+			this.wall.setImmovable()
+			this.wall.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall);
+			this.physics.add.collider(this.enemies, this.wall);
+			this.physics.add.collider(this.player, this.wall);
+		}
+
+		if (this.enemies3.children.entries.length === 0 && this.questProcess == "cave") {
+			this.wall.destroy();
+		}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+		// //Text npc
+		// //Welcome game -> start wonder forest
+		// if (this.questStarted) {
+		// 	if (this.questProcess == 3) {
+		// 		console.log('wonderToDessert');
+		// 		this.next.on('pointerdown', () => {
+		// 			this.txtBox.destroy();
+		// 			this.txtBox = this.add.image(115, 2180, "shop").setDepth(1000).setScale(0.15);
+		// 			this.yes = this.add.image(80, 2190, "yes").setDepth(2000).setScale(0.15);
+		// 			this.no = this.add.image(150, 2190, "no").setDepth(2000).setScale(0.14);
+		// 			this.yes.setInteractive()
+		// 			this.no.setInteractive()
+		// 			this.next.destroy();
+		// 			this.exit.destroy();
+		// 			this.wall.destroy();
+		// 			localStorage.setItem('health', this.player.health)
+		// 			localStorage.setItem('positionX', this.player.x)
+		// 			localStorage.setItem('positionY', this.player.y)
+		// 			this.yes.on('pointerdown', () => {
+		// 				this.scene.start('Shop')
+		// 			})
+		// 			this.no.on('pointerdown', () => {
+		// 				this.yes.destroy()
+		// 				this.no.destroy()
+		// 				this.txtBox.destroy()
+		// 				this.exit.destroy()
+		// 				this.next.destroy()
+		// 				this.exclamationMark.destroy()
+		// 				this.txtBox = this.add.image(115, 2180, "hasbulla-desert").setDepth(1000).setScale(0.15);
+		// 				this.exit = this.add.image(155, 2165, "exit").setDepth(2000).setScale(0.15);
+		// 				this.exit.setInteractive()
+
+		// 				for (let i = 0; i < 1; i++) {
+		// 					const element = new Enemy(this, 128, 1810, 'monsters', 5, 'bat')
+		// 					element.body.setCollideWorldBounds(true)
+		// 					element.setTint(0x999999)
+		// 					this.enemies2.add(element)
+		// 				}
+
+		// 				for (let i = 0; i < 1; i++) {
+		// 					const element = new Enemy(this, 395, 1829, 'monsters', 5, 'spider')
+		// 					element.body.setCollideWorldBounds(true)
+		// 					element.setTint(0x999999)
+		// 					this.enemies2.add(element)
+		// 				}
+
+		// 				for (let i = 0; i < 1; i++) {
+		// 					const element = new Enemy(this, 798, 2076, 'monsters', 5, 'bat')
+		// 					element.body.setCollideWorldBounds(true)
+		// 					element.setTint(0x999999)
+		// 					this.enemies2.add(element)
+		// 				}
+		// 				this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
+		// 				this.wall.setImmovable()
+		// 				this.physics.add.collider(this.player, this.wall)
+						
+		// 			})
+		// 		})
+		// 	}
+		// 	if (this.questProcess == 4) {
+		// 		console.log('!!!!!!!!');
+		// 		this.next.on('pointerdown', () => {
+		// 			this.txtBox.destroy();
+		// 			this.txtBox = this.add.image(104, 1480, "shop").setDepth(1000).setScale(0.15);
+		// 			this.yes = this.add.image(80, 1490, "yes").setDepth(2000).setScale(0.15);
+		// 			this.no = this.add.image(149, 1490, "no").setDepth(2000).setScale(0.14);
+		// 			this.yes.setInteractive()
+		// 			this.no.setInteractive()
+		// 			this.next.destroy();
+		// 			this.exit.destroy();
+		// 			this.wall.destroy();
+		// 			localStorage.setItem('health', this.player.health)
+		// 			localStorage.setItem('positionX', this.player.x)
+		// 			localStorage.setItem('positionY', this.player.y)
+		// 			this.yes.on('pointerdown', () => {
+		// 				this.scene.start('Shop')
+		// 			})
+		// 			this.no.on('pointerdown', () => {
+		// 				this.txtBox.destroy()
+		// 				this.exit.destroy()
+		// 				this.next.destroy()
+		// 				this.exclamationMark.destroy()
+		// 				this.yes.destroy()
+		// 				this.no.destroy()
+		// 			})
+		// 		})
+		// 	}
+		// 	if (this.questProcess == 1) {
+		// 		console.log('Meet hasbulla');
+		// 		this.next.on('pointerdown', () => {
+		// 			this.txtBox.destroy();
+		// 			this.txtBox = this.add.image(80, 3055, "hasbulla-wonder-forest").setDepth(1000).setScale(0.15);
+		// 			this.questProcess = 1
+		// 			this.next.destroy();
+		// 		})
+		// 	}
+		// 	this.exit.on('pointerdown', () => {
+		// 		this.txtBox.destroy()
+		// 		this.exit.destroy()
+		// 		this.next.destroy()
+		// 		this.butcher.destroy()
+		// 		this.exclamationMark.destroy()
+		// 		if (this.yes != undefined || this.no != undefined) {
+		// 			this.yes.destroy()
+		// 			this.no.destroy()
+		// 		}
+
+		// 	})
+
+		// 	//Enemies are dead
+		// 	if (this.enemies.children.entries.length === 0) {
+
+		// 		if (this.questProcess == 1) {
+		// 			this.questProcess = 2;
+		// 			this.butcher = this.add.image(145, 2207, "butcher").setDepth(1);
+		// 			this.exclamationMark = this.add.image(145, 2188, "questemote").setDepth(1);
+		// 			this.butcher.setInteractive()
+		// 			this.butcher.flipX = true
+		// 			this.butcher.on('pointerdown', () => {
+		// 				if (this.player.y <= 2250) {
+		// 					this.txtBox = this.add.image(115, 2180, "hasbulla-good-job").setDepth(1000).setScale(0.15);
+		// 					console.log('wonderToDessert');
+		// 					// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+		// 					this.next = this.add.image(160, 2190, "next").setDepth(2000).setScale(0.14);
+		// 					this.next.setInteractive()
+		// 					this.questProcess = 3
+		// 					//update fields localstorage
+		// 					//@TODO: pas aan
+
+		// 					//update in firestore
+							// updatePlayer();
+		// 				}
+		// 			})
+
+		// 		}
+		// 	}
+
+		// 	if (this.questProcess == 3 && this.enemies2.children.entries.length === 0) {
+		// 		// console.log("dessertToCave")
+		// 		this.butcher = this.add.image(134, 1508, "butcher").setDepth(1);
+		// 		this.exclamationMark = this.add.image(134, 1490, "questemote").setDepth(1);
+		// 		this.butcher.setInteractive()
+		// 		this.butcher.flipX = true
+		// 		this.butcher.on('pointerdown', () => {
+		// 			if (this.player.y <= 2250) {
+		// 				this.txtBox = this.add.image(104, 1480, "hasbulla-good-job").setDepth(1000).setScale(0.15);
+		// 				// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
+		// 				this.next = this.add.image(149, 1490, "next").setDepth(2000).setScale(0.14);
+		// 				this.next.setInteractive()
+		// 				this.questProcess = 4
+		// 				//update fields localstorage
+		// 				//@TODO: pas aan
+
+		// 				//update in firestore
+		// 				// updatePlayer();
+		// 			}
+		// 		})
+				
+		// 	}
+
+		// }
 
 
 		this.player.update()

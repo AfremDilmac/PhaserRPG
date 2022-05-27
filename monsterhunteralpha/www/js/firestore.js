@@ -90,21 +90,25 @@ const firebaseConfig = {
 
 
 
+
+
 let i = localStorage.getItem('ID')
 const docRef = doc(db, 'users', i)
 
-let a = localStorage.getItem('GOLD:')
-let b = localStorage.getItem('health')
-let c = localStorage.getItem('positionX')
-let d = localStorage.getItem('positionY')
+function updatePlayer(){
+	
+	let a = localStorage.getItem('gold:')
+	let b = localStorage.getItem('health')
+	let c = localStorage.getItem('positionX')
+	let d = localStorage.getItem('positionY')
 
-docRef.updateDoc(docRef, {
-	gold: a,
-	health: b,
-	positionX: c,
-	positionY: d,
-})
-
+	docRef.updateDoc(docRef, {
+		gold: a,
+		health: b,
+		positionX: c,
+		positionY: d,
+	})
+}
 
 
 
