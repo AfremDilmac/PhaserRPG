@@ -1,61 +1,85 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, updateDoc, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"; 
+import {
+	initializeApp
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+import {
+	getDatabase,
+	set,
+	ref,
+	update
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	onAuthStateChanged,
+	signOut
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import {
+	getFirestore,
+	collection,
+	getDocs,
+	updateDoc,
+	addDoc,
+	doc,
+	setDoc
+} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
-    authDomain: "monsterhunter-d7680.firebaseapp.com",
-    databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "monsterhunter-d7680",
-    storageBucket: "monsterhunter-d7680.appspot.com",
-    messagingSenderId: "338059376056",
-    appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+	authDomain: "monsterhunter-d7680.firebaseapp.com",
+	databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+	projectId: "monsterhunter-d7680",
+	storageBucket: "monsterhunter-d7680.appspot.com",
+	messagingSenderId: "338059376056",
+	appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
 };
 
 //Initialize Firebase
-   const app = initializeApp(firebaseConfig);
-   const database = getDatabase(app);
-   const auth = getAuth();
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth();
 
-   const db = getFirestore()
-   const colRef = collection(db, 'users')
+const db = getFirestore()
+const colRef = collection(db, 'users')
 
-  //array van docs uitloggen 
-  getDocs(colRef)
-  	.then((snapshot) => {
-		 let users = []
-		 snapshot.docs.forEach((doc) => {
-			 users.push({...doc.data(), id: doc.id})
-		 })
-		 console.log(users);
-	  })
-	  .catch(err => {
-		  console.log(err.message);
-	  })
+//array van docs uitloggen 
+getDocs(colRef)
+	.then((snapshot) => {
+		let users = []
+		snapshot.docs.forEach((doc) => {
+			users.push({
+				...doc.data(),
+				id: doc.id
+			})
+		})
+		console.log(users);
+	})
+	.catch(err => {
+		console.log(err.message);
+	})
 
 
-	  const gotoLogin = document.getElementById('gotoLogin');
-	  const signupBtn = document.getElementById('signUp');
+const gotoLogin = document.getElementById('gotoLogin');
+const signupBtn = document.getElementById('signUp');
 
-	  gotoLogin.style.display = 'none'
-	  	// nieuwe doc toevoegen in firestore bij signup 
-	const sigupForm = document.querySelector('.left')
+gotoLogin.style.display = 'none'
+// nieuwe doc toevoegen in firestore bij signup 
+const sigupForm = document.querySelector('.left')
 
-	sigupForm.addEventListener('submit', (e) => {
+sigupForm.addEventListener('submit', (e) => {
 		e.preventDefault();
 
 		var email = document.getElementById('email').value;
 		var password = document.getElementById('password').value;
 		var username = document.getElementById('username').value;
 		var lblError = document.getElementById('errormsg-signup')
-  
+
 		createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				// Signed in 
 				const user = userCredential.user;
 
-				set(ref(database, 'users/' + user.uid),{
+				set(ref(database, 'users/' + user.uid), {
 					username: username,
 					email: email
 				})
@@ -68,28 +92,28 @@ const firebaseConfig = {
 					gold: 0,
 					health: 50,
 					positionX: 90,
-					positionY: 3159,			
+					positionY: 3159,
 				});
-			
-			})
-				signupBtn.style.display = 'none'
-				gotoLogin.style.display = 'block'
 
-				lblError.innerHTML='user created!'
 				
+				// db.collection('users').doc('nphuFFSC7TafmI66bs5gzIlbZLo1').update({
+				// 	health: 999
+				// })
+
 			})
-			.catch((error) => {
-			const errorCode = error.code;
-			const errorMessage = error.message;
+		signupBtn.style.display = 'none'
+		gotoLogin.style.display = 'block'
 
-			lblError.innerHTML= errorCode
-			// ..
-			});
+		lblError.innerHTML = 'user created!'
 
+	})
+	.catch((error) => {
+		const errorCode = error.code;
+		const errorMessage = error.message;
 
-
-
-
+		lblError.innerHTML = errorCode
+		// ..
+	});
 
 
 let i = localStorage.getItem('ID')
@@ -109,6 +133,19 @@ function updatePlayer(){
 		positionY: d,
 	})
 }
+
+//tried:
+// import - export 
+// bind
+// require
+
+
+
+
+
+
+
+
 
 
 
@@ -203,6 +240,3 @@ function updatePlayer(){
 //   });
 
 //  });
-
-
-
