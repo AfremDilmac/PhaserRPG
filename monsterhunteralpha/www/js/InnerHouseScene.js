@@ -247,10 +247,10 @@ class InnerHouseScene extends Phaser.Scene {
 
 		monsterLayer.forEachTile(tile => {
 			if (tile.properties.CP_monster !== undefined) {
-
+				
 				const x = tile.getCenterX()
 				const y = tile.getCenterY()
-				const e = new Enemy(this, x, y, 'monsters', 5, tile.properties.CP_monster, 50)
+				const e = new Enemy(this, x, y, 'monsters', 1, tile.properties.CP_monster, 50).setScale(1.5)
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
