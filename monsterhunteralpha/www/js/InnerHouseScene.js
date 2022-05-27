@@ -72,6 +72,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall
 		this.coins
 		this.coinAmount = 0
+		this.score = 0
 		this.score1 
 		this.score2  
 		this.totalScore
@@ -163,7 +164,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.player = new Player(this, 90, 3159, 'player', 50).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
-		this.physics.add.collider(this.player, worldLayer)
+		// this.physics.add.collider(this.player, worldLayer)
 		// this.physics.add.collider(this.player, worldLayer2)
 		// this.physics.add.collider(this.player, exitHouse, this.handleExitHouse, null, this)
 
@@ -253,6 +254,8 @@ class InnerHouseScene extends Phaser.Scene {
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
+				e.active = false;
+				e.isPlaying = false;
 			}
 
 		})
@@ -287,7 +290,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.enemies2, worldLayer)
-		this.physics.add.collider(this.player, worldLayer)
+		// this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
 
@@ -390,11 +393,10 @@ class InnerHouseScene extends Phaser.Scene {
 				callbackScope: this,
 				loop: false
 			})
-
 			this.emmiter.active = true
 			this.emmiter.setPosition(enemy.x, enemy.y)
 			this.emmiter.explode()
-			this.score1 += 1;
+			
 		}
 	}
 
@@ -419,7 +421,6 @@ class InnerHouseScene extends Phaser.Scene {
 			loop: false
 		})
 		e.explode()
-		this.score2 += 1
 	}
 
 	
@@ -434,8 +435,11 @@ class InnerHouseScene extends Phaser.Scene {
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		if (this.input.x < 500) {
 			if (this.keys.space.isDown || this.player.isShooting) {
+				console.log(this.enemies)
 				if (time > this.lastFiredTime) {
 					console.log('y:' + this.player.y + 'x: ' + this.player.x)
+					console.log(this.score)
+					console.log(this.enemies.children.entries.length)
 					this.lastFiredTime = time + 200
 					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
 				}
@@ -444,9 +448,9 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 //////////////////////////////////////////////////////////////////////////////////
-this.totalScore = this.score1 + this.score2;
 
-		if (this.totalScore == 16 && this.questProcess == "start") {
+
+		if (this.enemies.children.entries.length == 116 && this.questProcess == "start") {
 			this.wall.destroy();
 		}
 
@@ -468,9 +472,6 @@ this.totalScore = this.score1 + this.score2;
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
 			this.physics.add.collider(this.player, this.wall);
-
-
-			console.log(totalScore);
 
 			// updatePlayer();
 		}
