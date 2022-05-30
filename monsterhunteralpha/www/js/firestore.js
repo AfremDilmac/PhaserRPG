@@ -1,29 +1,3 @@
-import {
-	initializeApp
-} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import {
-	getDatabase,
-	set,
-	ref,
-	update
-} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
-import {
-	getAuth,
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
-	onAuthStateChanged,
-	signOut
-} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import {
-	getFirestore,
-	collection,
-	getDocs,
-	updateDoc,
-	addDoc,
-	doc,
-	setDoc
-} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
-
 const firebaseConfig = {
 	apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
 	authDomain: "monsterhunter-d7680.firebaseapp.com",
@@ -35,28 +9,23 @@ const firebaseConfig = {
 };
 
 //Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const auth = getAuth();
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-const db = getFirestore()
-const colRef = collection(db, 'users')
+const colRef = db.collection('users').doc('hFKYRLsja7MGFhXhGavVPZnPIbU2');
 
-//array van docs uitloggen 
-getDocs(colRef)
-	.then((snapshot) => {
-		let users = []
-		snapshot.docs.forEach((doc) => {
-			users.push({
-				...doc.data(),
-				id: doc.id
-			})
-		})
-		console.log(users);
-	})
-	.catch(err => {
-		console.log(err.message);
-	})
+//doc uitloggen 
+
+// colRef.get().then((doc) => {
+// 	if (doc.exists) {       
+// 		console.log(doc);
+// 	}
+// }).catch((error) => {
+// 	console.log("Error getting document:", error);
+// });
+
 
 
 const gotoLogin = document.getElementById('gotoLogin');
@@ -67,73 +36,135 @@ gotoLogin.style.display = 'none'
 const sigupForm = document.querySelector('.left')
 
 sigupForm.addEventListener('submit', (e) => {
-		e.preventDefault();
+	e.preventDefault();
 
-		var email = document.getElementById('email').value;
-		var password = document.getElementById('password').value;
-		var username = document.getElementById('username').value;
-		var lblError = document.getElementById('errormsg-signup')
+	var email = document.getElementById('email').value;
+	var password = document.getElementById('password').value;
+	var username = document.getElementById('username').value;
+	var lblError = document.getElementById('errormsg-signup')
 
-		createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				// Signed in 
-				const user = userCredential.user;
+	// createUserWithEmailAndPassword(auth, email, password)
+	// 	.then((userCredential) => {
+	// 		// Signed in 
+	// 		const user = userCredential.user;
 
-				set(ref(database, 'users/' + user.uid), {
-					username: username,
-					email: email
-				})
-				console.log(user.uid); // ID VAN AUTH
-				localStorage.setItem("ID", user.uid)
-				let ident = localStorage.getItem('ID')
+	// 		set(ref(database, 'users/' + user.uid), {
+	// 			username: username,
+	// 			email: email
+	// 		})
+	// 		console.log(user.uid); // ID VAN AUTH
+	// 		localStorage.setItem("ID", user.uid)
+	// 		let ident = localStorage.getItem('ID')
 
-				setDoc(doc(db, "users", ident), {
-					name: username,
-					gold: 0,
-					health: 50,
-					positionX: 90,
-					positionY: 3159,
-				});
+	// 		setDoc(doc(db, "users", ident), {
+	// 			name: username,
+	// 			gold: 0,
+	// 			health: 50,
+	// 			positionX: 90,
+	// 			positionY: 3159,
+	// 		});
+	// 	})
 
-				
-				// db.collection('users').doc('nphuFFSC7TafmI66bs5gzIlbZLo1').update({
-				// 	health: 999
-				// })
-
-			})
-		signupBtn.style.display = 'none'
-		gotoLogin.style.display = 'block'
-
-		lblError.innerHTML = 'user created!'
-
-	})
+	
+	auth.createUserWithEmailAndPassword(email, password)
+    .then(function () {
+      db.collection('users').doc(auth.currentUser.uid)
+        .set({
+			gold: 0,
+			health: 50,
+			name: username,
+			positionX: 90,
+			positionY: 3159,
+        })
+		localStorage.setItem("ID", auth.currentUser.uid)
+		.then(() => {
+			console.log("Document successfully written!");
+		})
+		.catch((error) => {
+			console.error("Error writing document: ", error);
+		});
+    })
 	.catch((error) => {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-
-		lblError.innerHTML = errorCode
-		// ..
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		console.log(errorMessage + " " + errorCode);
 	});
 
+	// firebase.auth().createUserWithEmailAndPassword(email, password)
+	// 	.then((userCredential) => {
+	// 		// Signed in 
+	// 		const user = userCredential.user;
 
-let i = localStorage.getItem('ID')
-const docRef = doc(db, 'users', i)
+	// 		set(ref(database, 'users/' + user.uid), {
+	// 			username: username,
+	// 			email: email
+	// 		})
+	// 		console.log(user.uid); // ID VAN AUTH
+	// 		localStorage.setItem("ID", user.uid)
+	// 		let ident = localStorage.getItem('ID')
 
-window.updatePlayer = function(){
-	
-	let a = localStorage.getItem('gold')
-	let b = localStorage.getItem('health')
-	let c = localStorage.getItem('positionX')
-	let d = localStorage.getItem('positionY')
+	// 		// setDoc(doc(db, "users", ident), {
+	// 		// 	name: username,
+	// 		// 	gold: 0,
+	// 		// 	health: 50,
+	// 		// 	positionX: 90,
+	// 		// 	positionY: 3159,
+	// 		// });
 
-	docRef.updateDoc(docRef, {
-		gold: a,
-		health: b,
-		name: "jooooo",
-		positionX: c,
-		positionY: d,
-	})
-}
+	// 		db.collection("users").doc(ident).set({
+	// 				gold: 0,
+	// 				health: 50,
+	// 				name: username,
+	// 				positionX: 90,
+	// 				positionY: 3159,
+	// 			})
+	// 			.then(() => {
+	// 				console.log("Document successfully written!");
+	// 			})
+	// 			.catch((error) => {
+	// 				console.error("Error writing document: ", error);
+	// 			});
+	// 	})
+	// 	.catch((error) => {
+	// 		var errorCode = error.code;
+	// 		var errorMessage = error.message;
+	// 		console.log(errorMessage + " " + errorCode);
+	// 	});
+
+
+	signupBtn.style.display = 'none'
+	gotoLogin.style.display = 'block'
+
+	lblError.innerHTML = 'user created!'
+
+})
+// .catch((error) => {
+// 	const errorCode = error.code;
+// 	const errorMessage = error.message;
+
+// 	lblError.innerHTML = errorCode
+// 	// ..
+// });
+
+
+// let i = localStorage.getItem('ID')
+// const docRef = db.collection('users').doc(i)
+
+// window.updatePlayer = function(){
+
+// 	let a = localStorage.getItem('gold')
+// 	let b = localStorage.getItem('health')
+// 	let c = localStorage.getItem('positionX')
+// 	let d = localStorage.getItem('positionY')
+
+// 	docRef.updateDoc(docRef, {
+// 		gold: a,
+// 		health: b,
+// 		name: "jooooo",
+// 		positionX: c,
+// 		positionY: d,
+// 	})
+// }
 
 //tried:
 // import - export 

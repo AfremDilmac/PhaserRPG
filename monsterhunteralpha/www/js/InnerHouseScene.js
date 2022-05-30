@@ -365,6 +365,69 @@ class InnerHouseScene extends Phaser.Scene {
 
 	} //end create
 
+	getDatabasecoins(){
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+    	// if not initialized
+        if (firebase.apps.length === 0) {
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);        
+        }
+
+        //  let uidLocalStorage = localStorage.getItem('uid')
+         let identifier = localStorage.getItem('ID')
+
+         const db = firebase.firestore()
+         const docRef = db.collection('users').doc(identifier);
+
+         docRef.get().then((doc) => {
+            if (doc.exists) {       
+                window.localStorage.setItem('coin',  doc.data().coinAmount)
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+
+	setCoins(goldd, heal, posX, posY){
+        
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+    
+    	// if not initialized
+        if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);        
+		  }
+
+         let identifier = localStorage.getItem('ID')
+         const db = firebase.firestore()
+
+        db.collection('users').doc(identifier)
+        .update({
+            gold: goldd,
+			health: heal,
+			positionX: posX,
+			positionY: posY,
+
+        })
+    }
+
 	// handleExitHouse() {
 	//     this.scene.start('houseScene')
 	// }
@@ -484,6 +547,8 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
 
+			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
+
 		}
 
 		if (this.player.y <= 2175) {
@@ -522,6 +587,8 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
+
+			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 1445 ) {
@@ -566,6 +633,8 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
+
+			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 685) {
