@@ -48,6 +48,9 @@ class InnerShopScene extends Phaser.Scene {
 		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 		this.load.image("exit", "assets/menu/exit.png")
 		this.load.image("next", "assets/menu/next.png")
+		this.load.image("yes", "assets/text/yes.png")
+		this.load.image("no", "assets/text/no.png")
+		this.load.image("shop-salad", "assets/text/shop-salad.png")
 
 		this.player
 		this.keys
@@ -61,6 +64,10 @@ class InnerShopScene extends Phaser.Scene {
 		this.shopProcess = 0
 		this.emmiter
 		this.salad
+		this.down = true
+		this.up
+		this.txtBox
+		this.foodArrow
 		this.coins
 		this.coinAmount = 0
 		/**
@@ -80,7 +87,7 @@ class InnerShopScene extends Phaser.Scene {
 		const map = this.make.tilemap({
 			key: 'shop-map'
 		})
-		this.cameras.main.zoom = 2;
+		this.cameras.main.zoom = 2.5;
 
 		//verschillende layers aanmaken met gepaste key 
 		const tileset = map.addTilesetImage('Tileset', 'tiles')
@@ -111,7 +118,7 @@ class InnerShopScene extends Phaser.Scene {
 		 * Player
 		 */
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 210, 270, 'player', 50).setScale(0.5)
+		this.player = new Player(this, 210, 270, 'player', 20).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
@@ -148,28 +155,33 @@ class InnerShopScene extends Phaser.Scene {
 
 		let merchant = this.add.image(160, 62, "merchant").setDepth(1);
 		
-		let foodArrow = this.add.image(110, 168, "down").setDepth(1).setScale(0.1);
-		foodArrow.setInteractive()
-		foodArrow.on('pointerdown', () =>{
+		this.foodArrow = this.add.image(110, 165, "down").setDepth(1).setScale(0.1);
+		this.foodArrow.setInteractive()
+		this.foodArrow.on('pointerdown', () =>{
 			if (this.player.x >= 101 && this.player.y > 160 && this.player.x <= 138 && this.player.y <= 210 ) {
 				console.log('Buy food')
+				this.txtBox = this.add.image(200, 160, "shop-salad").setDepth(1000).setScale(0.25);
+				this.yes = this.add.image(160, 175, "yes").setDepth(2000).setScale(0.2);
+				this.no = this.add.image(240, 175, "no").setDepth(2000).setScale(0.2);
+				this.no.setInteractive()
+				this.yes.setInteractive()
+				
+				this.no.on('pointerdown', () =>{
+					this.txtBox.destroy();
+					this.no.destroy();
+					this.yes.destroy();
+				})
+				this.yes.on('pointerdown', () =>{
+					this.player.health = localStorage.getItem('health');
+					this.txtBox.destroy();
+					this.no.destroy();
+					this.yes.destroy();
+					//update coins - 10
+				})
+				
 			}
 		})
-
-		merchant.setInteractive()
-		merchant.flipX = true
-		merchant.on('pointerdown', () =>{
-			console.log(this.player.y)
-			if (this.player.y <= 104) {
-				if (this.shopProcess == 0) {
-				this.txtBox = this.add.image(129, 38, "merchant-welcome").setDepth(1000).setScale(0.15);
-				this.exit = this.add.image(180, 20, "exit").setDepth(2000).setScale(0.15);
-				this.exit.setInteractive()
-				this.next = this.add.image(180, 50, "next").setDepth(2000).setScale(0.14);
-				this.next.setInteractive()
-				this.npcStart = true;
-			}}
-		})
+	
 	} //end create
 
 
@@ -196,7 +208,26 @@ class InnerShopScene extends Phaser.Scene {
 		this.player.update()
 		// console.log('X: ' + this.player.x + 'Y: ' + this.player.y)
 		
-
+		if (this.down) {
+			if (this.foodArrow.y >= 160 && this.foodArrow.y <= 165) {
+				console.log("food arrow down: " + this.foodArrow.y)
+			}
+			else if (this.foodArrow.y >= 165){
+				this.down = false
+				console.log("down stop: " + this.foodArrow.y)
+			}
+		}
+		if (this.down == false) {
+			if (this.foodArrow.y >= 165 && this.foodArrow.y <= 170) {
+				console.log("food arrow up: " + this.foodArrow.y)
+			}
+			else if (this.foodArrow.y <= 169){
+				this.down = true
+				console.log("up stop: " + this.foodArrow.y)
+			}
+		}
+		
+		
 	} //end update
 
 

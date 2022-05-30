@@ -254,8 +254,7 @@ class InnerHouseScene extends Phaser.Scene {
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
-				e.active = false;
-				e.isPlaying = false;
+				
 			}
 
 		})
