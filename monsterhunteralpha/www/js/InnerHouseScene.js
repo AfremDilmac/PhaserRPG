@@ -85,6 +85,8 @@ class InnerHouseScene extends Phaser.Scene {
 		url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
 		this.load.plugin('rexvirtualjoystickplugin', url, true);
 
+		// this.startData();
+
 
 	} //end preload
 
@@ -359,12 +361,15 @@ class InnerHouseScene extends Phaser.Scene {
 		// this.butcher.setInteractive()
 		// this.butcher.flipX = true
 
+		this.coinText = this.add.text(300, 2800, 'Gold: ' + parseInt(localStorage.getItem('gold')), {
+			font: '18px',
+			fill: '#ffffff'
+		})
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 	} //end create
 
-	getDatabasecoins(){
+	startData(){
 
 		const firebaseConfig = {
 			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
@@ -389,14 +394,14 @@ class InnerHouseScene extends Phaser.Scene {
 
          docRef.get().then((doc) => {
             if (doc.exists) {       
-                window.localStorage.setItem('coin',  doc.data().coinAmount)
+                localStorage.setItem('gold', doc.data().gold)
             }
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
     }
 
-	setCoins(goldd, heal, posX, posY){
+	updatePlayer(goldd, heal, posX, posY){
         
 		const firebaseConfig = {
 			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
@@ -433,19 +438,13 @@ class InnerHouseScene extends Phaser.Scene {
 
 	//COLLISION HANDLING
 
+	
+
 	handlePlayerCoinCollision(p, c) {
 		c.destroy()
 		this.coinAmount += 1
-
-		// localStorage.setItem('gold', this.coinAmount)
-
-		// console.log(this.enemies.children.entries.length)
-		// console.log("questProcess:" + " " + this.questProcess);
-		// console.log("health:" + " " + this.player.health);
-		// console.log("gold:" + " " + this.coinAmount);
-		// console.log("positionX:" + " " + this.player.x);
-		// console.log("positionY:" + " " + this.player.y);
-
+		var tot = this.coinAmount + parseInt(localStorage.getItem('gold'));
+		this.coinText.setText('Gold: ' + tot )
 	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -504,6 +503,7 @@ class InnerHouseScene extends Phaser.Scene {
 	update(time, delta) {
 
 
+
 	//time = tijd dat het programma gerund is in ms
 	//delta = tijd tussen laatste update en nieuwe update 
 
@@ -522,7 +522,6 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-
 
 		if (this.enemies.children.entries.length == 88 && this.questProcess == "start") {
 			// this.wall.destroy();
@@ -546,7 +545,7 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
 
-			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 
 		}
 
@@ -587,7 +586,7 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
 
-			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 1445 ) {
@@ -633,7 +632,7 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('positionY', this.player.y);
 			localStorage.setItem('level', this.questProcess);
 
-			this.setCoins(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 685) {
@@ -856,6 +855,8 @@ class InnerHouseScene extends Phaser.Scene {
 		// }
 
 	} //end update
+
+
 
 
 }; //end gameScene

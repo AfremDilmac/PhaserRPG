@@ -14,17 +14,9 @@ const database = firebase.database();
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const colRef = db.collection('users').doc('hFKYRLsja7MGFhXhGavVPZnPIbU2');
 
-//doc uitloggen 
 
-// colRef.get().then((doc) => {
-// 	if (doc.exists) {       
-// 		console.log(doc);
-// 	}
-// }).catch((error) => {
-// 	console.log("Error getting document:", error);
-// });
+
 
 
 
@@ -43,28 +35,6 @@ sigupForm.addEventListener('submit', (e) => {
 	var username = document.getElementById('username').value;
 	var lblError = document.getElementById('errormsg-signup')
 
-	// createUserWithEmailAndPassword(auth, email, password)
-	// 	.then((userCredential) => {
-	// 		// Signed in 
-	// 		const user = userCredential.user;
-
-	// 		set(ref(database, 'users/' + user.uid), {
-	// 			username: username,
-	// 			email: email
-	// 		})
-	// 		console.log(user.uid); // ID VAN AUTH
-	// 		localStorage.setItem("ID", user.uid)
-	// 		let ident = localStorage.getItem('ID')
-
-	// 		setDoc(doc(db, "users", ident), {
-	// 			name: username,
-	// 			gold: 0,
-	// 			health: 50,
-	// 			positionX: 90,
-	// 			positionY: 3159,
-	// 		});
-	// 	})
-
 	
 	auth.createUserWithEmailAndPassword(email, password)
     .then(function () {
@@ -76,7 +46,7 @@ sigupForm.addEventListener('submit', (e) => {
 			positionX: 90,
 			positionY: 3159,
         })
-		localStorage.setItem("ID", auth.currentUser.uid)
+		// localStorage.setItem("ID", auth.currentUser.uid)
 		.then(() => {
 			console.log("Document successfully written!");
 		})
@@ -172,7 +142,15 @@ sigupForm.addEventListener('submit', (e) => {
 // require
 
 
-
+//doc uitloggen 
+// const colRef = db.collection('users').doc(id....);
+// colRef.get().then((doc) => {
+// 	if (doc.exists) {       
+// 		console.log(doc);
+// 	}
+// }).catch((error) => {
+// 	console.log("Error getting document:", error);
+// });
 
 
 
