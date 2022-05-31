@@ -51,6 +51,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.load.image("shop", "assets/text/shop.png")
 		this.load.image("yes", "assets/text/yes.png")
 		this.load.image("no", "assets/text/no.png")
+		this.load.image("monsters-alive", "assets/text/monsters-alive.png")
 		this.player
 		this.keys
 		this.enemy
@@ -73,8 +74,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.coins
 		this.coinAmount = 0
 		this.score = 0
-		this.score1 
-		this.score2  
+		this.score1
+		this.score2
 		this.totalScore
 
 		/**
@@ -98,7 +99,7 @@ class InnerHouseScene extends Phaser.Scene {
 		})
 		this.cameras.main.zoom = 2;
 
-		//verschillende layers aanmaken met gepaste key 
+		//verschillende layers aanmaken met gepaste key
 		const tileset = map.addTilesetImage('Tileset', 'house-tiles')
 		const floor = map.createStaticLayer('floor', tileset, 0, 0)
 		const floor2 = map.createStaticLayer('floor2', tileset, 0, 0)
@@ -109,12 +110,12 @@ class InnerHouseScene extends Phaser.Scene {
 
 		// zorgt ervoor dat de player niet meer zichtbaar is op de abovelayer (z-index)
 		// aboveLayer.setDepth(100)
-		// // collision inschakelen voor onze wereld 
+		// // collision inschakelen voor onze wereld
 		worldLayer.setCollisionByProperty({
 			collides: true
 		})
 
-		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen 
+		// lengte en hoogte van de map in een variabelen steken + camera bounds limiet gelijkstelen aan deze variabelen
 		this.physics.world.bounds.width = map.widthInPixels
 		this.physics.world.bounds.height = map.heightInPixels
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
@@ -127,7 +128,7 @@ class InnerHouseScene extends Phaser.Scene {
 		//  this.minimap = this.add.image(340, 50, "minimap").setDepth(1).setScale(0.2);
 
 		////////////////////////////////////:
-		//collectable animaties 
+		//collectable animaties
 		this.anims.create({
 			key: 'coinAnim',
 			frames: this.anims.generateFrameNumbers('coin', {
@@ -175,13 +176,13 @@ class InnerHouseScene extends Phaser.Scene {
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
 
-		/** 
+		/**
 		 * Group of ennemys
 		 */
 		// Groep enemies aanmaken op verchillende plaatsen (zie berekening) a.d.h van de group functie
 		// Colider inschakelen
-		// enemies een blauwe kleur geven 
-		// elements (enemies) in de group steken 
+		// enemies een blauwe kleur geven
+		// elements (enemies) in de group steken
 		this.enemies = this.add.group()
 		this.enemies2 = this.add.group()
 		this.enemies3 = this.add.group()
@@ -206,7 +207,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 		this.enemies.add(element)
 		// 	}
 		// }
-////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
 		// if (this.questProcess == "dessert") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 1400 , 'monsters', 5, 'ghost')
@@ -222,7 +223,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 		this.enemies2.add(element)
 		// 	}
 		// }
-////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
 		// if (this.questProcess == "cave") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 600 , 'monsters', 5, 'skeleton')
@@ -249,14 +250,14 @@ class InnerHouseScene extends Phaser.Scene {
 
 		monsterLayer.forEachTile(tile => {
 			if (tile.properties.CP_monster !== undefined) {
-				
+
 				const x = tile.getCenterX()
 				const y = tile.getCenterY()
 				const e = new Enemy(this, x, y, 'monsters', 1, tile.properties.CP_monster, 50).setScale(1.5)
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
-				
+
 			}
 
 		})
@@ -296,7 +297,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
 
 
-		/** 
+		/**
 		 * Particles
 		 */
 		//Aanmaken van emitter dat we straks gaan gebruiken voor de handleProjectileEnemyCollision
@@ -332,34 +333,56 @@ class InnerHouseScene extends Phaser.Scene {
 		// /**
 		//  * Butcher
 		//  */
-		// this.butcher = this.add.image(110, 3080, "butcher").setDepth(1);
-		// this.exclamationMark = this.add.image(110, 3070, "exclemote").setDepth(1);
+		this.butcher = this.add.image(120, 2931, "butcher").setDepth(1);
+		this.exclamationMark = this.add.image(120, 2920, "exclemote").setDepth(1);
 
-		// this.butcher.on('pointerdown', () => {
-		// 	if (this.player.y >= 3060 && this.player.y <= 3107) {
-		// 		if (this.questProcess == "start") {
-		// 			console.log('quest start');
-		// 			this.txtBox = this.add.image(80, 3055, "hasbulla-welcome").setDepth(1000).setScale(0.15);
-		// 			// this.txtWelcome = this.add.image(503, 180, "lblwelcome").setDepth(12).setScale(0.38)
-		// 			this.exit = this.add.image(125, 3040, "exit").setDepth(2000).setScale(0.15);
-		// 			this.exit.setInteractive()
-		// 			this.next = this.add.image(125, 3063, "next").setDepth(2000).setScale(0.14);
-		// 			this.next.setInteractive()
-		// 			this.questStarted = true
-		// 			this.questProcess = "wonder";
-		// 			//update fields localstorage
-		// 			//@TODO: pas aan
+		this.butcher.on('pointerdown', () => {
+			if (this.player.y <= 2990 && this.player.y >= 2900) {
 
-		// 			//update in firestore
-		// 			// updatePlayer();
-					
+				console.log('quest start');
+				this.exclamationMark.destroy();
+				this.txtBox = this.add.image(80, 2900, "hasbulla-welcome").setDepth(1000).setScale(0.2);
+				this.exit = this.add.image(139, 2885, "exit").setDepth(2000).setScale(0.15);
+				this.exit.setInteractive()
+				this.next = this.add.image(140, 2909, "next").setDepth(2000).setScale(0.14);
+				this.next.setInteractive()
+				this.questStarted = true
+				this.next.on('pointerdown', () => {
+					this.txtBox.destroy();
+					this.txtBox = this.add.image(80, 2900, "hasbulla-wonder-forest").setDepth(1000).setScale(0.2);
+					this.next.destroy();
+				})
+				this.exit.on('pointerdown', () => {
+					this.txtBox.destroy();
+					this.exit.destroy();
+					if (this.next != "") {
+						this.next.destroy();
+					}
+					this.butcher.destroy();
+					this.questProcess = "wonder";
+					this.butcher = this.add.image(216, 2216, "butcher").setDepth(1);
+					this.exclamationMark = this.add.image(216, 2205, "exclemote").setDepth(1);
+					this.butcher.setInteractive()
+				})
 
-		// 		}
-		// 	}
-		// })
+				//update fields localstorage
+				//@TODO: pas aan
 
-		// this.butcher.setInteractive()
-		// this.butcher.flipX = true
+				//update in firestore
+				// updatePlayer();
+
+			}
+		})
+
+		this.butcher.setInteractive()
+		this.butcher.flipX = true
+
+		this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
+		this.wall.setImmovable();
+		this.wall.visible = false;
+		this.physics.add.collider(this.enemies2, this.wall);
+		this.physics.add.collider(this.enemies, this.wall);
+		this.physics.add.collider(this.player, this.wall);
 
 		this.coinText = this.add.text(300, 2800, 'Gold: ' + parseInt(localStorage.getItem('gold')), {
 			font: '18px',
@@ -369,7 +392,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 	} //end create
 
-	startData(){
+	startData() {
 
 		const firebaseConfig = {
 			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
@@ -380,57 +403,57 @@ class InnerHouseScene extends Phaser.Scene {
 			messagingSenderId: "338059376056",
 			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
 		};
-    	// if not initialized
-        if (firebase.apps.length === 0) {
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);        
-        }
-
-        //  let uidLocalStorage = localStorage.getItem('uid')
-         let identifier = localStorage.getItem('ID')
-
-         const db = firebase.firestore()
-         const docRef = db.collection('users').doc(identifier);
-
-         docRef.get().then((doc) => {
-            if (doc.exists) {       
-                localStorage.setItem('gold', doc.data().gold)
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-    }
-
-	updatePlayer(goldd, heal, posX, posY){
-        
-		const firebaseConfig = {
-			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
-			authDomain: "monsterhunter-d7680.firebaseapp.com",
-			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
-			projectId: "monsterhunter-d7680",
-			storageBucket: "monsterhunter-d7680.appspot.com",
-			messagingSenderId: "338059376056",
-			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
-		};
-    
-    	// if not initialized
-        if (firebase.apps.length === 0) {
+		// if not initialized
+		if (firebase.apps.length === 0) {
 			// Initialize Firebase
-			firebase.initializeApp(firebaseConfig);        
-		  }
+			firebase.initializeApp(firebaseConfig);
+		}
 
-         let identifier = localStorage.getItem('ID')
-         const db = firebase.firestore()
+		//  let uidLocalStorage = localStorage.getItem('uid')
+		let identifier = localStorage.getItem('ID')
 
-        db.collection('users').doc(identifier)
-        .update({
-            gold: goldd,
-			health: heal,
-			positionX: posX,
-			positionY: posY,
+		const db = firebase.firestore()
+		const docRef = db.collection('users').doc(identifier);
 
-        })
-    }
+		docRef.get().then((doc) => {
+			if (doc.exists) {
+				localStorage.setItem('gold', doc.data().gold)
+			}
+		}).catch((error) => {
+			console.log("Error getting document:", error);
+		});
+	}
+
+	updatePlayer(goldd, heal, posX, posY) {
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+
+		// if not initialized
+		if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		}
+
+		let identifier = localStorage.getItem('ID')
+		const db = firebase.firestore()
+
+		db.collection('users').doc(identifier)
+			.update({
+				gold: goldd,
+				health: heal,
+				positionX: posX,
+				positionY: posY,
+
+			})
+	}
 
 	// handleExitHouse() {
 	//     this.scene.start('houseScene')
@@ -438,13 +461,13 @@ class InnerHouseScene extends Phaser.Scene {
 
 	//COLLISION HANDLING
 
-	
+
 
 	handlePlayerCoinCollision(p, c) {
 		c.destroy()
 		this.coinAmount += 1
 		var tot = this.coinAmount + parseInt(localStorage.getItem('gold'));
-		this.coinText.setText('Gold: ' + tot )
+		this.coinText.setText('Gold: ' + tot)
 	}
 
 	//projectielen zijn niet meer actief en verdwijnen dankzij deze functie
@@ -469,7 +492,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.emmiter.active = true
 			this.emmiter.setPosition(enemy.x, enemy.y)
 			this.emmiter.explode()
-			
+
 		}
 	}
 
@@ -495,20 +518,20 @@ class InnerHouseScene extends Phaser.Scene {
 		})
 		e.explode()
 	}
-	
 
-	
+
+
 	////UPDATE
 
 	update(time, delta) {
 
 
 
-	//time = tijd dat het programma gerund is in ms
-	//delta = tijd tussen laatste update en nieuwe update 
+		//time = tijd dat het programma gerund is in ms
+		//delta = tijd tussen laatste update en nieuwe update
 
 		// als er op space gedrukt wordt schieten we een bullet met een interval van 200 ms
-		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
+		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt
 		if (this.input.x < 500) {
 			if (this.keys.space.isDown || this.player.isShooting) {
 				if (time > this.lastFiredTime) {
@@ -516,15 +539,62 @@ class InnerHouseScene extends Phaser.Scene {
 					// console.log(this.enemies.children.entries.length)
 					this.lastFiredTime = time + 200
 					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+					console.log(this.enemies.children.entries.length);
 				}
 			}
 		}
 
 
-// //////////////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////////////////
 
-		if (this.enemies.children.entries.length == 88 && this.questProcess == "start") {
-			// this.wall.destroy();
+		// if (this.enemies.children.entries.length >= 89 && this.questProcess == "wonder" && this.questProcess != "sand") {
+
+		// 	this.butcher = this.add.image(216, 2216, "butcher").setDepth(1);
+		// 	this.exclamationMark = this.add.image(216, 2205, "exclemote").setDepth(1);
+
+		// 	this.butcher.on('pointerdown', () => {
+		// 		console.log("monsters")
+		// 		this.exclamationMark.destroy();
+		// 		this.txtBox = this.add.image(200, 2190, "monsters-alive").setDepth(1000).setScale(0.2);
+		// 		this.exit = this.add.image(260, 2175, "exit").setDepth(2000).setScale(0.15);
+		// 		this.exit.setInteractive()
+
+		// 		this.exit.on('pointerdown', () => {
+		// 			this.txtBox.destroy();
+		// 			this.exit.destroy();
+		// 		})
+
+		// 	})
+
+
+		// 	this.butcher.setInteractive()
+		// }
+		//lvl 1 done
+		if (this.enemies.children.entries.length == 88 && this.questProcess == "wonder") {
+			this.questProcess = "pas niveau 1"//tu peux changer cette variable j'ai du la mettre pour eviter un loop infinie a partir du moment ou le lvl 1 est terminé
+			this.butcher.on('pointerdown', () => {
+				console.log("done")
+				this.exclamationMark.destroy();
+				this.txtBox = this.add.image(200, 2190, "shop").setDepth(1000).setScale(0.2);
+
+				this.yes = this.add.image(180, 2200, "yes").setDepth(2000).setScale(0.15);
+				this.no = this.add.image(220, 2200, "no").setDepth(2000).setScale(0.14);
+				this.yes.setInteractive()
+				this.no.setInteractive()
+				this.yes.on('pointerdown', () => {
+					this.scene.start('Shop')
+				})
+				this.no.on('pointerdown', () => {
+					this.butcher.destroy();
+					this.txtBox.destroy();
+					this.yes.destroy();
+					this.no.destroy();
+					this.wall.destroy();
+					console.log("no")
+
+				})
+
+			})
 		}
 
 
@@ -562,7 +632,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 
-////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////
 
 
 		if (this.enemies.children.entries.length == 62 && this.questProcess == "dessert") {
@@ -589,7 +659,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		}
 
-		if (this.player.y <= 1445 ) {
+		if (this.player.y <= 1445) {
 			// wall
 			this.wall = this.physics.add.sprite(135, 1460, "wall").setScale(0.08);
 			this.wall.setImmovable();
@@ -603,11 +673,11 @@ class InnerHouseScene extends Phaser.Scene {
 			// localStorage.setItem('positionY', this.player.y);
 
 			// Window.updatePlayer();
-			
+
 		}
 
 
-// // //////////////////////////////////////////////////////////////////////////////////////
+		// // //////////////////////////////////////////////////////////////////////////////////////
 
 
 		if (this.enemies.children.entries.length == 37 && this.questProcess == "cave") {
@@ -654,7 +724,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 
-// //////////////////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -714,7 +784,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 				this.wall = this.physics.add.sprite(124, 1454, "wall").setScale(0.08)
 		// 				this.wall.setImmovable()
 		// 				this.physics.add.collider(this.player, this.wall)
-						
+
 		// 			})
 		// 		})
 		// 	}
@@ -789,7 +859,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 					//@TODO: pas aan
 
 		// 					//update in firestore
-							// updatePlayer();
+		// updatePlayer();
 		// 				}
 		// 			})
 
@@ -816,7 +886,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 				// updatePlayer();
 		// 			}
 		// 		})
-				
+
 		// 	}
 
 		// }
