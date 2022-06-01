@@ -13,13 +13,6 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const auth = firebase.auth();
 const db = firebase.firestore();
-
-
-
-
-
-
-
 const gotoLogin = document.getElementById('gotoLogin');
 const signupBtn = document.getElementById('signUp');
 
@@ -60,47 +53,6 @@ sigupForm.addEventListener('submit', (e) => {
 		console.log(errorMessage + " " + errorCode);
 	});
 
-	// firebase.auth().createUserWithEmailAndPassword(email, password)
-	// 	.then((userCredential) => {
-	// 		// Signed in 
-	// 		const user = userCredential.user;
-
-	// 		set(ref(database, 'users/' + user.uid), {
-	// 			username: username,
-	// 			email: email
-	// 		})
-	// 		console.log(user.uid); // ID VAN AUTH
-	// 		localStorage.setItem("ID", user.uid)
-	// 		let ident = localStorage.getItem('ID')
-
-	// 		// setDoc(doc(db, "users", ident), {
-	// 		// 	name: username,
-	// 		// 	gold: 0,
-	// 		// 	health: 50,
-	// 		// 	positionX: 90,
-	// 		// 	positionY: 3159,
-	// 		// });
-
-	// 		db.collection("users").doc(ident).set({
-	// 				gold: 0,
-	// 				health: 50,
-	// 				name: username,
-	// 				positionX: 90,
-	// 				positionY: 3159,
-	// 			})
-	// 			.then(() => {
-	// 				console.log("Document successfully written!");
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error("Error writing document: ", error);
-	// 			});
-	// 	})
-	// 	.catch((error) => {
-	// 		var errorCode = error.code;
-	// 		var errorMessage = error.message;
-	// 		console.log(errorMessage + " " + errorCode);
-	// 	});
-
 
 	signupBtn.style.display = 'none'
 	gotoLogin.style.display = 'block'
@@ -108,38 +60,50 @@ sigupForm.addEventListener('submit', (e) => {
 	lblError.innerHTML = 'user created!'
 
 })
-// .catch((error) => {
-// 	const errorCode = error.code;
-// 	const errorMessage = error.message;
-
-// 	lblError.innerHTML = errorCode
-// 	// ..
-// });
 
 
-// let i = localStorage.getItem('ID')
-// const docRef = db.collection('users').doc(i)
 
-// window.updatePlayer = function(){
 
-// 	let a = localStorage.getItem('gold')
-// 	let b = localStorage.getItem('health')
-// 	let c = localStorage.getItem('positionX')
-// 	let d = localStorage.getItem('positionY')
 
-// 	docRef.updateDoc(docRef, {
-// 		gold: a,
-// 		health: b,
-// 		name: "jooooo",
-// 		positionX: c,
-// 		positionY: d,
-// 	})
-// }
 
-//tried:
-// import - export 
-// bind
-// require
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //doc uitloggen 
@@ -151,52 +115,6 @@ sigupForm.addEventListener('submit', (e) => {
 // }).catch((error) => {
 // 	console.log("Error getting document:", error);
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // // nieuwe doc toevoegen in firestore bij signup 
