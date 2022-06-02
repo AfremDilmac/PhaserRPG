@@ -338,7 +338,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 		this.wall3 = this.physics.add.sprite(875, 710, "wall").setScale(0.08);
 		this.wall3.setImmovable();
-		this.wall3.visible = true;
+		this.wall3.visible = false;
 		this.physics.add.collider(this.enemies2, this.wall3);
 		this.physics.add.collider(this.enemies, this.wall3);
 		this.physics.add.collider(this.player, this.wall3);
@@ -664,25 +664,38 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.player, this.wall4);
 			this.wall4.setImmovable();
 			this.wall4.flipY = true
-			this.wall4.visible = true
+			this.wall4.visible = false
 			this.questProcess = "greenhell"
+			console.log(this.questProcess)
 			
 		}	
 
 		//Green Hell -> Yellowstone
-		if (this.questProcess == "greenhell" && this.enemies.children.entries.length == 17) {
+		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980 && this.enemies.children.entries.length == 17) {
 			// wall
 			this.wall5.destroy();
 			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
 			this.physics.add.collider(this.enemies2, this.wall5);
 			this.physics.add.collider(this.enemies, this.wall5);
 			this.physics.add.collider(this.player, this.wall5);
+			this.wall5.visible = false
+		}	
+
+		//Green Hell -> Yellowstone
+		if (this.player.x > 1000 && this.player.y > 1000 && this.enemies.children.entries.length == 17) {
+			// wall
+			this.wall5.destroy();
+			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
+			this.physics.add.collider(this.enemies2, this.wall5);
+			this.physics.add.collider(this.enemies, this.wall5);
+			this.physics.add.collider(this.player, this.wall5);
+			this.wall5.setImmovable();
 			this.wall5.visible = true
 		}	
 
 		
 		//Yellowstone -> Red hell
-		if (this.player.y >= 1900 && this.player.x > 1400) {
+		if (this.player.y >= 1200 && this.player.x > 1000) {
 			// wall
 			this.wall6.destroy();
 			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
@@ -694,8 +707,26 @@ class InnerHouseScene extends Phaser.Scene {
 			
 		}	
 
+		if (this.player.y >= 1200 && this.player.y <= 1850 && this.player.x > 1000 && this.enemies.children.entries.length == 6) {
+			// wall
+			this.wall6.destroy();
+			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
+			this.wall6.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall6);
+			this.physics.add.collider(this.enemies, this.wall6);
+			this.physics.add.collider(this.player, this.wall6);
+		}	
 
-
+		if (this.player.y >= 1908 && this.player.x > 1000 && this.enemies.children.entries.length == 6) {
+			// wall
+			this.wall6.destroy();
+			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
+			this.wall6.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall6);
+			this.physics.add.collider(this.enemies, this.wall6);
+			this.physics.add.collider(this.player, this.wall6);
+			this.wall6.setImmovable();
+		}	
 
 		// //////////////////////////////////////////////////////////////////////////////////////
 
