@@ -73,6 +73,9 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall
 		this.wall2
 		this.wall3
+		this.wall4
+		this.wall5
+		this.wall6
 		this.coins
 		this.coinAmount = 0
 		this.score = 0
@@ -169,14 +172,6 @@ class InnerHouseScene extends Phaser.Scene {
 
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
-
-
-
-
-
-
-
-
 
 
 
@@ -343,15 +338,32 @@ class InnerHouseScene extends Phaser.Scene {
 
 		this.wall3 = this.physics.add.sprite(875, 710, "wall").setScale(0.08);
 		this.wall3.setImmovable();
-		this.wall3.visible = false;
+		this.wall3.visible = true;
 		this.physics.add.collider(this.enemies2, this.wall3);
 		this.physics.add.collider(this.enemies, this.wall3);
 		this.physics.add.collider(this.player, this.wall3);
 
+		this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
+		this.wall4.visible = false;
+		this.wall4.setImmovable();
+		this.physics.add.collider(this.enemies2, this.wall4);
+		this.physics.add.collider(this.enemies, this.wall4);
+		this.physics.add.collider(this.player, this.wall4);
+		this.wall4.flipY = true
 
-		
+		this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
+		this.wall5.visible = false;
+		this.wall5.setImmovable();
+		this.physics.add.collider(this.enemies2, this.wall5);
+		this.physics.add.collider(this.enemies, this.wall5);
+		this.physics.add.collider(this.player, this.wall5);
 
-
+		this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
+		this.wall6.visible = false;
+		this.wall6.setImmovable();
+		this.physics.add.collider(this.enemies2, this.wall6);
+		this.physics.add.collider(this.enemies, this.wall6);
+		this.physics.add.collider(this.player, this.wall6);
 
 	} //end create
 
@@ -511,12 +523,14 @@ class InnerHouseScene extends Phaser.Scene {
 		//lvl 1 done
 		if (this.enemies.children.entries.length == 53 && this.questProcess == "start") {
 			this.wall.destroy();
+			this.questProcess = "dessert";
+			console.log("lvl 1 monsters cleared")
 		}
 
 
 		if (this.player.y <= 2180 && this.player.y >= 2175) {
 			console.log('enter dessert');
-			this.questProcess = "dessert";
+			
 
 			console.log(this.enemies.children.entries.length);
 			console.log("questProcess:" + " " + this.questProcess);
@@ -535,14 +549,16 @@ class InnerHouseScene extends Phaser.Scene {
 
 		}
 
-		if (this.player.y <= 2175) {
+		if (this.player.y <= 2175 && this.player.y >= 2120 ) {
 			// wall
 			this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
+			this.questProcess == "dessert"
 			this.wall.setImmovable();
 			this.wall.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
 			this.physics.add.collider(this.player, this.wall);
+			console.log("wall enter dessert replaced")
 		}
 
 
@@ -551,11 +567,12 @@ class InnerHouseScene extends Phaser.Scene {
 		////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 43 && this.questProcess == "dessert") {
+		if (this.enemies.children.entries.length == 43 && this.questProcess == "dessert" && this.player.y >= 1381) {
 			this.wall2.destroy();
+			console.log("wall enter desert destroyed")
 		}
 
-		if (this.player.y <= 1450 && this.player.y >= 1445) {
+		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
 			console.log('enter cave');
 			this.questProcess = "cave";
 
@@ -594,7 +611,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall3.destroy();
 		}
 
-		if (this.player.y <= 695 && this.player.y >= 690) {
+		if (this.player.y <= 730 && this.player.y >= 690) {
 			console.log('enter ice');
 			this.questProcess = "ice";
 
@@ -624,6 +641,58 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.enemies, this.wall);
 			this.physics.add.collider(this.player, this.wall);
 		}
+
+		//Ice -> GreenHell
+		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.questProcess == "ice") {
+			// wall
+			this.wall4.destroy();
+			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
+			this.physics.add.collider(this.enemies2, this.wall4);
+			this.physics.add.collider(this.enemies, this.wall4);
+			this.physics.add.collider(this.player, this.wall4);
+			this.wall4.flipY = true
+			this.wall4.visible = false
+			
+		}	
+
+		if (this.player.y < 120 && this.player.x > 970) {
+			// wall
+			this.wall4.destroy();
+			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
+			this.physics.add.collider(this.enemies2, this.wall4);
+			this.physics.add.collider(this.enemies, this.wall4);
+			this.physics.add.collider(this.player, this.wall4);
+			this.wall4.setImmovable();
+			this.wall4.flipY = true
+			this.wall4.visible = true
+			this.questProcess = "greenhell"
+			
+		}	
+
+		//Green Hell -> Yellowstone
+		if (this.questProcess == "greenhell" && this.enemies.children.entries.length == 17) {
+			// wall
+			this.wall5.destroy();
+			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
+			this.physics.add.collider(this.enemies2, this.wall5);
+			this.physics.add.collider(this.enemies, this.wall5);
+			this.physics.add.collider(this.player, this.wall5);
+			this.wall5.visible = true
+		}	
+
+		
+		//Yellowstone -> Red hell
+		if (this.player.y >= 1900 && this.player.x > 1400) {
+			// wall
+			this.wall6.destroy();
+			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
+			this.wall6.visible = false;
+			this.physics.add.collider(this.enemies2, this.wall6);
+			this.physics.add.collider(this.enemies, this.wall6);
+			this.physics.add.collider(this.player, this.wall6);
+			this.wall6.setImmovable();
+			
+		}	
 
 
 
