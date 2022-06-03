@@ -172,7 +172,7 @@ class InnerShopScene extends Phaser.Scene {
 					this.yes.destroy();
 				})
 				this.yes.on('pointerdown', () =>{
-					this.player.health = localStorage.getItem('health');
+					this.player.health = 50
 					this.txtBox.destroy();
 					this.no.destroy();
 					this.yes.destroy();

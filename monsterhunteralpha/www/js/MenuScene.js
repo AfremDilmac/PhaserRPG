@@ -74,7 +74,7 @@ class MenuScene extends Phaser.Scene {
 
 		optionButton.on('pointerdown', function () {
 
-			this.scene.start('optionScene');
+			this.scene.start('Shop');
 			this.music.pause('introMusic');
 	
 		}, this);
