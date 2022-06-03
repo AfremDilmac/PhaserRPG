@@ -34,6 +34,12 @@ class InnerHouseScene extends Phaser.Scene {
 			frameWidth: 32,
 			frameHieght: 32
 		})
+
+		//boss loaden
+		this.load.spritesheet('boss', 'assets/sprites/boss.png', {
+			frameWidth: 50,
+			frameHieght: 50
+		})
 		// coin loaden
 		this.load.spritesheet('coin', 'assets/pickup/FullCoins.png', {
 			frameWidth: 16,
@@ -55,6 +61,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.load.image("no", "assets/text/no.png")
 		this.load.image("monsters-alive", "assets/text/monsters-alive.png")
 		this.player
+		this.boss
 		this.keys
 		this.enemy
 		this.enemies
@@ -239,6 +246,8 @@ class InnerHouseScene extends Phaser.Scene {
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
 		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth).setScale(0.5)
 		// this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+		this.boss = new Boss(this, 1467, 2251, 'boss',50, 500)
+		this.boss.body.setCollideWorldBounds(true)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// this.physics.add.collider(this.player, worldLayer)
@@ -359,12 +368,15 @@ class InnerHouseScene extends Phaser.Scene {
 		//projectile aanmaken + collision tussen projectile-enemy en projectile-world inschakelen
 		this.projectiles = new Projectiles(this)
 		this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
+		this.physics.add.overlap(this.player, this.boss, this.handlePlayerBossCollision, null, this)
 		this.physics.add.overlap(this.player, this.enemies2, this.handlePlayerEnemyCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies, this.handleProjectileEnemyCollision, null, this)
+		this.physics.add.overlap(this.projectiles, this.boss, this.handleProjectileBossCollision, null, this)
 		this.physics.add.overlap(this.projectiles, this.enemies2, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.enemies2, worldLayer)
+		this.physics.add.collider(this.boss, worldLayer)
 		// this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
@@ -482,6 +494,27 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 	}
 
+	handleProjectileBossCollision(enemy, projectile) {
+		if (projectile.active) {
+
+			enemy.setTint(0xff0000)
+
+			this.time.addEvent({
+				delay: 100,
+				callback: () => {
+					projectile.recycle()
+				},
+				callbackScope: this,
+				loop: false
+			})
+			
+			this.emmiter.active = true
+			this.emmiter.setPosition(enemy.x, enemy.y)
+			this.emmiter.explode()
+
+		}
+	}
+
 	handlePlayerEnemyCollision(p, e) {
 		p.health -= e.damage
 		this.healthbar.updateHealth(p.health)
@@ -503,6 +536,28 @@ class InnerHouseScene extends Phaser.Scene {
 			loop: false
 		})
 		e.explode()
+	}
+
+	handlePlayerBossCollision(p, e) {
+		p.health -= e.damage
+		this.healthbar.updateHealth(p.health)
+		if (p.health <= 0) {
+			this.cameras.main.shake(100, 0.05)
+			this.cameras.main.fade(250, 0, 0, 0)
+			this.cameras.main.once('camerafadeoutcomplete', () => {
+				this.scene.restart()
+			})
+		}
+		this.cameras.main.shake(40, 0.02)
+		p.setTint(0xff0000) //red
+		this.time.addEvent({
+			delay: 350,
+			callback: () => {
+				p.clearTint() // get rid of red tint
+			},
+			callbackScope: this,
+			loop: false
+		})
 	}
 
 
@@ -746,6 +801,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		this.player.update()
+		this.boss.update()
 
 		/**
 		 * Health update
