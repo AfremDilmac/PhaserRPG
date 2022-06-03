@@ -4,6 +4,8 @@ class InnerHouseScene extends Phaser.Scene {
 	}
 
 	preload() {
+
+		this.startData();
 		this.cursors
 		// this.cameras.main.setBackgroundColor('0x9900e3')
 		// verchillende tiles loaden
@@ -91,12 +93,80 @@ class InnerHouseScene extends Phaser.Scene {
 		url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
 		this.load.plugin('rexvirtualjoystickplugin', url, true);
 
-		// this.startData();
 
 
 	} //end preload
 
+	startData() {
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+		// if not initialized
+		if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		}
+
+		
+		let identifier = localStorage.getItem('ID')
+
+		const db = firebase.firestore()
+		const docRef = db.collection('users').doc(identifier);
+
+		docRef.get().then((doc) => {
+			if (doc.exists) {
+				localStorage.setItem('gold', doc.data().gold)
+				localStorage.setItem('health', doc.data().health)
+				localStorage.setItem('positionX', doc.data().positionX)
+				localStorage.setItem('positionY', doc.data().positionY)
+			}
+			this.coinAmount = doc.data().gold; 
+		}).catch((error) => {
+			console.log("Error getting document:", error);
+		});
+	}
+
+	updatePlayer(goldd, heal, posX, posY) {
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+
+		// if not initialized
+		if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		}
+
+		let identifier = localStorage.getItem('ID')
+		const db = firebase.firestore()
+
+		db.collection('users').doc(identifier)
+			.update({
+				gold: goldd,
+				health: heal,
+				positionX: posX,
+				positionY: posY,
+			})
+	}
+
 	create() {
+
+
+		
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
@@ -163,8 +233,12 @@ class InnerHouseScene extends Phaser.Scene {
 		/**
 		 * Player
 		 */
+		let fsHealth = parseInt(localStorage.getItem('health'));
+		let fsPosX = parseFloat(localStorage.getItem('positionX')); 
+		let fsPosY = parseFloat(localStorage.getItem('positionY')); 
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 90, 3159, 'player', 50).setScale(0.5)
+		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth).setScale(0.5)
+		// this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// this.physics.add.collider(this.player, worldLayer)
@@ -365,70 +439,11 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.enemies, this.wall6);
 		this.physics.add.collider(this.player, this.wall6);
 
+		
+
 	} //end create
 
-	startData() {
 
-		const firebaseConfig = {
-			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
-			authDomain: "monsterhunter-d7680.firebaseapp.com",
-			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
-			projectId: "monsterhunter-d7680",
-			storageBucket: "monsterhunter-d7680.appspot.com",
-			messagingSenderId: "338059376056",
-			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
-		};
-		// if not initialized
-		if (firebase.apps.length === 0) {
-			// Initialize Firebase
-			firebase.initializeApp(firebaseConfig);
-		}
-
-		//  let uidLocalStorage = localStorage.getItem('uid')
-		let identifier = localStorage.getItem('ID')
-
-		const db = firebase.firestore()
-		const docRef = db.collection('users').doc(identifier);
-
-		docRef.get().then((doc) => {
-			if (doc.exists) {
-				localStorage.setItem('gold', doc.data().gold)
-			}
-		}).catch((error) => {
-			console.log("Error getting document:", error);
-		});
-	}
-
-	updatePlayer(goldd, heal, posX, posY) {
-
-		const firebaseConfig = {
-			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
-			authDomain: "monsterhunter-d7680.firebaseapp.com",
-			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
-			projectId: "monsterhunter-d7680",
-			storageBucket: "monsterhunter-d7680.appspot.com",
-			messagingSenderId: "338059376056",
-			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
-		};
-
-		// if not initialized
-		if (firebase.apps.length === 0) {
-			// Initialize Firebase
-			firebase.initializeApp(firebaseConfig);
-		}
-
-		let identifier = localStorage.getItem('ID')
-		const db = firebase.firestore()
-
-		db.collection('users').doc(identifier)
-			.update({
-				gold: goldd,
-				health: heal,
-				positionX: posX,
-				positionY: posY,
-
-			})
-	}
 
 
 	//COLLISION HANDLING
@@ -517,7 +532,6 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		// /////////////////////////////////////////////////////////////////////////////////
-
 
 
 		//lvl 1 done

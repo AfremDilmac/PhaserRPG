@@ -83,6 +83,8 @@ class InnerShopScene extends Phaser.Scene {
 
 	create() {
 
+		this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
 			key: 'shop-map'
