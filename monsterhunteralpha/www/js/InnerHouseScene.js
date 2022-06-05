@@ -4,12 +4,15 @@ class InnerHouseScene extends Phaser.Scene {
 	}
 
 	preload() {
+		localStorage.removeItem('gold');
+		localStorage.removeItem('health');
+		localStorage.removeItem('positionX');
+		localStorage.removeItem('positionY');
 
 		this.startData();
 		this.cursors
 		// this.cameras.main.setBackgroundColor('0x9900e3')
 		// verchillende tiles loaden
-		// this.load.image('tiles', 'assets/Tilemap/dungeon.png')
 		this.load.image('house-tiles', 'assets/Tilemap/Tileset.png')
 		this.load.image("butcher", "assets/npc/butcher.png")
 		this.load.image("exclemote", "assets/npc/emotes/exclamation-mark.png")
@@ -41,19 +44,7 @@ class InnerHouseScene extends Phaser.Scene {
 		})
 		this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json')
 
-		/**
-		 * Text
-		 */
-		this.load.image("exit", "assets/menu/exit.png")
-		this.load.image("next", "assets/menu/next.png")
-		this.load.image("hasbulla-welcome", "assets/text/intro.png")
-		this.load.image("hasbulla-wonder-forest", "assets/text/wonder-forest.png")
-		this.load.image("hasbulla-good-job", "assets/text/good-job.png")
-		this.load.image("hasbulla-desert", "assets/text/start-desert.png")
-		this.load.image("shop", "assets/text/shop.png")
-		this.load.image("yes", "assets/text/yes.png")
-		this.load.image("no", "assets/text/no.png")
-		this.load.image("monsters-alive", "assets/text/monsters-alive.png")
+		
 		this.player
 		this.keys
 		this.enemy
@@ -64,14 +55,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.keys
 		this.lastFiredTime = 0
 		this.emmiter
-		this.minimap
 		this.questStarted = false;
-		this.questProcess = "start"
-		this.exit
-		this.next
-		this.yes
-		this.no
-		this.butcher
 		this.wall
 		this.wall2
 		this.wall3
@@ -79,11 +63,6 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall5
 		this.wall6
 		this.coins
-		this.coinAmount = 0
-		this.score = 0
-		this.score1
-		this.score2
-		this.totalScore
 
 		/**
 		 * Virtual joystick
@@ -124,16 +103,16 @@ class InnerHouseScene extends Phaser.Scene {
 			if (doc.exists) {
 				localStorage.setItem('gold', doc.data().gold)
 				localStorage.setItem('health', doc.data().health)
+				localStorage.setItem('level', doc.data().level)
 				localStorage.setItem('positionX', doc.data().positionX)
 				localStorage.setItem('positionY', doc.data().positionY)
 			}
-			this.coinAmount = doc.data().gold; 
 		}).catch((error) => {
 			console.log("Error getting document:", error);
 		});
 	}
 
-	updatePlayer(goldd, heal, posX, posY) {
+	updatePlayer(goldd, heal, lvl, posX, posY) {
 
 		const firebaseConfig = {
 			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
@@ -158,6 +137,7 @@ class InnerHouseScene extends Phaser.Scene {
 			.update({
 				gold: goldd,
 				health: heal,
+				level: lvl,
 				positionX: posX,
 				positionY: posY,
 			})
@@ -236,9 +216,11 @@ class InnerHouseScene extends Phaser.Scene {
 		let fsHealth = parseInt(localStorage.getItem('health'));
 		let fsPosX = parseFloat(localStorage.getItem('positionX')); 
 		let fsPosY = parseFloat(localStorage.getItem('positionY')); 
+		let fsGold = parseInt(localStorage.getItem('gold'));
+		let fsLevel = parseInt(localStorage.getItem('level'));
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth).setScale(0.5)
-		// this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth, fsGold, fsLevel).setScale(0.5)
+		// this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// this.physics.add.collider(this.player, worldLayer)
@@ -267,7 +249,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 		
 		//Wonder forest{
-		// if (this.questProcess == "start") {
+		// if (this.player.level == "start") {
 		// 	for (let i = 0; i < 1; i++) {
 		// 		const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
 		// 		element.body.setCollideWorldBounds(true)
@@ -282,7 +264,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	}
 		// }
 		////////////////////////////////////////////////////////////////////////////////
-		// if (this.questProcess == "dessert") {
+		// if (this.player.level == "dessert") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 1400 , 'monsters', 5, 'ghost')
 		// 		element.body.setCollideWorldBounds(true)
@@ -297,7 +279,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	}
 		// }
 		////////////////////////////////////////////////////////////////////////////////
-		// if (this.questProcess == "cave") {
+		// if (this.player.level == "cave") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 600 , 'monsters', 5, 'skeleton')
 		// 		element.body.setCollideWorldBounds(true)
@@ -452,7 +434,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 	handlePlayerCoinCollision(p, c) {
 		c.destroy()
-		this.coinAmount += 1
+		this.player.gold += 1
 		console.log(this.enemies.children.entries.length);
 	}
 
@@ -535,38 +517,39 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//lvl 1 done
-		if (this.enemies.children.entries.length == 53 && this.questProcess == "start") {
+		if (this.enemies.children.entries.length == 53 && this.player.level == "start") {
 			this.wall.destroy();
-			this.questProcess = "dessert";
+			// this.player.level = "dessert";
 			console.log("lvl 1 monsters cleared")
 		}
 
 
 		if (this.player.y <= 2180 && this.player.y >= 2175) {
 			console.log('enter dessert');
+			this.player.level == "dessert"
+
 			
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.questProcess);
+			console.log("questProcess:" + " " + this.player.level);
 			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.coinAmount);
+			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
 			console.log("positionY:" + " " + this.player.y);
 
-			localStorage.setItem('gold', this.coinAmount);
+			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcess);
+			localStorage.setItem('level', this.player.level);
 
-			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
 
 		}
 
 		if (this.player.y <= 2175 && this.player.y >= 2120 ) {
 			// wall
 			this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
-			this.questProcess == "dessert"
 			this.wall.setImmovable();
 			this.wall.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall);
@@ -581,29 +564,29 @@ class InnerHouseScene extends Phaser.Scene {
 		////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 43 && this.questProcess == "dessert" && this.player.y >= 1381) {
+		if (this.enemies.children.entries.length == 43 && this.player.level == "dessert" && this.player.y >= 1381) {
 			this.wall2.destroy();
 			console.log("wall enter desert destroyed")
 		}
 
 		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
 			console.log('enter cave');
-			this.questProcess = "cave";
+			this.player.level = "cave";
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.questProcess);
+			console.log("questProcess:" + " " + this.player.level);
 			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.coinAmount);
+			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
 			console.log("positionY:" + " " + this.player.y);
 
-			localStorage.setItem('gold', this.coinAmount);
+			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcess);
+			localStorage.setItem('level', this.player.level);
 
-			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 1445) {
@@ -621,29 +604,29 @@ class InnerHouseScene extends Phaser.Scene {
 		// // //////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 34 && this.questProcess == "cave") {
+		if (this.enemies.children.entries.length == 34 && this.player.level == "cave") {
 			this.wall3.destroy();
 		}
 
 		if (this.player.y <= 730 && this.player.y >= 690) {
 			console.log('enter ice');
-			this.questProcess = "ice";
+			this.player.level = "ice";
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.questProcess);
+			console.log("questProcess:" + " " + this.player.level);
 			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.coinAmount);
+			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
 			console.log("positionY:" + " " + this.player.y);
 
 
-			localStorage.setItem('gold', this.coinAmount);
+			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcess);
+			localStorage.setItem('level', this.player.level);
 
-			this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 685) {
@@ -656,8 +639,11 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.player, this.wall);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////
+
+
 		//Ice -> GreenHell
-		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.questProcess == "ice") {
+		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.player.level == "ice") {
 			// wall
 			this.wall4.destroy();
 			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
@@ -679,10 +665,13 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall4.setImmovable();
 			this.wall4.flipY = true
 			this.wall4.visible = false
-			this.questProcess = "greenhell"
-			console.log(this.questProcess)
+			this.player.level = "greenhell"
+			console.log(this.player.level)
 			
-		}	
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////
+
 
 		//Green Hell -> Yellowstone
 		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980 && this.enemies.children.entries.length == 17) {
@@ -706,6 +695,9 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall5.setImmovable();
 			this.wall5.visible = true
 		}	
+		
+
+		////////////////////////////////////////////////////////////////////////////////////
 
 		
 		//Yellowstone -> Red hell
