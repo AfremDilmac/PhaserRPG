@@ -247,6 +247,9 @@ class InnerShopScene extends Phaser.Scene {
 						this.player.gold -= price;
 						localStorage.setItem('gold', this.player.gold);
 						this.updatePlayer(this.player.gold, this.player.health);
+						this.no.destroy();
+						this.yes.destroy();
+						this.txtBox.destroy();
 					}
 					else{
 						this.txtBox.destroy();
@@ -260,10 +263,7 @@ class InnerShopScene extends Phaser.Scene {
 							this.exit.destroy();
 						})
 					}
-					
-
 				})
-				
 			}
 		})
 	
