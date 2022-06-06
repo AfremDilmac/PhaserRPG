@@ -494,8 +494,6 @@ class InnerHouseScene extends Phaser.Scene {
 	}
 
 
-
-
 	////UPDATE
 
 	update(time, delta) {
