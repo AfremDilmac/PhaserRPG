@@ -505,11 +505,12 @@ class InnerHouseScene extends Phaser.Scene {
 		if (this.input.x < 500) {
 			if (this.keys.space.isDown || this.player.isShooting) {
 				if (time > this.lastFiredTime) {
-					console.log('y:' + this.player.y + 'x: ' + this.player.x)
-					// console.log(this.enemies.children.entries.length)
+					// console.log('y:' + this.player.y + 'x: ' + this.player.x)
+					console.log("questProcess:" + " " + this.questProcces);
+
+					console.log(this.enemies.children.entries.length)
 					this.lastFiredTime = time + 200
 					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
-					console.log(this.enemies.children.entries.length);
 				}
 			}
 		}
@@ -521,31 +522,25 @@ class InnerHouseScene extends Phaser.Scene {
 		//lvl 1 done
 		if (this.enemies.children.entries.length == 42 && this.questProcces == "start") {
 			this.wall.destroy();
-			// this.questProcces = "dessert";
-			console.log("lvl 1 monsters cleared")
+			this.questProcces = "dessert";
 		}
 
 
 		if (this.player.y <= 2180 && this.player.y >= 2175) {
-			console.log('enter dessert');
-			this.questProcces == "dessert"
-
 			
-
-			console.log(this.enemies.children.entries.length);
+			// console.log(this.enemies.children.entries.length);
 			console.log("questProcess:" + " " + this.questProcces);
-			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.player.gold);
-			console.log("positionX:" + " " + this.player.x);
-			console.log("positionY:" + " " + this.player.y);
+			// console.log("health:" + " " + this.player.health);
+			// console.log("gold:" + " " + this.player.gold);
+			// console.log("positionX:" + " " + this.player.x);
+			// console.log("positionY:" + " " + this.player.y);
 
 			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
 
 		}
 
@@ -557,7 +552,6 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
 			this.physics.add.collider(this.player, this.wall);
-			console.log("wall enter dessert replaced")		
 		}
 
 
@@ -571,23 +565,21 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 
 		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
-			console.log('enter cave');
 			this.questProcces = "cave";
 
-			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.questProcces);
-			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.player.gold);
-			console.log("positionX:" + " " + this.player.x);
-			console.log("positionY:" + " " + this.player.y);
+			// console.log(this.enemies.children.entries.length);
+			// console.log("questProcess:" + " " + this.questProcces);
+			// console.log("health:" + " " + this.player.health);
+			// console.log("gold:" + " " + this.player.gold);
+			// console.log("positionX:" + " " + this.player.x);
+			// console.log("positionY:" + " " + this.player.y);
 
 			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 1445) {
@@ -610,24 +602,22 @@ class InnerHouseScene extends Phaser.Scene {
 		}
 
 		if (this.player.y <= 730 && this.player.y >= 690) {
-			console.log('enter ice');
 			this.questProcces = "ice";
 
-			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.questProcces);
-			console.log("health:" + " " + this.player.health);
-			console.log("gold:" + " " + this.player.gold);
-			console.log("positionX:" + " " + this.player.x);
-			console.log("positionY:" + " " + this.player.y);
+			// console.log(this.enemies.children.entries.length);
+			// console.log("questProcess:" + " " + this.questProcces);
+			// console.log("health:" + " " + this.player.health);
+			// console.log("gold:" + " " + this.player.gold);
+			// console.log("positionX:" + " " + this.player.x);
+			// console.log("positionY:" + " " + this.player.y);
 
 
 			localStorage.setItem('gold', this.player.gold);
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 685) {

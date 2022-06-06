@@ -89,7 +89,7 @@ class Player extends Entity {
 
         //Rectangle shooting function
 
-          scene.input.on('pointerdown', function(pointer){
+        scene.input.on('pointerdown', function(pointer){
            this.isShooting = true;
         }.bind(this));
 
@@ -101,7 +101,7 @@ class Player extends Entity {
 
 	update(){
 		const {keys} = this //output: this.keys
-        const speed = 600
+        const speed = 300
 		//positie in een var steken, gebruikt voor idle animation (zie lijn 189 t.e.m 200 )
         const previousVelocity = this.body.velocity.clone()
 		// player stopt als we op geen enekel arrow drukken

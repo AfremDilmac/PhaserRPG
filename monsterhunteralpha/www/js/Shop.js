@@ -144,7 +144,6 @@ class InnerShopScene extends Phaser.Scene {
 
 	create() {
 
-		this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
@@ -213,7 +212,7 @@ class InnerShopScene extends Phaser.Scene {
 		 * Healthbar
 		 */
 		//healthbar aanmaken
-		this.healthbar = new HealthBar(this, this.player.x - 27, this.player.y - 19, 50)
+		this.healthbar = new HealthBar(this, this.player.x - 27, this.player.y - 19, this.player.health)
 		
 		//////////////////////:
 		// coint text
@@ -236,15 +235,22 @@ class InnerShopScene extends Phaser.Scene {
 					this.no.destroy();
 					this.yes.destroy();
 				})
+
 				this.yes.on('pointerdown', () =>{
-					if (this.player.gold >= 10) {
-						this.player.health = 50;
-						this.player.gold - 10;
+
+					let price = 10;
+					
+					if (this.player.gold >= price) {
+						this.player.health = 50
+						localStorage.setItem('health', 50)
+						this.player.gold -= price;
+						localStorage.setItem('gold', this.player.gold);
+						this.updatePlayer(this.player.gold, this.player.health);
 					}
 					this.txtBox.destroy();
 					this.no.destroy();
 					this.yes.destroy();
-					this.updatePlayer(this.player.gold, this.player.health)
+
 				})
 				
 			}
@@ -270,32 +276,11 @@ class InnerShopScene extends Phaser.Scene {
 	update(time, delta) {
 		this.healthbar.x = this.player.x - 25
 		this.healthbar.y = this.player.y - 19
-		this.healthbar.updateHealth(this.player.health)
+		this.healthbar.updateHealth(this.player.health);
 		// als er op space gedrukto wordt schieten we een bullet met een interval van 200 ms
 		// en we houden rekening met de positie van de player en de richting waar naar hij kijkt 
 		this.player.update()
 		// console.log('X: ' + this.player.x + 'Y: ' + this.player.y)
-		
-		if (this.down) {
-			if (this.foodArrow.y >= 160 && this.foodArrow.y <= 165) {
-				console.log("food arrow down: " + this.foodArrow.y)
-			}
-			else if (this.foodArrow.y >= 165){
-				this.down = false
-				console.log("down stop: " + this.foodArrow.y)
-			}
-		}
-		if (this.down == false) {
-			if (this.foodArrow.y >= 165 && this.foodArrow.y <= 170) {
-				console.log("food arrow up: " + this.foodArrow.y)
-			}
-			else if (this.foodArrow.y <= 169){
-				this.down = true
-				console.log("up stop: " + this.foodArrow.y)
-			}
-		}
-		
-		
 	} //end update
 
 
