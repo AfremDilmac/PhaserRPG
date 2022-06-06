@@ -276,13 +276,8 @@ class InnerHouseScene extends Phaser.Scene {
 		// 		element.setTint(0x999999)
 		// 		this.enemies2.add(element)
 		// 	}
-		// 	for (let i = 0; i < 5; i++) {
-		// 		const element = new Enemy(this, 550 , 1300 , 'monsters', 5, 'ghost')
-		// 		element.body.setCollideWorldBounds(true)
-		// 		element.setTint(0x999999)
-		// 		this.enemies2.add(element)
-		// 	}
-		// }
+			
+		//}
 		////////////////////////////////////////////////////////////////////////////////
 		// if (this.questProcces == "cave") {
 		// 	for (let i = 0; i < 5; i++) {
@@ -329,6 +324,14 @@ class InnerHouseScene extends Phaser.Scene {
 				e.setTint(0x09fc65)
 			}
 		})
+
+		for (let i = 0; i < 5; i++) {
+			const element = new EnemyFollow(this, 1464 + i * 2, 2243 + i *3 , 'monsters', 50, 'skeleton', 200)
+			element.body.setCollideWorldBounds(true)
+			element.setTint(0x808080)
+			element.setScale(3)
+			this.enemies2.add(element)
+		}
 
 		/**
 		 * Projectiles
