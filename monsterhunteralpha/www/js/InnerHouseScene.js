@@ -25,6 +25,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.load.image('minimap', 'assets/minimap/innerVillageMap-minimap.png')
 		//particle loaden
 		this.load.image('particle', 'assets/items/particle.png')
+		//shop button
+		this.load.image('btn-shop', 'assets/menu/shopping.png')
 		//map dat we in Tiled hebben gemaakt loaden
 		this.load.tilemapTiledJSON('map', 'js/UltimeMap.json')
 		//characters loaden
@@ -70,6 +72,13 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall6
 		this.coins
 		this.questProcces = "start"
+		this.shopbtn1
+		this.shopbtn2
+		this.shopbtn3
+		this.shopbtn4
+		this.shopbtn5
+		this.shopbtn6
+		this.shopbtn7
 
 		/**
 		 * Virtual joystick
@@ -230,11 +239,6 @@ class InnerHouseScene extends Phaser.Scene {
 		// focus op player bij beweging
 		this.cameras.main.startFollow(this.player, true, 0.8, 0.8)
 
-
-
-
-
-
 		/**
 		 * Group of ennemys
 		 */
@@ -326,13 +330,6 @@ class InnerHouseScene extends Phaser.Scene {
 			}
 		})
 
-
-
-
-
-
-
-
 		/**
 		 * Projectiles
 		 */
@@ -378,6 +375,81 @@ class InnerHouseScene extends Phaser.Scene {
 			active: false
 
 		})
+
+		/**
+		 * Shop btns
+		 */
+		 this.shopbtn1 = this.add.image(51, 2221, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn1.setInteractive();
+		 this.shopbtn1.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
+
+		 this.shopbtn2 = this.add.image(40, 1483, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn2.setInteractive();
+		 this.shopbtn2.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
+
+		 this.shopbtn3 = this.add.image(785, 727, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn3.setInteractive();
+		 this.shopbtn3.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
+
+		 this.shopbtn4 = this.add.image(848, 33, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn4.setInteractive();
+		 this.shopbtn4.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
+
+		 this.shopbtn5 = this.add.image(1364, 973, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn5.setInteractive();
+		 this.shopbtn5.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
+
+		 this.shopbtn6 = this.add.image(1397, 1861, "btn-shop").setDepth(1).setScale(0.35);
+		 this.shopbtn6.setInteractive();
+		 this.shopbtn6.on('pointerdown', () => {
+			localStorage.setItem('gold', this.player.gold);
+			localStorage.setItem('health', this.player.health);
+			localStorage.setItem('positionX', this.player.x);
+			localStorage.setItem('positionY', this.player.y);
+
+			this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
+			this.scene.start('Shop')
+		 })
 
 
 		this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
@@ -507,7 +579,7 @@ class InnerHouseScene extends Phaser.Scene {
 				if (time > this.lastFiredTime) {
 					// console.log('y:' + this.player.y + 'x: ' + this.player.x)
 					console.log("questProcess:" + " " + this.questProcces);
-
+					console.log("x: " + this.player.x + "y: " + this.player.y)
 					console.log(this.enemies.children.entries.length)
 					this.lastFiredTime = time + 200
 					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
