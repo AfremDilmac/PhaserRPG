@@ -81,6 +81,67 @@ class InnerShopScene extends Phaser.Scene {
 
 	} //end preload
 
+	startData() {
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+		// if not initialized
+		if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		}
+
+		
+		let identifier = localStorage.getItem('ID')
+
+		const db = firebase.firestore()
+		const docRef = db.collection('users').doc(identifier);
+
+		docRef.get().then((doc) => {
+			if (doc.exists) {
+				localStorage.setItem('gold', doc.data().gold)
+				localStorage.setItem('health', doc.data().health)
+			}
+		}).catch((error) => {
+			console.log("Error getting document:", error);
+		});
+	}
+
+	updatePlayer(goldd, heal) {
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
+			authDomain: "monsterhunter-d7680.firebaseapp.com",
+			databaseURL: "https://monsterhunter-d7680-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "monsterhunter-d7680",
+			storageBucket: "monsterhunter-d7680.appspot.com",
+			messagingSenderId: "338059376056",
+			appId: "1:338059376056:web:a1bb36e87101c4f2598b4d"
+		};
+
+		// if not initialized
+		if (firebase.apps.length === 0) {
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		}
+
+		let identifier = localStorage.getItem('ID')
+		const db = firebase.firestore()
+
+		db.collection('users').doc(identifier)
+			.update({
+				gold: goldd,
+				health: heal
+			})
+	}
+
 	create() {
 
 		this.updatePlayer(this.coinAmount, this.player.health, this.player.x, this.player.y)
@@ -119,8 +180,10 @@ class InnerShopScene extends Phaser.Scene {
 		/**
 		 * Player
 		 */
+		let fsHealth = parseInt(localStorage.getItem('health'));
+		let fsGold = parseInt(localStorage.getItem('gold'));
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, 210, 270, 'player', 20).setScale(0.5)
+		this.player = new Player(this, 210, 270, 'player', fsHealth, fsGold).setScale(0.5)
 		// collision tussen player en wereld inschakelen
 		this.player.body.setCollideWorldBounds(true)
 		// focus op player bij beweging
@@ -174,11 +237,14 @@ class InnerShopScene extends Phaser.Scene {
 					this.yes.destroy();
 				})
 				this.yes.on('pointerdown', () =>{
-					this.player.health = 50
+					if (this.player.gold >= 10) {
+						this.player.health = 50;
+						this.player.gold - 10;
+					}
 					this.txtBox.destroy();
 					this.no.destroy();
 					this.yes.destroy();
-					//update coins - 10
+					this.updatePlayer(this.player.gold, this.player.health)
 				})
 				
 			}
