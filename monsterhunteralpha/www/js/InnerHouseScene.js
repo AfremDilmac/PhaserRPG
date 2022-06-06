@@ -519,7 +519,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//lvl 1 done
-		if (this.enemies.children.entries.length == 53 && this.questProcces == "start") {
+		if (this.enemies.children.entries.length == 42 && this.questProcces == "start") {
 			this.wall.destroy();
 			// this.questProcces = "dessert";
 			console.log("lvl 1 monsters cleared")
@@ -566,9 +566,8 @@ class InnerHouseScene extends Phaser.Scene {
 		////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 43 && this.questProcces == "dessert" && this.player.y >= 1381) {
+		if (this.enemies.children.entries.length == 32 && this.questProcces == "dessert" && this.player.y >= 1381) {
 			this.wall2.destroy();
-			console.log("wall enter desert destroyed")
 		}
 
 		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
@@ -606,7 +605,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// // //////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 34 && this.questProcces == "cave") {
+		if (this.enemies.children.entries.length == 23 && this.questProcces == "cave") {
 			this.wall3.destroy();
 		}
 
@@ -645,7 +644,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//Ice -> GreenHell
-		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.questProcces == "ice") {
+		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 12 && this.questProcces == "ice") {
 			// wall
 			this.wall4.destroy();
 			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
@@ -676,7 +675,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//Green Hell -> Yellowstone
-		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980 && this.enemies.children.entries.length == 17) {
+		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980 && this.enemies.children.entries.length == 6) {
 			// wall
 			this.wall5.destroy();
 			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
@@ -687,7 +686,7 @@ class InnerHouseScene extends Phaser.Scene {
 		}	
 
 		//Green Hell -> Yellowstone
-		if (this.player.x > 1000 && this.player.y > 1000 && this.enemies.children.entries.length == 17) {
+		if (this.player.x > 1000 && this.player.y > 1000 && this.enemies.children.entries.length == 6) {
 			// wall
 			this.wall5.destroy();
 			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
@@ -715,7 +714,7 @@ class InnerHouseScene extends Phaser.Scene {
 			
 		}	
 
-		if (this.player.y >= 1200 && this.player.y <= 1850 && this.player.x > 1000 && this.enemies.children.entries.length == 6) {
+		if (this.player.y >= 1200 && this.player.y <= 1850 && this.player.x > 1000 && this.enemies.children.entries.length == 0) {
 			// wall
 			this.wall6.destroy();
 			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
@@ -725,7 +724,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.physics.add.collider(this.player, this.wall6);
 		}	
 
-		if (this.player.y >= 1908 && this.player.x > 1000 && this.enemies.children.entries.length == 6) {
+		if (this.player.y >= 1908 && this.player.x > 1000 && this.enemies.children.entries.length == 0) {
 			// wall
 			this.wall6.destroy();
 			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
