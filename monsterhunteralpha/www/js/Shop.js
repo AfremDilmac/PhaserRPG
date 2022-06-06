@@ -51,6 +51,7 @@ class InnerShopScene extends Phaser.Scene {
 		this.load.image("yes", "assets/text/yes.png")
 		this.load.image("no", "assets/text/no.png")
 		this.load.image("shop-salad", "assets/text/shop-salad.png")
+		this.load.image("shop-negative", "assets/text/shop-negative.png")
 
 		this.player
 		this.keys
@@ -247,9 +248,19 @@ class InnerShopScene extends Phaser.Scene {
 						localStorage.setItem('gold', this.player.gold);
 						this.updatePlayer(this.player.gold, this.player.health);
 					}
-					this.txtBox.destroy();
-					this.no.destroy();
-					this.yes.destroy();
+					else{
+						this.txtBox.destroy();
+						this.txtBox = this.add.image(200, 160, "shop-negative").setDepth(1000).setScale(0.25);
+						this.no.destroy();
+						this.yes.destroy();
+						this.exit = this.add.image(290, 130, "exit").setDepth(1001).setScale(0.2);
+						this.exit.setInteractive()
+						this.exit.on('pointerdown', () =>{
+							this.txtBox.destroy();
+							this.exit.destroy();
+						})
+					}
+					
 
 				})
 				
