@@ -148,10 +148,7 @@ class InnerHouseScene extends Phaser.Scene {
 			})
 	}
 
-	create() {
-
-
-		
+	create() {		
 
 		//map object aanmaken met key 'map'
 		const map = this.make.tilemap({
