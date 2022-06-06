@@ -35,7 +35,6 @@ sigupForm.addEventListener('submit', (e) => {
         .set({
 			gold: 0,
 			health: 50,
-			level: "start",
 			name: username,
 			positionX: 90,
 			positionY: 3159,

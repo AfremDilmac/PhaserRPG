@@ -1,5 +1,5 @@
 class Player extends Entity {
-	constructor(scene, x, y, texturekey, health, gold, level){
+	constructor(scene, x, y, texturekey, health, gold){
         super(scene, x, y, texturekey, 'Player')
 
         scene.input.addPointer(3)
@@ -8,7 +8,6 @@ class Player extends Entity {
 		const anims = scene.anims
 		this.health = health
 		this.gold = gold
-		this.level = level
 		this.facing = 'down'
 		// hier gebeurt de animatie van onze character aan de hand van frames
 		//player-left = frames nr 15 t.e.m 17 zie characters.png

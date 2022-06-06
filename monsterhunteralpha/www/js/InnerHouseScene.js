@@ -70,6 +70,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall5
 		this.wall6
 		this.coins
+		this.questProcces = "start"
 
 		/**
 		 * Virtual joystick
@@ -110,7 +111,6 @@ class InnerHouseScene extends Phaser.Scene {
 			if (doc.exists) {
 				localStorage.setItem('gold', doc.data().gold)
 				localStorage.setItem('health', doc.data().health)
-				localStorage.setItem('level', doc.data().level)
 				localStorage.setItem('positionX', doc.data().positionX)
 				localStorage.setItem('positionY', doc.data().positionY)
 			}
@@ -119,7 +119,7 @@ class InnerHouseScene extends Phaser.Scene {
 		});
 	}
 
-	updatePlayer(goldd, heal, lvl, posX, posY) {
+	updatePlayer(goldd, heal, posX, posY) {
 
 		const firebaseConfig = {
 			apiKey: "AIzaSyAeBjdQt26lGPxqiuUeQvDGLiFfbEbYYS8",
@@ -144,7 +144,6 @@ class InnerHouseScene extends Phaser.Scene {
 			.update({
 				gold: goldd,
 				health: heal,
-				level: lvl,
 				positionX: posX,
 				positionY: posY,
 			})
@@ -224,9 +223,8 @@ class InnerHouseScene extends Phaser.Scene {
 		let fsPosX = parseFloat(localStorage.getItem('positionX')); 
 		let fsPosY = parseFloat(localStorage.getItem('positionY')); 
 		let fsGold = parseInt(localStorage.getItem('gold'));
-		let fsLevel = parseInt(localStorage.getItem('level'));
 		//Om een player aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de health
-		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth, fsGold, fsLevel).setScale(0.5)
+		this.player = new Player(this, fsPosX , fsPosY, 'player', fsHealth, fsGold).setScale(0.5)
 		// this.updatePlayer(this.player.gold, this.player.health, this.player.x, this.player.y)
 		this.boss = new Boss(this, 1467, 2251, 'boss',50, 500)
 		this.boss.body.setCollideWorldBounds(true)
@@ -258,7 +256,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 		
 		//Wonder forest{
-		// if (this.player.level == "start") {
+		// if (this.questProcces == "start") {
 		// 	for (let i = 0; i < 1; i++) {
 		// 		const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
 		// 		element.body.setCollideWorldBounds(true)
@@ -273,7 +271,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	}
 		// }
 		////////////////////////////////////////////////////////////////////////////////
-		// if (this.player.level == "dessert") {
+		// if (this.questProcces == "dessert") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 1400 , 'monsters', 5, 'ghost')
 		// 		element.body.setCollideWorldBounds(true)
@@ -288,7 +286,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// 	}
 		// }
 		////////////////////////////////////////////////////////////////////////////////
-		// if (this.player.level == "cave") {
+		// if (this.questProcces == "cave") {
 		// 	for (let i = 0; i < 5; i++) {
 		// 		const element = new Enemy(this, 180 , 600 , 'monsters', 5, 'skeleton')
 		// 		element.body.setCollideWorldBounds(true)
@@ -572,21 +570,21 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//lvl 1 done
-		if (this.enemies.children.entries.length == 53 && this.player.level == "start") {
+		if (this.enemies.children.entries.length == 53 && this.questProcces == "start") {
 			this.wall.destroy();
-			// this.player.level = "dessert";
+			// this.questProcces = "dessert";
 			console.log("lvl 1 monsters cleared")
 		}
 
 
 		if (this.player.y <= 2180 && this.player.y >= 2175) {
 			console.log('enter dessert');
-			this.player.level == "dessert"
+			this.questProcces == "dessert"
 
 			
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.player.level);
+			console.log("questProcess:" + " " + this.questProcces);
 			console.log("health:" + " " + this.player.health);
 			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
@@ -596,9 +594,9 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.player.level);
+			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
 
 		}
 
@@ -619,17 +617,17 @@ class InnerHouseScene extends Phaser.Scene {
 		////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 43 && this.player.level == "dessert" && this.player.y >= 1381) {
+		if (this.enemies.children.entries.length == 43 && this.questProcces == "dessert" && this.player.y >= 1381) {
 			this.wall2.destroy();
 			console.log("wall enter desert destroyed")
 		}
 
 		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
 			console.log('enter cave');
-			this.player.level = "cave";
+			this.questProcces = "cave";
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.player.level);
+			console.log("questProcess:" + " " + this.questProcces);
 			console.log("health:" + " " + this.player.health);
 			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
@@ -639,9 +637,9 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.player.level);
+			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 1445) {
@@ -659,16 +657,16 @@ class InnerHouseScene extends Phaser.Scene {
 		// // //////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 34 && this.player.level == "cave") {
+		if (this.enemies.children.entries.length == 34 && this.questProcces == "cave") {
 			this.wall3.destroy();
 		}
 
 		if (this.player.y <= 730 && this.player.y >= 690) {
 			console.log('enter ice');
-			this.player.level = "ice";
+			this.questProcces = "ice";
 
 			console.log(this.enemies.children.entries.length);
-			console.log("questProcess:" + " " + this.player.level);
+			console.log("questProcess:" + " " + this.questProcces);
 			console.log("health:" + " " + this.player.health);
 			console.log("gold:" + " " + this.player.gold);
 			console.log("positionX:" + " " + this.player.x);
@@ -679,9 +677,9 @@ class InnerHouseScene extends Phaser.Scene {
 			localStorage.setItem('health', this.player.health);
 			localStorage.setItem('positionX', this.player.x);
 			localStorage.setItem('positionY', this.player.y);
-			localStorage.setItem('level', this.player.level);
+			localStorage.setItem('level', this.questProcces);
 
-			this.updatePlayer(this.player.gold, this.player.health, this.player.level, this.player.x, this.player.y)
+			this.updatePlayer(this.player.gold, this.player.health, this.questProcces, this.player.x, this.player.y)
 		}
 
 		if (this.player.y <= 685) {
@@ -698,7 +696,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//Ice -> GreenHell
-		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.player.level == "ice") {
+		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 23 && this.questProcces == "ice") {
 			// wall
 			this.wall4.destroy();
 			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
@@ -720,8 +718,8 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall4.setImmovable();
 			this.wall4.flipY = true
 			this.wall4.visible = false
-			this.player.level = "greenhell"
-			console.log(this.player.level)
+			this.questProcces = "greenhell"
+			console.log(this.questProcces)
 			
 		}
 
