@@ -19,6 +19,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.load.image("questemote", "assets/npc/emotes/question-mark.png")
 		this.load.image("speakemote", "assets/npc/emotes/speach.png")
 		this.load.image("wall", "assets/items/wall.jpg")
+		this.load.image("beta", "assets/menu/beta.png")
 		//bullet loaden
 		this.load.image('bullet', 'assets/items/bullet.png')
 		//minimap loaden
@@ -70,6 +71,8 @@ class InnerHouseScene extends Phaser.Scene {
 		this.wall4
 		this.wall5
 		this.wall6
+		this.wall7
+		this.wall8
 		this.coins
 		this.questProcces = "start"
 		this.shopbtn1
@@ -318,7 +321,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 				const x = tile.getCenterX()
 				const y = tile.getCenterY()
-				const e = new Enemy(this, x, y, 'monsters', 1, tile.properties.CP_monster, 50).setScale(1.5)
+				const e = new Enemy(this, x, y, 'monsters', 10, tile.properties.CP_monster, 50).setScale(1.5)
 				this.enemies.add(e)
 				e.body.setCollideWorldBounds(true)
 				e.setTint(0x09fc65)
@@ -498,7 +501,17 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.enemies, this.wall6);
 		this.physics.add.collider(this.player, this.wall6);
 
-		
+		this.wall7 = this.physics.add.sprite(1478, 2050, "wall").setScale(0.1);
+		this.wall7.visible = false;
+		this.wall7.setImmovable();
+		this.physics.add.collider(this.enemies2, this.wall7);
+		this.physics.add.collider(this.enemies, this.wall7);
+
+		this.wall8 = this.physics.add.sprite(1471, 2476, "wall").setScale(0.1);
+		this.wall8.visible = false;
+		this.wall8.setImmovable();
+		this.physics.add.collider(this.enemies2, this.wall8);
+		this.physics.add.collider(this.enemies, this.wall8);
 
 	} //end create
 
@@ -580,10 +593,8 @@ class InnerHouseScene extends Phaser.Scene {
 		if (this.input.x < 500) {
 			if (this.keys.space.isDown || this.player.isShooting) {
 				if (time > this.lastFiredTime) {
-					// console.log('y:' + this.player.y + 'x: ' + this.player.x)
-					console.log("questProcess:" + " " + this.questProcces);
-					console.log("x: " + this.player.x + "y: " + this.player.y)
-					console.log(this.enemies.children.entries.length)
+					console.log('y:' + this.player.y + 'x: ' + this.player.x)
+					console.log()
 					this.lastFiredTime = time + 200
 					this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
 				}
@@ -822,9 +833,15 @@ class InnerHouseScene extends Phaser.Scene {
 			if (!child.isDead) {
 				child.update()
 			}
-
 		})
-
+		if (this.enemies2.children.entries.length < 1 && this.player.y > 2069 && this.player.x > 970) {
+			console.log("end game")
+			// this.input.keyboard.enabled = false
+			this.player.x = 1471
+			this.player.y = 2240
+			this.beta = this.add.image(1460, 2240, "beta").setDepth(1).setScale(0.85);
+			
+		}
 	} //end update
 
 
