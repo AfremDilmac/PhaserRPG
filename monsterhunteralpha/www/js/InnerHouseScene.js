@@ -352,7 +352,7 @@ class InnerHouseScene extends Phaser.Scene {
 		this.physics.add.collider(this.projectiles, worldLayer, this.handleProjectileWorldCollision, null, this)
 		this.physics.add.collider(this.enemies, worldLayer)
 		this.physics.add.collider(this.enemies2, worldLayer)
-		// this.physics.add.collider(this.player, worldLayer)
+		this.physics.add.collider(this.player, worldLayer)
 		this.physics.add.overlap(this.projectiles, this.enemy, this.handleProjectileEnemyCollision, null, this)
 		this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
 
@@ -459,57 +459,57 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
-		this.wall.setImmovable();
+	
 		this.wall.visible = false;
 		this.physics.add.collider(this.enemies2, this.wall);
 		this.physics.add.collider(this.enemies, this.wall);
-		this.physics.add.collider(this.player, this.wall);
+	
 
 		this.wall2 = this.physics.add.sprite(135, 1460, "wall").setScale(0.08);
-		this.wall2.setImmovable();
+	
 		this.wall2.visible = false;
 		this.physics.add.collider(this.enemies2, this.wall2);
 		this.physics.add.collider(this.enemies, this.wall2);
-		this.physics.add.collider(this.player, this.wall2);
+
 
 		this.wall3 = this.physics.add.sprite(875, 710, "wall").setScale(0.08);
-		this.wall3.setImmovable();
+	
 		this.wall3.visible = false;
 		this.physics.add.collider(this.enemies2, this.wall3);
 		this.physics.add.collider(this.enemies, this.wall3);
-		this.physics.add.collider(this.player, this.wall3);
+	
 
 		this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
 		this.wall4.visible = false;
-		this.wall4.setImmovable();
+	
 		this.physics.add.collider(this.enemies2, this.wall4);
 		this.physics.add.collider(this.enemies, this.wall4);
-		this.physics.add.collider(this.player, this.wall4);
+	
 		this.wall4.flipY = true
 
 		this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
 		this.wall5.visible = false;
-		this.wall5.setImmovable();
+	
 		this.physics.add.collider(this.enemies2, this.wall5);
 		this.physics.add.collider(this.enemies, this.wall5);
-		this.physics.add.collider(this.player, this.wall5);
+	
 
 		this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
 		this.wall6.visible = false;
-		this.wall6.setImmovable();
+	
 		this.physics.add.collider(this.enemies2, this.wall6);
 		this.physics.add.collider(this.enemies, this.wall6);
-		this.physics.add.collider(this.player, this.wall6);
+	
 
 		this.wall7 = this.physics.add.sprite(1478, 2050, "wall").setScale(0.1);
 		this.wall7.visible = false;
-		this.wall7.setImmovable();
+	
 		this.physics.add.collider(this.enemies2, this.wall7);
 		this.physics.add.collider(this.enemies, this.wall7);
 
 		this.wall8 = this.physics.add.sprite(1471, 2476, "wall").setScale(0.1);
 		this.wall8.visible = false;
-		this.wall8.setImmovable();
+	
 		this.physics.add.collider(this.enemies2, this.wall8);
 		this.physics.add.collider(this.enemies, this.wall8);
 
@@ -550,6 +550,7 @@ class InnerHouseScene extends Phaser.Scene {
 			this.emmiter.active = true
 			this.emmiter.setPosition(enemy.x, enemy.y)
 			this.emmiter.explode()
+			this.player.gold = this.player.gold + 0.5
 
 		}
 	}
@@ -576,6 +577,7 @@ class InnerHouseScene extends Phaser.Scene {
 			loop: false
 		})
 		e.explode()
+		this.player.gold = this.player.gold + 0.5
 	}
 
 
@@ -606,7 +608,7 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//lvl 1 done
-		if (this.enemies.children.entries.length == 42 && this.questProcces == "start") {
+		if (this.questProcces == "start") {
 			this.wall.destroy();
 			this.questProcces = "dessert";
 		}
@@ -633,11 +635,11 @@ class InnerHouseScene extends Phaser.Scene {
 		if (this.player.y <= 2175 && this.player.y >= 2120 ) {
 			// wall
 			this.wall = this.physics.add.sprite(144, 2195, "wall").setScale(0.08);
-			this.wall.setImmovable();
+			
 			this.wall.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
-			this.physics.add.collider(this.player, this.wall);
+		
 		}
 
 
@@ -646,8 +648,8 @@ class InnerHouseScene extends Phaser.Scene {
 		////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 32 && this.questProcces == "dessert" && this.player.y >= 1381) {
-			this.wall2.destroy();
+		if (this.questProcces == "dessert" && this.player.y >= 1381) {
+			
 		}
 
 		if (this.player.y <= 1488 && this.player.y >= 1430 && this.player.x < 925) {
@@ -671,11 +673,11 @@ class InnerHouseScene extends Phaser.Scene {
 		if (this.player.y <= 1445) {
 			// wall
 			this.wall = this.physics.add.sprite(135, 1460, "wall").setScale(0.08);
-			this.wall.setImmovable();
+	
 			this.wall.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
-			this.physics.add.collider(this.player, this.wall);
+			
 
 		}
 
@@ -683,7 +685,7 @@ class InnerHouseScene extends Phaser.Scene {
 		// // //////////////////////////////////////////////////////////////////////////////////////
 
 
-		if (this.enemies.children.entries.length == 23 && this.questProcces == "cave") {
+		if (this.questProcces == "cave") {
 			this.wall3.destroy();
 		}
 
@@ -709,24 +711,24 @@ class InnerHouseScene extends Phaser.Scene {
 		if (this.player.y <= 685) {
 			// wall
 			this.wall = this.physics.add.sprite(875, 710, "wall").setScale(0.08);
-			this.wall.setImmovable();
+			
 			this.wall.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall);
 			this.physics.add.collider(this.enemies, this.wall);
-			this.physics.add.collider(this.player, this.wall);
+		
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
 
 
 		//Ice -> GreenHell
-		if (this.player.y > 60 && this.player.x > 800 && this.enemies.children.entries.length == 12 && this.questProcces == "ice") {
+		if (this.player.y > 60 && this.player.x > 800 && this.questProcces == "ice") {
 			// wall
 			this.wall4.destroy();
 			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
 			this.physics.add.collider(this.enemies2, this.wall4);
 			this.physics.add.collider(this.enemies, this.wall4);
-			this.physics.add.collider(this.player, this.wall4);
+		
 			this.wall4.flipY = true
 			this.wall4.visible = false
 			
@@ -738,8 +740,8 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall4 = this.physics.add.sprite(890, 80, "wall").setScale(0.1);
 			this.physics.add.collider(this.enemies2, this.wall4);
 			this.physics.add.collider(this.enemies, this.wall4);
-			this.physics.add.collider(this.player, this.wall4);
-			this.wall4.setImmovable();
+
+			
 			this.wall4.flipY = true
 			this.wall4.visible = false
 			this.questProcces = "greenhell"
@@ -751,26 +753,26 @@ class InnerHouseScene extends Phaser.Scene {
 
 
 		//Green Hell -> Yellowstone
-		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980 && this.enemies.children.entries.length == 6) {
+		if (this.player.x > 1000 && this.player.y > 855 && this.player.y < 980) {
 			// wall
 			this.wall5.destroy();
 			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
 			this.physics.add.collider(this.enemies2, this.wall5);
 			this.physics.add.collider(this.enemies, this.wall5);
-			this.physics.add.collider(this.player, this.wall5);
+			
 			this.wall5.visible = false
 		}	
 
 		//Green Hell -> Yellowstone
-		if (this.player.x > 1000 && this.player.y > 1000 && this.enemies.children.entries.length == 6) {
+		if (this.player.x > 1000 && this.player.y > 1000) {
 			// wall
 			this.wall5.destroy();
 			this.wall5 = this.physics.add.sprite(1448, 953, "wall").setScale(0.1);
 			this.physics.add.collider(this.enemies2, this.wall5);
 			this.physics.add.collider(this.enemies, this.wall5);
-			this.physics.add.collider(this.player, this.wall5);
-			this.wall5.setImmovable();
-			this.wall5.visible = true
+			
+		
+			this.wall5.visible = false
 		}	
 		
 
@@ -785,30 +787,30 @@ class InnerHouseScene extends Phaser.Scene {
 			this.wall6.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall6);
 			this.physics.add.collider(this.enemies, this.wall6);
-			this.physics.add.collider(this.player, this.wall6);
-			this.wall6.setImmovable();
+			
+			
 			
 		}	
 
-		if (this.player.y >= 1200 && this.player.y <= 1850 && this.player.x > 1000 && this.enemies.children.entries.length == 0) {
+		if (this.player.y >= 1200 && this.player.y <= 1850 && this.player.x > 1000 ) {
 			// wall
 			this.wall6.destroy();
 			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
 			this.wall6.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall6);
 			this.physics.add.collider(this.enemies, this.wall6);
-			this.physics.add.collider(this.player, this.wall6);
+			
 		}	
 
-		if (this.player.y >= 1908 && this.player.x > 1000 && this.enemies.children.entries.length == 0) {
+		if (this.player.y >= 1908 && this.player.x > 1000 ) {
 			// wall
 			this.wall6.destroy();
 			this.wall6 = this.physics.add.sprite(1476, 1833, "wall").setScale(0.1);
 			this.wall6.visible = false;
 			this.physics.add.collider(this.enemies2, this.wall6);
 			this.physics.add.collider(this.enemies, this.wall6);
-			this.physics.add.collider(this.player, this.wall6);
-			this.wall6.setImmovable();
+		
+			
 		}	
 
 		// //////////////////////////////////////////////////////////////////////////////////////
