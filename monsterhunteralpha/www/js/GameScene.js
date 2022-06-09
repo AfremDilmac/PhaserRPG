@@ -209,6 +209,64 @@ class GameScene extends Phaser.Scene {
 		// }
 
 
+				//Wonder forest{
+		// if (this.questProcces == "start") {
+		// 	for (let i = 0; i < 1; i++) {
+		// 		const element = new Enemy(this, 180 , 2500 , 'monsters', 5, 'bat')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies.add(element)
+		// 	}
+		// 	for (let i = 0; i < 1; i++) {
+		// 		const element = new Enemy(this, 550 , 2500 , 'monsters', 5, 'bat')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies.add(element)
+		// 	}
+		// }
+		////////////////////////////////////////////////////////////////////////////////
+		// if (this.questProcces == "dessert") {
+		// 	for (let i = 0; i < 5; i++) {
+		// 		const element = new Enemy(this, 180 , 1400 , 'monsters', 5, 'ghost')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies2.add(element)
+		// 	}
+		// 	for (let i = 0; i < 5; i++) {
+		// 		const element = new Enemy(this, 550 , 1300 , 'monsters', 5, 'ghost')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies2.add(element)
+		// 	}
+		// }
+		////////////////////////////////////////////////////////////////////////////////
+		// if (this.questProcces == "cave") {
+		// 	for (let i = 0; i < 5; i++) {
+		// 		const element = new Enemy(this, 180 , 600 , 'monsters', 5, 'skeleton')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies3.add(element)
+		// 	}
+		// 	for (let i = 0; i < 5; i++) {
+		// 		const element = new Enemy(this, 550 , 600 , 'monsters', 5, 'skeleton')
+		// 		element.body.setCollideWorldBounds(true)
+		// 		element.setTint(0x999999)
+		// 		this.enemies3.add(element)
+		// 	}
+		// }
+		// console.log(this.enemies);
+		// this.enemy = new Enemy(this, 300, 200, 'monsters', 5, 'slime', 10).setTint(0xffffff)
+		// this.physics.add.collider(this.enemy, this.worldLayer) // collision tussen enemy en map
+		// this.enemy.body.setCollideWorldBounds(true)
+		// //Om een enemy aan te maken gebruiken we deze code => kies de x, y positie de atlas die je wilt, en de damage
+		// //Hier kan men een type/classe geven aan de enemy en hier is het follow zodat hij ons character volgt
+		// this.enemy2 = new Enemy(this, 250, 242, 'monsters', 150, 'bat', 10).setTint(0x990005)
+		// this.physics.add.collider(this.enemy2, worldLayer) // collision tussen enemy en map
+		// // this.physics.add.collider(this.enemy2, worldLayer2) // collision tussen enemy en map
+		// this.enemy2.body.setCollideWorldBounds(true)
+		//}
+
+
 		//// We hebben de enemies direct op de map geplaatst (Tiled) op de monster layer 
 		//hier gaan we voor elke tile van de monster layer zien als de id overeenkomt met een monster 
 		// zo ja gaan we ze instantieeren met de a.d.h van de custom property dat we in tiled hebben toegewezen 
