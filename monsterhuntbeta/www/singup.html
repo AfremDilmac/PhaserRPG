@@ -1,0 +1,34 @@
+<html>
+
+<head>
+	<title>Firebase Authentication</title>
+	<link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+	<div id="login-box">
+		<form class="left">
+
+			<h1 id='status'>Sign up</h1>
+			<input type="text" id="username" name="username" placeholder="Username" />
+			<input type="text" id="email" name="email" placeholder="E-mail" />
+			<input type="password" id="password" name="password" placeholder="Password" />
+			<p id="errormsg-signup"></p>
+
+			<input type="submit" id='signUp' name="signup_submit" value="Sign up" />
+			<a id="gotoLogin" href="index.html">Login &#8250;</a>
+
+		</form>
+	</div>
+
+	<script type="module" src="js/firestore.js"></script>
+</body>
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+</html>
