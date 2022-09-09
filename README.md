@@ -1,2 +1,2 @@
 # PhaserRPG
-* Finale versie is in -> MonsterHunterAlpha
+* Web & mobile video game project created for the school
